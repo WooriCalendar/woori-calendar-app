@@ -23,8 +23,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # IntelliJ project files
-.idea
-.idea/*.xml
+/.idea
+/.idea/*.xml
 *.iml
 out
 gen
