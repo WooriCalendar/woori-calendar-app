@@ -1,5 +1,5 @@
 import './App.css';
-import FullCalendarApp from "./FullCalendarApp";
+import FullCalendarApp from "./components/FullCalendarApp";
 
 function App() {
   return (
