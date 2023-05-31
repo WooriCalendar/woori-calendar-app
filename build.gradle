@@ -30,7 +30,7 @@ dependencies {
     implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 //    implementation 'org.springframework.boot:spring-boot-starter-security'
-    runtimeOnly 'mysql:mysql-connector-java'
+//    runtimeOnly 'mysql:mysql-connector-java'
 
 //    implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: '5.6.1'
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.2'
