@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+  devtools:
+    livereload:
+      enabled: true
+  jpa:
+    show-sql: true
+  config:
+    import:
+      - classpath:/application-datasource.yml
+#      - classpath:/None
+
+logging:
+  level:
+    root: info
+    sql: debug
