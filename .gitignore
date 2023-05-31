@@ -36,5 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-#properties
-src/main/resources/datasource.properties
+### Data Source ###
+src/main/resources/application-datasource.yml
