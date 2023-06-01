@@ -5,7 +5,7 @@ package com.ceojun7.wooricalendar.controller;
  * @packageName : com.ceojun7.wooricalendar.controller
  * @fileName : NotificationController
  * @date : 2023-06-01
- * @description :
+ * @description :알림에 대한
  * ===========================================================
  * DATE           AUTHOR             NOTE
  * -----------------------------------------------------------
