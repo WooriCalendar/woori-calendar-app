@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ public class NotificationEntity {
     private String type; // 알림의 타입 ex) accept(캘린더 공유 승락), schReg(일정 등록), notReg(알림 등록), invite(캘린더 초대)
     private LocalDateTime sdate; // 알림 발송 시간
     private LocalDateTime rdate; // 알림 수신 시간 ( 수신 시간으로 check 여부 판단! )
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "calNo")
     private CalendarEntity calNo; // 캘린더 번호
 
