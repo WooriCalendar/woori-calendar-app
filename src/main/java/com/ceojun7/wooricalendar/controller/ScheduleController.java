@@ -33,4 +33,13 @@ public class ScheduleController {
             return ResponseEntity.badRequest().body(ResponseDTO.<ScheduleDTO>builder().error(e.getMessage()).build());
         }
     }
+
+    @GetMapping
+    public ResponseEntity<?> retrieveSchedule(@RequestBody ScheduleDTO dto) {
+        log.warn(String.valueOf(dto.getCalNo()));
+        List<ScheduleEntity> entities = service.retrieve(dto.getCalNo());
+        List<ScheduleDTO> dtos = entities.stream().map(ScheduleDTO::new).collect(Collectors.toList());
+        ResponseDTO<ScheduleDTO> response = ResponseDTO.<ScheduleDTO>builder().data(dtos).build();
+        return ResponseEntity.ok().body(response);
+    }
 }
