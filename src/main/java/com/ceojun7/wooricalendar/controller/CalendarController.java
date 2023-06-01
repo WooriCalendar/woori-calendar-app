@@ -22,12 +22,14 @@ public class CalendarController {
     /**
      * methodName : createSchedule
      * comment : 새 calendar 생성
-     * author : seolha86
+     * author : seolha86, 강태수
      * date : 2023-06-01
      * description :
      *
      * @param dto the dto
      * @return the response entity
+     * 
+     * @DeleteMapping 생성
      */
     @PostMapping
     public ResponseEntity<?> createSchedule(@RequestBody CalendarDTO dto) {
@@ -42,5 +44,32 @@ public class CalendarController {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(ResponseDTO.<CalendarDTO>builder().error(e.getMessage()).build());
         }
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateSchedule(@RequestBody CalendarDTO dto) {
+        CalendarEntity entity = CalendarDTO.toEntity(dto);
+
+        List<CalendarEntity> entities = service.update(entity);
+        List<CalendarDTO> dtos = entities.stream().map(CalendarDTO::new).collect(Collectors.toList());
+        ResponseDTO<CalendarDTO> response = ResponseDTO.<CalendarDTO>builder().data(dtos).build();
+        return ResponseEntity.ok().body(response);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteSchedule(@RequestBody CalendarDTO dto) {
+
+        try {
+            CalendarEntity entity = CalendarDTO.toEntity(dto);
+
+            List<CalendarEntity> entities = service.delete(entity);
+            List<CalendarDTO> dtos = entities.stream().map(CalendarDTO::new).collect(Collectors.toList());
+            ResponseDTO<CalendarDTO> response = ResponseDTO.<CalendarDTO>builder().data(dtos).build();
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(ResponseDTO.<CalendarDTO>builder().error(e.getMessage()).build());
+        }
+
     }
 }
