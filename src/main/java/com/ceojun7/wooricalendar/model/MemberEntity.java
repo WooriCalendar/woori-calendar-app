@@ -30,14 +30,12 @@ import javax.persistence.Table;
 @Table(name = "tbl_member")
 public class MemberEntity {
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String email;
     private String password;
     private String nickname;
     private String subemail;
     private String birthday;
-    private String regDate;
-    private String updateDate;
+    private String regdate;
+    private String updatedate;
     private String authProvider;
 }
