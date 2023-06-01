@@ -5,8 +5,21 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.util.Date;
+
+/**
+ * @packageName    : com.ceojun7.wooricalendar.dto
+ * @fileName       : CalendarDTO.java
+ * @author         : 김설하
+ * @date           : 2023.05.31
+ * @description    :
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023.05.31         김설하           최초 생성
+ */
 
 @Builder
 @NoArgsConstructor
@@ -25,13 +38,13 @@ public class CalendarDTO {
         this.calNo = entity.getCalNo();
         this.name = entity.getName();
         this.comment = entity.getComment();
-        this.timeZone = entity.getTimeZone();
-        this.regDate = entity.getRegDate();
-        this.updateDate = entity.getUpdateDate();
+        this.timeZone = entity.getTimezone();
+        this.regDate = entity.getRegdate();
+        this.updateDate = entity.getUpdatedate();
     }
 
     // dto > entity
-    public static CalendarEntity calDTOtoEntity(final CalendarDTO dto) {
-        return CalendarEntity.builder().calNo(dto.getCalNo()).name(dto.getName()).comment(dto.getComment()).timeZone(dto.getTimeZone()).regDate(dto.getRegDate()).updateDate(dto.getUpdateDate()).build();
+    public static CalendarEntity toEntity(final CalendarDTO dto) {
+        return CalendarEntity.builder().calNo(dto.getCalNo()).name(dto.getName()).comment(dto.getComment()).timezone(dto.getTimeZone()).regdate(dto.getRegDate()).updatedate(dto.getUpdateDate()).build();
     }
 }
