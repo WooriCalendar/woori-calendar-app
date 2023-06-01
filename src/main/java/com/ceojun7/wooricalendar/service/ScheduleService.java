@@ -9,7 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+/**
+ * @packageName : com.ceojun7.wooricalendar.service
+ * @fileName    : CalendarService.java
+ * @author      : 김설하
+ * @date        : 2023.05.31
+ * @description :
+ *              ===========================================================
+ *              DATE AUTHOR NOTE
+ *              -----------------------------------------------------------
+ *              2023.05.31 김설하 최초 생성
+ *              2023.06.01 김설하 create 기능추가
+ */
 @Service
 @Slf4j
 public class ScheduleService {

@@ -12,6 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @packageName : com.ceojun7.wooricalendar.contorller
+ * @fileName    : ScheduleController.java
+ * @author      : 김설하
+ * @date        : 2023.05.31
+ * @description :
+ *              ===========================================================
+ *              DATE AUTHOR NOTE
+ *              -----------------------------------------------------------
+ *              2023.05.31 김설하 최초 생성
+ */
 @RestController
 @RequestMapping("schedule")
 @Slf4j
