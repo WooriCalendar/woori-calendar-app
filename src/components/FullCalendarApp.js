@@ -21,6 +21,11 @@ export default class FullCalendarApp extends React.Component {
             alert(arg.dateStr)
         }
 
+        /**
+         * @Author 함준혁
+         * 일정 추가
+         * @type {[{date: string, title: string},{date: string, title: string}]}
+         */
         const events = [
             { title: '이벤트 1', date: '2023-05-31' },
             { title: '이벤트 2', date: '2023-06-01' },
