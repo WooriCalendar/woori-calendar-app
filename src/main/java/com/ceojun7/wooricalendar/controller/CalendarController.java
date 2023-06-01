@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * @packageName : com.ceojun7.wooricalendar.contorller
  * @fileName    : CalendarController.java
- * @author      : 김설하
+ * @author      : 김설하, 강태수
  * @date        : 2023.05.31
  * @description :
  *              ===========================================================
@@ -32,7 +32,7 @@ public class CalendarController {
     /**
      * methodName : createSchedule
      * comment : 새 calendar 생성
-     * author : seolha86, 강태수
+     * author : seolha86
      * date : 2023-06-01
      * description :
      *
@@ -54,6 +54,15 @@ public class CalendarController {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(ResponseDTO.<CalendarDTO>builder().error(e.getMessage()).build());
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> retrieveSchedule(@RequestBody CalendarDTO dto) {
+        log.warn(String.valueOf(dto.getCalNo()));
+        List<CalendarEntity> entities = service.retrieve(dto.getCalNo());
+        List<CalendarDTO> dtos = entities.stream().map(CalendarDTO::new).collect(Collectors.toList());
+        ResponseDTO<CalendarDTO> response = ResponseDTO.<CalendarDTO>builder().data(dtos).build();
+        return ResponseEntity.ok().body(response);
     }
 
     @PutMapping
