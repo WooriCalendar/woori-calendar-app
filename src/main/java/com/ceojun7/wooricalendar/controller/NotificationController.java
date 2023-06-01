@@ -1,7 +1,7 @@
 package com.ceojun7.wooricalendar.controller;
 
 /**
- * @author : pro_g
+ * @author : Hamdoson
  * @packageName : com.ceojun7.wooricalendar.controller
  * @fileName : NotificationController
  * @date : 2023-06-01
@@ -9,7 +9,7 @@ package com.ceojun7.wooricalendar.controller;
  * ===========================================================
  * DATE           AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-06-01        pro_g             최초 생성
+ * 2023-06-01        Hamdoson             최초 생성
  */
 public class NotificationController {
 }
