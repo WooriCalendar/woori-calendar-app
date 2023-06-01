@@ -1,5 +1,6 @@
 package com.ceojun7.wooricalendar.dto;
 
+import com.ceojun7.wooricalendar.model.CalendarEntity;
 import com.ceojun7.wooricalendar.model.ScheduleEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,12 +36,12 @@ public class ScheduleDTO {
         this.endDate = entity.getEndDate();
         this.regDate = entity.getRegDate();
         this.updateDate = entity.getRegDate();
-        this.calNo = entity.getCalNo();
+        this.calNo = entity.getCalendarEntity().getCalNo();
     }
 
     public static ScheduleEntity toEntity(final ScheduleDTO dto) {
         return ScheduleEntity.builder().sNo(dto.getSNo()).name(dto.getName()).comment(dto.getComment()).startTime(dto.getStartTime())
                 .endTime(dto.getEndTime()).startDate(dto.getStartDate()).endDate(dto.getEndDate()).regDate(dto.getRegDate())
-                .updateDate(dto.getUpdateDate()).calNo(dto.getCalNo()).build();
+                .updateDate(dto.getUpdateDate()).calendarEntity(CalendarEntity.builder().calNo(dto.calNo).build()).build();
     }
 }

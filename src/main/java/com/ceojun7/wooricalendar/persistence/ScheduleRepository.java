@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<ScheduleEntity, String> {
-    List<ScheduleEntity> findByCalNo(Long calNo);
+    List<ScheduleEntity> findByCalendarEntity_CalNo(Long calNo);
 }
