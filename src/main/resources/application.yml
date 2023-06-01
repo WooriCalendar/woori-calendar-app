@@ -10,7 +10,7 @@ spring:
   config:
     import:
       - classpath:/application-datasource.yml
-#      - classpath:/None
+      - classpath:/application-oauth2.yml
 
 logging:
   level:
