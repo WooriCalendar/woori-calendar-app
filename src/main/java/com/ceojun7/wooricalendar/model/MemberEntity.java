@@ -39,5 +39,5 @@ public class MemberEntity {
     private String birthday;
     private String regDate;
     private String updateDate;
-    private String provider;
+    private String authProvider;
 }
