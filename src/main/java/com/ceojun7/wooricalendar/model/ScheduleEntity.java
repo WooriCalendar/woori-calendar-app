@@ -9,6 +9,18 @@ import javax.persistence.*;
 import java.util.Date;
 import java.sql.Timestamp;
 
+/**
+ * @packageName    : com.ceojun7.wooricalendar.model
+ * @fileName       : ScheduleEntity.java
+ * @author         : 김설하
+ * @date           : 2023.05.31
+ * @description    :
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023.05.31         김설하           최초 생성
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,12 +32,15 @@ public class ScheduleEntity {
     private Long sNo;
     private String name;
     private String comment;
+
     private Timestamp startTime;
     private Timestamp endTime;
     private Timestamp startDate;
     private Timestamp endDate;
     private Date regDate;
     private Date updateDate;
-    @ManyToOne(targetEntity = CalendarEntity.class) @JoinColumn(name = "calendar_calNo")
-    private Long calNo;
+
+    @ManyToOne
+    @JoinColumn(name = "calNo")
+    private CalendarEntity calendarEntity;
 }

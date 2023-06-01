@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * @author : 함준혁
+ * The type Notification dto.
+ *
+ * @author : HAMDOSON
  * @packageName : com.ceojun7.wooricalendar.dto
  * @fileName : NotificationDTO
  * @date : 2023-06-01
@@ -32,11 +34,15 @@ public class NotificationDTO {
     private LocalDateTime sdate; // 알림 발송 시간
     private LocalDateTime rdate; // 알림 수신 시간 ( 수신 시간으로 check 여부 판단! )
 
+
     /**
-     * @methodName    : NotificationDTO
-     * @author        : 함준혁
-     * @date          : 2023-06-01
-     * TodoEntity 객체를 기반으로 TodoDTO 객체를 생성하는 생성자
+     * NotificationDTO
+     * comment : NotificationDTO생성자
+     * author : Hamdoson
+     * date : 2023-06-01
+     * description : NotificationEntity 객체를 기반으로 NotificationDTO 객체를 생성하는 생성자
+     *
+     * @param entity the entity
      */
     public NotificationDTO(final NotificationEntity entity) {
         this.nNo = entity.getNNo();
@@ -47,11 +53,15 @@ public class NotificationDTO {
         this.sdate = entity.getSdate();
         this.rdate = entity.getRdate();
     }
+
     /**
-     * @methodName    : toEntity
-     * @author        : 함준혁
-     * @date          : 2023-06-01
-     * TodoDTO 객체를 기반으로 TodoEntity 객체를 생성하는 정적 메서드
+     * methodName : toEntity
+     * comment : toEntity 객체 생성
+     * author : Hamdoson
+     * date : 2023-06-01
+     * description : NotificationDTO 객체를 기반으로 NotificationEntity 객체를 생성하는 정적 메서드
+     * @param dto the dto
+     * @return the notification entity
      */
     public static NotificationEntity toEntity(final NotificationDTO dto) {
         return NotificationEntity.builder()

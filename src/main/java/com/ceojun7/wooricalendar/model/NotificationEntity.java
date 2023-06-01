@@ -9,7 +9,7 @@ import org.hibernate.mapping.ToOne;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 /**
- * @author : 함준혁
+ * @author : Hamdoson
  * @packageName : com.ceojun7.wooricalendar.model
  * @fileName : NotificationEntity
  * @date : 2023-06-01

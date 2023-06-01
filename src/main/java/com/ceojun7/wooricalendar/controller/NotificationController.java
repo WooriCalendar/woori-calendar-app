@@ -1,15 +1,21 @@
 package com.ceojun7.wooricalendar.controller;
 
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 /**
- * @author : pro_g
+ * @author : Hamdoson
  * @packageName : com.ceojun7.wooricalendar.controller
  * @fileName : NotificationController
  * @date : 2023-06-01
- * @description :
+ * @description :알림에 대한
  * ===========================================================
  * DATE           AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-06-01        pro_g             최초 생성
+ * 2023-06-01        Hamdoson             최초 생성
  */
+@RestController
+@RequestMapping("Notification")
 public class NotificationController {
+
 }
