@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
  * @fileName : ShareEntity.java
  * @author : 박현민
  * @date : 2023.06.02
- * @description : 공유
+ * @description : 공유(share)
  *              ===========================================================
  *              DATE AUTHOR NOTE
  *              -----------------------------------------------------------
