@@ -7,12 +7,12 @@ import com.ceojun7.wooricalendar.security.TokenProvider;
 import com.ceojun7.wooricalendar.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-
 
 /**
  * @author : DGeon
@@ -20,10 +20,11 @@ import java.util.Date;
  * @fileName : MemberController
  * @date : 2023-05-31
  * @description :
- * ===========================================================
- * DATE           AUTHOR             NOTE
- * -----------------------------------------------------------
- * 2023-05-31        DGeon         최초 생성
+ *              ===========================================================
+ *              DATE AUTHOR NOTE
+ *              -----------------------------------------------------------
+ *              2023-05-31 DGeon 최초 생성
+ *              2023-06-04 get, update 생성
  **/
 @RestController
 @RequestMapping("member")
@@ -39,7 +40,7 @@ public class MemberController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("signup")
-    public ResponseEntity<?> registerMember(@RequestBody MemberDTO memberDTO){
+    public ResponseEntity<?> registerMember(@RequestBody MemberDTO memberDTO) {
         try {
             if (memberDTO == null || memberDTO.getPassword() == null) {
                 throw new RuntimeException("Invalid Password value.");
@@ -68,7 +69,8 @@ public class MemberController {
     @PostMapping("signin")
     public ResponseEntity<?> authenticate(@RequestBody MemberDTO memberDTO) {
         log.info("{}", memberDTO);
-        MemberEntity member = memberService.getByCredentials(memberDTO.getEmail(), memberDTO.getPassword(), passwordEncoder);
+        MemberEntity member = memberService.getByCredentials(memberDTO.getEmail(), memberDTO.getPassword(),
+                passwordEncoder);
         log.info("{}", member);
         if (member != null) {
             // 토큰생성
@@ -88,4 +90,26 @@ public class MemberController {
                     .body(responseDTO);
         }
     }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<MemberDTO> getMemberByEmail(@PathVariable String email) {
+        MemberDTO memberDTO = memberService.getMemberByEmail(email);
+        if (memberDTO != null) {
+            return new ResponseEntity<>(memberDTO, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/{email}")
+    public ResponseEntity<String> updateMember(@PathVariable String email,
+            @RequestHeader("Authorization") String token,
+            @RequestBody MemberDTO memberDTO) {
+
+        boolean updated = memberService.updateMember(memberDTO);
+        if (updated) {
+            return new ResponseEntity<>("회원 정보가 성공적으로 업데이트되었습니다.", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+    }
+
 }
