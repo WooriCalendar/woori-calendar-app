@@ -57,7 +57,7 @@ public class OAuthMemberServiceImpl extends DefaultOAuth2UserService {
         MemberEntity memberEntity = null;
         // db탐색 후 중복되는 id가 없을시 신규 id로 등록
         if (!memberRepository.existsByEmail(email)) {
-            memberEntity = MemberEntity.builder().email(email).authProvider(authProvider).build();
+            memberEntity = MemberEntity.builder().email(email).auth_Provider(authProvider).build();
             memberEntity = memberRepository.save(memberEntity);
         } else {
             memberEntity = memberRepository.findByEmail(email);

@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @author : DGeon
@@ -35,7 +36,7 @@ public class MemberEntity {
     private String nickname;
     private String subemail;
     private String birthday;
-    private String regdate;
-    private String updatedate;
-    private String authProvider;
+    private Date regDate;
+    private Date updateDate;
+    private String auth_Provider;
 }
