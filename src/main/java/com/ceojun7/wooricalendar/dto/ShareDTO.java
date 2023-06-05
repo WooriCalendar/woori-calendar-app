@@ -2,6 +2,8 @@ package com.ceojun7.wooricalendar.dto;
 
 import java.util.Date;
 
+import com.ceojun7.wooricalendar.model.CalendarEntity;
+import com.ceojun7.wooricalendar.model.MemberEntity;
 import com.ceojun7.wooricalendar.model.ShareEntity;
 
 import lombok.AllArgsConstructor;
@@ -31,27 +33,27 @@ public class ShareDTO {
   private boolean checked;
   private Date regDate;
   private Date updateDate;
-  private Long gradeNo;
+  private Long grade;
 
   // entity > dto
   public ShareDTO(final ShareEntity entity) {
-    this.calNo = entity.getCalNo();
-    this.email = entity.getEmail();
+    this.calNo = entity.getCalendarEntity().getCalNo();
+    this.email = entity.getMemberEntity().getEmail();
     this.checked = entity.isChecked();
     this.regDate = entity.getRegDate();
     this.updateDate = entity.getUpdateDate();
-    this.gradeNo = entity.getGradeNo();
+    this.grade = entity.getGrade();
   }
 
   // dto > entity
   public static ShareEntity toEntity(final ShareDTO dto) {
     return ShareEntity.builder()
-        .calNo(dto.getCalNo())
-        .email(dto.getEmail())
+        .calendarEntity(CalendarEntity.builder().calNo(dto.calNo).build())
+        .memberEntity(MemberEntity.builder().email(dto.email).build())
         .checked(dto.isChecked())
         .regDate(dto.getRegDate())
         .updateDate(dto.getUpdateDate())
-        .gradeNo(dto.getGradeNo())
+        .grade(dto.getGrade())
         .build();
   }
 }

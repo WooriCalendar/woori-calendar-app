@@ -33,12 +33,12 @@ import lombok.NoArgsConstructor;
 public class ShareEntity {
   @Id
   @JoinColumn(name = "calNo") // tbl_calendar
-  private Long calNo;
+  private CalendarEntity calendarEntity;
   @Id
   @JoinColumn(name = "email") // tbl_member
-  private String email;
+  private MemberEntity memberEntity;
   private boolean checked;
   private Date regDate;
   private Date updateDate;
-  private Long gradeNo;
+  private Long grade;
 }
