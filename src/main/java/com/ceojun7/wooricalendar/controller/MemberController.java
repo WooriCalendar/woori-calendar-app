@@ -26,7 +26,7 @@ import java.util.Date;
  * 2023-05-31        DGeon         최초 생성
  **/
 @RestController
-@RequestMapping("auth")
+@RequestMapping("member")
 @Slf4j
 public class MemberController {
     @Autowired
@@ -58,7 +58,6 @@ public class MemberController {
                     .build();
             return ResponseEntity.ok().body(responseUserDTO);
         } catch (Exception e) {
-            // 유저 정보는 항상 하나이므로 리스트로 만들어야 하는 ResponseDTO를 사용하지 않고 그냥 UserDTO를 리턴
             ResponseDTO responseDTO = ResponseDTO.builder().error(e.getLocalizedMessage()).build();
             return ResponseEntity
                     .badRequest()
