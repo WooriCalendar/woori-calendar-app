@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 
 /**
  * @author : DGeon
@@ -46,6 +48,8 @@ public class MemberController {
             MemberEntity member = MemberEntity.builder()
                     .email(memberDTO.getEmail())
                     .password(passwordEncoder.encode(memberDTO.getPassword()))
+                    .regDate(new Date())
+                    .updateDate(new Date())
                     .build();
             // 서비스를 이용해 레포지토리에 유저 저장
             MemberEntity registeredMember = memberService.create(member);
