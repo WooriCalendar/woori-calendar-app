@@ -1,13 +1,20 @@
 import './App.css';
 import FullCalendarApp from "./components/FullCalendarApp";
-import Signup from "./components/Signup";
 import Navigation from "./components/Navigation"
+import {Container} from "@mui/material";
+import {useEffect} from "react";
+import {call} from "./service/ApiService";
+
+
+
 function App() {
   return (
-      <>
+      <div className="App">
         <Navigation />
-        <FullCalendarApp />
-      </>
+          <Container maxWidth="md">
+            <FullCalendarApp />
+          </Container>
+      </div>
   );
 }
 
