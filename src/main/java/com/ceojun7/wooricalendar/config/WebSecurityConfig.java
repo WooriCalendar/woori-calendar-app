@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .and().csrf().disable().httpBasic().disable().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // session 안씀
                 .and().authorizeRequests()
-                .antMatchers("/", "/auth/**", "/oauth2/**").permitAll()
+                .antMatchers("/", "/member/**", "/oauth2/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
