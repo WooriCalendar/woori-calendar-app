@@ -1,9 +1,6 @@
 package com.ceojun7.wooricalendar.persistence;
 
-import com.ceojun7.wooricalendar.model.CalendarEntity;
-import com.ceojun7.wooricalendar.model.MemberEntity;
 import com.ceojun7.wooricalendar.model.NotificationEntity;
-import com.ceojun7.wooricalendar.model.ScheduleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +16,7 @@ import java.util.List;
  * DATE           AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023-06-01        Hamdoson           최초 생성
+ * 2023-06-05        Hamdoson           findByRevEmail, findByCalendarEntity_calNo 추가
  */
 @Repository
 public interface NotificationRepository extends JpaRepository<NotificationEntity, String> {

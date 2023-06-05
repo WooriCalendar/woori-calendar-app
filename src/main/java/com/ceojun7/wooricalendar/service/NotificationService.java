@@ -1,6 +1,5 @@
 package com.ceojun7.wooricalendar.service;
 
-import com.ceojun7.wooricalendar.dto.NotificationDTO;
 import com.ceojun7.wooricalendar.model.CalendarEntity;
 import com.ceojun7.wooricalendar.model.NotificationEntity;
 import com.ceojun7.wooricalendar.persistence.CalendarRepository;
@@ -18,7 +17,12 @@ import java.util.List;
  * @packageName : com.ceojun7.wooricalendar.service
  * @fileName : NotificationService
  * @date : 2023-06-01
- * @description : =========================================================== DATE           AUTHOR             NOTE ----------------------------------------------------------- 2023-06-01        Hamdoson           최초 생성
+ * @description :
+ * ===========================================================
+ * DATE           AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023-06-01     Hamdoson           최초 생성
+ * 2023-06-05     Hamdoson           create, retrieve 생성
  */
 @Service
 @Slf4j

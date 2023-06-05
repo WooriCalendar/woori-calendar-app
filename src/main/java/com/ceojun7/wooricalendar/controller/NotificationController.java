@@ -22,7 +22,8 @@ import java.util.stream.Collectors;
  * ===========================================================
  * DATE           AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023-06-01        Hamdoson             최초 생성
+ * 2023-06-01     Hamdoson           최초 생성
+ * 2023-06-05     Hamdoson           createNotification, retrieveNotificationList 생성
  */
 @RestController
 @RequestMapping("notification")
@@ -32,6 +33,16 @@ public class NotificationController {
     @Autowired
     private NotificationService service;
 
+    /**
+     * methodName : createNotification
+     * comment : Create
+     * author : Hamdoson
+     * date : 2023-06-05
+     * description : 알림 생성(발송)
+     *
+     * @param dto the dto
+     * @return the response entity
+     */
     @PostMapping
     public ResponseEntity<?> createNotification(@RequestBody NotificationDTO dto) {
         log.info(String.valueOf(dto));
@@ -53,6 +64,16 @@ public class NotificationController {
         }
     }
 
+    /**
+     * methodName : retrieveNotificationList
+     * comment : retrieve
+     * author : Hamdoson
+     * date : 2023-06-05
+     * description : 받은이의 이메일로서의 조회
+     *
+     * @param dto the dto
+     * @return the response entity
+     */
     @GetMapping
     public ResponseEntity<?> retrieveNotificationList(@RequestBody NotificationDTO dto) {
         log.info(String.valueOf(dto));
