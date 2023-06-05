@@ -41,7 +41,7 @@ public class NotificationService {
      * comment : Create Notification
      * author : Hamdoson
      * date : 2023-06-05
-     * description : Notification Create
+     * description : Notification Create생성
      *
      * @param notificationEntity the notification entity
      * @return the list
