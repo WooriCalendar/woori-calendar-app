@@ -19,7 +19,6 @@ import com.ceojun7.wooricalendar.persistence.ShareRepository;
  *              -----------------------------------------------------------
  *              2023.06.05 박현민 최초 생성
  */
-
 @Service
 public class ShareService {
 
