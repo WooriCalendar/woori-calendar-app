@@ -18,6 +18,7 @@ import com.ceojun7.wooricalendar.persistence.ShareRepository;
  *              DATE AUTHOR NOTE
  *              -----------------------------------------------------------
  *              2023.06.05 박현민 최초 생성
+ *              2023.06.07 박현민 create 매서드 추가
  */
 @Service
 public class ShareService {
@@ -25,15 +26,18 @@ public class ShareService {
   @Autowired
   private ShareRepository shareRepository;
 
-  // public List<ShareEntity> create(final ShareEntity entity) {
-  // shareRepository.save(entity);
-  // return
-  // }
+  public List<ShareEntity> create(final ShareEntity shareEntity) {
 
-  // public GradeEntity update(final GradeEntity entity) {
-  // final GradeEntity original = gradeRepository.findByGrade(entity.getGrade());
+    shareRepository.save(shareEntity);
+
+    return shareRepository.findByShareNo(shareEntity.getShareNo());
+  }
+
+  // public List<ShareEntity> update(final ShareEntity shareEntity) {
+  // final List<ShareEntity> original =
+  // shareRepository.findByShareNo(shareEntity.getShareNo());
   // // 등급을 업데이트하고 저장
-  // original.setGrade(entity.getGrade());
+  // original.setGrade(shareEntity.getGrade());
   // gradeRepository.save(original);
   // // 업데이트한 등급으로 반환
   // return original;
