@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  *              DATE AUTHOR NOTE
  *              -----------------------------------------------------------
  *              2023.06.02 박현민 최초 생성
+ *              2023.06.07 박현민 create 추가
  */
 
 @Slf4j
@@ -50,6 +52,15 @@ public class ShareController {
       e.printStackTrace();
       return ResponseEntity.badRequest().body(ResponseDTO.<ShareDTO>builder().error(e.getMessage()).build());
     }
+  }
+
+  @PutMapping
+  public ResponseEntity<?> updateShare(@RequestBody ShareDTO dto) {
+    ShareEntity entity = ShareDTO.toEntity(dto);
+    List<ShareEntity> entities = service.update(entity);
+    List<ShareDTO> dtos = entities.stream().map(ShareDTO::new).collect(Collectors.toList());
+    ResponseDTO<ShareDTO> response = ResponseDTO.<ShareDTO>builder().data(dtos).build();
+    return ResponseEntity.ok().body(response);
   }
 
 }
