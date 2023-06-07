@@ -11,16 +11,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 /**
  * @packageName : com.ceojun7.wooricalendar.contorller
- * @fileName    : CalendarController.java
- * @author      : 김설하, 강태수
- * @date        : 2023.05.31
+ * @fileName : CalendarController.java
+ * @author : 김설하, 강태수
+ * @date : 2023.05.31
  * @description :
  *              ===========================================================
  *              DATE AUTHOR NOTE
  *              -----------------------------------------------------------
  *              2023.05.31 김설하 최초 생성
+ *              2023.06.01 강태수 update, delete 생성
+ * 
  */
 @RestController
 @RequestMapping("calendar")
