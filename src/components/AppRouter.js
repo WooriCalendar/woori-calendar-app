@@ -2,9 +2,9 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./Login";
-import SignUp from "./Signup";
 import SocialLogin from "./SocialLogin";
 import App from "../App";
+import Signup from "./Signup";
 
 function Copyright() {
     return (
@@ -21,7 +21,7 @@ const AppRouter = () => {
                 <Routes>
                     <Route index element={<App />} />
                     <Route path="login" element={<Login />} />
-                    <Route path="signup" element={<SignUp />} />
+                    <Route path="signup" element={<Signup />} />
                     <Route path="socialLogin" element={<SocialLogin />} />
                 </Routes>
             </BrowserRouter>
