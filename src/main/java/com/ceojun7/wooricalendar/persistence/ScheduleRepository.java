@@ -23,5 +23,8 @@ import java.util.List;
 public interface ScheduleRepository extends JpaRepository<ScheduleEntity, String> {
     List<ScheduleEntity> findByCalendarEntity_CalNo(Long calNo);
 
+    List<ScheduleEntity> findByScNo(Long scNo);
+
     List<ScheduleEntity> findByStartDate(Timestamp startDate);
+
 }

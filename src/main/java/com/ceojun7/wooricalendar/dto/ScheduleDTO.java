@@ -15,9 +15,10 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 public class ScheduleDTO {
-    private Long sNo;
+    private Long scNo;
     private String name;
     private String comment;
+    private String place;
     private Timestamp startTime;
     private Timestamp endTime;
     private Timestamp startDate;
@@ -27,9 +28,10 @@ public class ScheduleDTO {
     private Long calNo;
 
     public ScheduleDTO(final ScheduleEntity entity) {
-        this.sNo = entity.getSNo();
+        this.scNo = entity.getScNo();
         this.name = entity.getName();
         this.comment = entity.getComment();
+        this.place = entity.getPlace();
         this.startTime = entity.getStartTime();
         this.endTime = entity.getEndTime();
         this.startDate = entity.getStartDate();
@@ -40,8 +42,8 @@ public class ScheduleDTO {
     }
 
     public static ScheduleEntity toEntity(final ScheduleDTO dto) {
-        return ScheduleEntity.builder().sNo(dto.getSNo()).name(dto.getName()).comment(dto.getComment()).startTime(dto.getStartTime())
-                .endTime(dto.getEndTime()).startDate(dto.getStartDate()).endDate(dto.getEndDate()).regDate(dto.getRegDate())
+        return ScheduleEntity.builder().scNo(dto.getScNo()).name(dto.getName()).comment(dto.getComment()).place(dto.getPlace())
+                .startTime(dto.getStartTime()).endTime(dto.getEndTime()).startDate(dto.getStartDate()).endDate(dto.getEndDate()).regDate(dto.getRegDate())
                 .updateDate(dto.getUpdateDate()).calendarEntity(CalendarEntity.builder().calNo(dto.calNo).build()).build();
     }
 }

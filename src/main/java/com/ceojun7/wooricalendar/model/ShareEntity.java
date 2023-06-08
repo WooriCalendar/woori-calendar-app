@@ -2,6 +2,7 @@ package com.ceojun7.wooricalendar.model;
 
 import java.util.Date;
 
+import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,8 +38,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "tbl_share")
 @DynamicInsert
 public class ShareEntity {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long shareNo;
   @ManyToOne
   @JoinColumn(name = "calNo") // tbl_calendar

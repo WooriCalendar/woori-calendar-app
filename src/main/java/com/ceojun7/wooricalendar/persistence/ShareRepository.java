@@ -21,5 +21,7 @@ import com.ceojun7.wooricalendar.model.ShareEntity;
 
 @Repository
 public interface ShareRepository extends JpaRepository<ShareEntity, Long> {
-  List<ShareEntity> findByShareNo(Long shareNo);
+//  List<ShareEntity> findByCalNo(Long calNo);
+
+//  List<ShareEntity> findByEmail(String email);
 }
