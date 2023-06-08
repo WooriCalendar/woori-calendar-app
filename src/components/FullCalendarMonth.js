@@ -1,8 +1,10 @@
 import React from 'react'
 import FullCalendar from '@fullcalendar/react' // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
+import dayGridPlugin from '@fullcalendar/daygrid'
+import {Calendar} from "@fullcalendar/core"; // a plugin!
+import timeGridPlugin from '@fullcalendar/timegrid'
 
-export default class FullCalendarApp extends React.Component {
+export default class FullCalendarMonth extends React.Component {
     render() {
         /**
          * 이벤트 클릭시 발생 함수
@@ -19,6 +21,7 @@ export default class FullCalendarApp extends React.Component {
          */
         const handleDateClick = (arg) => { // bind with an arrow function
             alert(arg.dateStr)
+            console.log("클릭한 Date:", arg.dateStr);
         }
 
         /**
@@ -26,11 +29,35 @@ export default class FullCalendarApp extends React.Component {
          * 일정 추가
          * @type {[{date: string, title: string},{date: string, title: string}]}
          */
+        const startdate = '2023-05-31 00:00:00.000'
+
         const events = [
-            { title: '이벤트 1', date: '2023-05-31' },
-            { title: '이벤트 2', date: '2023-06-01' },
+            {
+                sNo: '',
+                title: '서라',
+                comment: '테스트',
+                startTime: '',
+                endTime: '',
+                date: startdate,
+                endDate: '2023-05-31 00:00:00.000',
+                regDate: '2023-05-31 20:41:22.000',
+                updateDate: '2023-05-31 20:41:22.000',
+                calNo: '1',
+                place: ''
+            },
             // 추가적인 이벤트 데이터...
         ];
+
+        /*const calendar = new Calendar(calendarEl, {
+            plugins: [timeGridPlugin],
+            initialView: 'timeGridWeek',
+            headerToolbar: {
+                left: 'prev,next',
+                center: 'title',
+                right: 'timeGridWeek,timeGridDay' // user can switch between the two
+            }
+        })*/
+
         return (
             /**
              * FullCalendar Api 추가
@@ -42,6 +69,7 @@ export default class FullCalendarApp extends React.Component {
                 initialView="dayGridMonth"
                 events={events}
                 eventClick={handleEventClick}
+                DateClick={handleDateClick}
             />
         )
     }
