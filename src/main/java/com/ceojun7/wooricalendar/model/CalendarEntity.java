@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @packageName    : com.ceojun7.wooricalendar.model
@@ -30,13 +33,28 @@ import java.util.Date;
 @Table(name = "tbl_calendar")
 @DynamicInsert
 public class CalendarEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long calNo;
     private String name;
     private String comment;
     private String timezone;
-    @Column(nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date regdate;
-    @Column(nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date updatedate;
+
+    @OneToMany(mappedBy = "calendarEntity")
+    private final List<ScheduleEntity> schedules = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "CalendarEntity{" +
+                "calNo=" + calNo +
+                ", name='" + name + '\'' +
+                ", comment='" + comment + '\'' +
+                ", timezone='" + timezone + '\'' +
+                ", regdate=" + regdate +
+                ", updatedate=" + updatedate +
+                ", 스케줄= " + schedules +
+                '}';
+    }
 }
