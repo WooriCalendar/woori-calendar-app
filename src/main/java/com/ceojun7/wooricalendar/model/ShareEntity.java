@@ -2,10 +2,7 @@ package com.ceojun7.wooricalendar.model;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,10 +28,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "tbl_share")
 public class ShareEntity {
-  @Id
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long shareNo;
+  @ManyToOne
   @JoinColumn(name = "calNo") // tbl_calendar
   private CalendarEntity calendarEntity;
-  @Id
+  @ManyToOne
   @JoinColumn(name = "email") // tbl_member
   private MemberEntity memberEntity;
   private boolean checked;

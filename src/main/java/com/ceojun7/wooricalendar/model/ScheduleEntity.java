@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -27,20 +28,40 @@ import java.sql.Timestamp;
 @Builder
 @Entity
 @Table(name = "tbl_schedule")
+@DynamicInsert
 public class ScheduleEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long sNo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long scNo;
     private String name;
     private String comment;
+    private String place;
 
     private Timestamp startTime;
     private Timestamp endTime;
     private Timestamp startDate;
     private Timestamp endDate;
+
     private Date regDate;
     private Date updateDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "calNo")
     private CalendarEntity calendarEntity;
+
+    @Override
+    public String toString() {
+        return "ScheduleEntity{" +
+                "scNo=" + scNo +
+                ", name='" + name + '\'' +
+                ", comment='" + comment + '\'' +
+                ", place='" + place + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", regDate=" + regDate +
+                ", updateDate=" + updateDate +
+                '}';
+    }
 }

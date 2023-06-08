@@ -2,11 +2,14 @@ package com.ceojun7.wooricalendar.service;
 
 import com.ceojun7.wooricalendar.model.CalendarEntity;
 import com.ceojun7.wooricalendar.model.ScheduleEntity;
+import com.ceojun7.wooricalendar.model.ShareEntity;
 import com.ceojun7.wooricalendar.persistence.CalendarRepository;
 import com.ceojun7.wooricalendar.persistence.ScheduleRepository;
+import com.ceojun7.wooricalendar.persistence.ShareRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -26,6 +29,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@Transactional
 public class ScheduleService {
     @Autowired
     private ScheduleRepository scheduleRepository;
@@ -69,4 +73,9 @@ public class ScheduleService {
 
         return scheduleRepository.findByCalendarEntity_CalNo(calendarEntity.getCalNo());
     }
+
+//    public List<ShareEntity> retrieveByEmail(String email) {
+//        return shareRepository.findByMemberEntity_Email(email);
+//    }
+
 }
