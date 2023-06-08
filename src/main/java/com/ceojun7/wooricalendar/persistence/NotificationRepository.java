@@ -19,7 +19,7 @@ import java.util.List;
  * 2023-06-05        Hamdoson           findByRevEmail, findByCalendarEntity_calNo 추가
  */
 @Repository
-public interface NotificationRepository extends JpaRepository<NotificationEntity, String> {
+public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {
     List<NotificationEntity> findByRevEmail(String revEmail);
     List<NotificationEntity> findByCalendarEntity_CalNo(Long calNo);
 }
