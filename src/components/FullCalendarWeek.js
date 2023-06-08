@@ -1,8 +1,9 @@
 import React from 'react'
 import FullCalendar from '@fullcalendar/react' // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import dayGridPlugin from "@fullcalendar/daygrid";
 
-export default class FullCalendarMonth extends React.Component {
+export default class FullCalendarWeek extends React.Component {
     render() {
         /**
          * 이벤트 클릭시 발생 함수
@@ -54,7 +55,7 @@ export default class FullCalendarMonth extends React.Component {
              */
             <FullCalendar
                 plugins={[ dayGridPlugin ]}
-                initialView="dayGridMonth"
+                initialView="dayGridWeek"
                 events={events}
                 eventClick={handleEventClick}
                 DateClick={handleDateClick}
@@ -62,3 +63,4 @@ export default class FullCalendarMonth extends React.Component {
         )
     }
 }
+

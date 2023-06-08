@@ -1,7 +1,5 @@
 import React from 'react'
 import FullCalendar from '@fullcalendar/react' // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid'
-import {Calendar} from "@fullcalendar/core"; // a plugin!
 import timeGridPlugin from '@fullcalendar/timegrid'
 
 export default class FullCalendarDay extends React.Component {
@@ -48,16 +46,6 @@ export default class FullCalendarDay extends React.Component {
             // 추가적인 이벤트 데이터...
         ];
 
-        const calendar = new Calendar(calendarEl, {
-            plugins: [timeGridPlugin],
-            initialView: 'timeGridWeek',
-            headerToolbar: {
-                left: 'prev,next',
-                center: 'title',
-                right: 'timeGridWeek,timeGridDay' // user can switch between the two
-            }
-        })
-
         return (
             /**
              * FullCalendar Api 추가
@@ -65,7 +53,7 @@ export default class FullCalendarDay extends React.Component {
              * 2023-05-31
              */
             <FullCalendar
-                plugins={[timeGridPlugin]}
+                plugins={[ timeGridPlugin ]}
                 initialView="timeGridWeek"
                 events={events}
                 eventClick={handleEventClick}
