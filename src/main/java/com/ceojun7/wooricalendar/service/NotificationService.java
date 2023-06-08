@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The type Notification service.
@@ -23,13 +24,11 @@ import java.util.List;
  * -----------------------------------------------------------
  * 2023-06-01     Hamdoson           최초 생성
  * 2023-06-05     Hamdoson           create, retrieve 생성
+ * 2023-06-08     Hamdoson           delete 생성
  */
 @Service
 @Slf4j
 public class NotificationService {
-    /**
-     * The Notification repository.
-     */
     @Autowired
     NotificationRepository notificationRepository;
 
@@ -55,10 +54,10 @@ public class NotificationService {
 
     /**
      * methodName : retrieve
-     * comment : Retrieve Notification list of revEmail
+     * comment : 이메일을 통한 알림 조회
      * author : Hamdoson
      * date : 2023-06-05
-     * description : Retrieve Notification list of revEmail
+     * description : 수신자의 이메일을 통한 알림을 조회한다.
      *
      * @param revEmail the rev email
      * @return the list
@@ -67,4 +66,24 @@ public class NotificationService {
         return notificationRepository.findByRevEmail(revEmail);
     }
 
+    /**
+     * methodName : delete
+     * comment : 알림 삭제
+     * author : Hamdoson
+     * date : 2023-06-08
+     * description : 알림번호를 통해 알림을 삭제한다.
+     *
+     * @param entity the entity
+     * @return the list
+     */
+    public List<NotificationEntity> delete(final NotificationEntity entity) {
+        try {
+            notificationRepository.delete(entity);
+        } catch(Exception e) {
+            log.error("error deleting entity ", entity.getRevEmail(), e);
+            throw new RuntimeException("error deleting entity " + entity.getRevEmail());
+        }
+        // (5) 새 Todo리스트를 가져와 리턴한다.
+        return retrieve(entity.getRevEmail());
+    }
 }

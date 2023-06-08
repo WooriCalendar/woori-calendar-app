@@ -28,6 +28,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ShareDTO {
+  private Long shareNo;
   private Long calNo;
   private String email;
   private boolean checked;
@@ -37,6 +38,7 @@ public class ShareDTO {
 
   // entity > dto
   public ShareDTO(final ShareEntity entity) {
+    this.shareNo = entity.getShareNo();
     this.calNo = entity.getCalendarEntity().getCalNo();
     this.email = entity.getMemberEntity().getEmail();
     this.checked = entity.isChecked();
@@ -48,6 +50,7 @@ public class ShareDTO {
   // dto > entity
   public static ShareEntity toEntity(final ShareDTO dto) {
     return ShareEntity.builder()
+        .shareNo(dto.getShareNo())
         .calendarEntity(CalendarEntity.builder().calNo(dto.calNo).build())
         .memberEntity(MemberEntity.builder().email(dto.email).build())
         .checked(dto.isChecked())
@@ -57,3 +60,4 @@ public class ShareDTO {
         .build();
   }
 }
+

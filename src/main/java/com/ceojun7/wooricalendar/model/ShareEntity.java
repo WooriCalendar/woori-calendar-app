@@ -3,6 +3,15 @@ package com.ceojun7.wooricalendar.model;
 import java.util.Date;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicInsert;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +36,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Builder
 @Table(name = "tbl_share")
+@DynamicInsert
 public class ShareEntity {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long shareNo;

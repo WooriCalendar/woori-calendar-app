@@ -22,6 +22,7 @@ import java.util.Date;
  * DATE           AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023-06-01        DGeon             최초 생성
+ * 2023-06-08        DGeon             language 필드 추가(국가별 언어를 위해)
  **/
 @Data
 @NoArgsConstructor
@@ -35,8 +36,9 @@ public class MemberEntity {
     private String password;
     private String nickname;
     private String subemail;
-    private String birthday;
+    private Date birthday;
     private Date regDate;
     private Date updateDate;
+    private String language;
     private String auth_Provider;
 }

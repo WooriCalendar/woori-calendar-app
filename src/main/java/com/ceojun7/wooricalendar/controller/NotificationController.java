@@ -7,10 +7,10 @@ import com.ceojun7.wooricalendar.service.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -84,5 +84,34 @@ public class NotificationController {
         ResponseDTO<NotificationDTO> response = ResponseDTO.<NotificationDTO>builder().data(dtos).build();
         log.info(String.valueOf(response));
         return ResponseEntity.ok().body(response);
+    }
+
+    /**
+     * methodName : deleteNotificiation
+     * comment : 알림 삭제
+     * author : Hamdoson
+     * date : 2023-06-08
+     * description : 알림 삭제
+     *
+     * @param dto the dto
+     * @return the response entity
+     */
+    @DeleteMapping
+    public ResponseEntity<?> deleteNotification(@RequestBody NotificationDTO dto) {
+        try {
+            NotificationEntity entity = NotificationDTO.toEntity(dto);
+
+            List<NotificationEntity> entities = service.delete(entity);
+
+            List<NotificationDTO> dtos = entities.stream().map(NotificationDTO::new).collect(Collectors.toList());
+
+            ResponseDTO<NotificationDTO> response = ResponseDTO.<NotificationDTO>builder().data(dtos).build();
+
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            String error = e.getMessage();
+            ResponseDTO<NotificationDTO> response = ResponseDTO.<NotificationDTO>builder().error(error).build();
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 }

@@ -14,9 +14,10 @@ import java.util.stream.Collectors;
 
 /**
  * @packageName : com.ceojun7.wooricalendar.contorller
- * @fileName : CalendarController.java
- * @author : 김설하, 강태수
- * @date : 2023.05.31
+
+ * @fileName    : CalendarController.java
+ * @author      : 김설하, 강태수
+ * @date        : 2023.05.31
  * @description :
  *              ===========================================================
  *              DATE AUTHOR NOTE
