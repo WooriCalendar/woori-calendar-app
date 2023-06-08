@@ -28,7 +28,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 public class NotificationDTO {
-    private Long nNo; //알림 번호
+    private Long ntNo; //알림 번호
     private String sendEmail; //보낸 사람의 이메일
     private String revEmail; // 받는 사람의 이메일
     private String comment; // 알림의 내용
@@ -48,7 +48,7 @@ public class NotificationDTO {
      * @param entity the entity
      */
     public NotificationDTO(final NotificationEntity entity) {
-        this.nNo = entity.getNNo();
+        this.ntNo = entity.getNtNo();
         this.sendEmail = entity.getSendEmail();
         this.revEmail = entity.getRevEmail();
         this.comment = entity.getComment();
@@ -69,7 +69,7 @@ public class NotificationDTO {
      */
     public static NotificationEntity toEntity(final NotificationDTO dto) {
         return NotificationEntity.builder()
-                .nNo(dto.getNNo())
+                .ntNo(dto.getNtNo())
                 .sendEmail(dto.getSendEmail())
                 .revEmail(dto.getRevEmail())
                 .comment(dto.getComment())

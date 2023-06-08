@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author : Hamdoson
@@ -19,7 +20,8 @@ import java.util.List;
  * 2023-06-05        Hamdoson           findByRevEmail, findByCalendarEntity_calNo 추가
  */
 @Repository
-public interface NotificationRepository extends JpaRepository<NotificationEntity, String> {
+public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {
+    List<NotificationEntity> findByNtNo(Long nNo);
     List<NotificationEntity> findByRevEmail(String revEmail);
     List<NotificationEntity> findByCalendarEntity_CalNo(Long calNo);
 }
