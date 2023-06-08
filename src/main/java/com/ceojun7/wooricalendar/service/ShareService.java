@@ -1,5 +1,6 @@
 package com.ceojun7.wooricalendar.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ import lombok.extern.slf4j.Slf4j;
  *              DATE AUTHOR NOTE
  *              -----------------------------------------------------------
  *              2023.06.05 박현민 최초 생성
- *              2023.06.07 박현민 create 추가
+ *              2023.06.07 박현민 create, update 추가
+ *              2023.06.08 박현민 retrieve, delete 추가
  */
 
 @Slf4j
@@ -31,9 +33,14 @@ public class ShareService {
   private ShareRepository shareRepository;
 
   public List<ShareEntity> create(final ShareEntity shareEntity) {
+    // if ()
     shareRepository.save(shareEntity);
 
     return shareRepository.findByShareNo(shareEntity.getShareNo());
+  }
+
+  public List<ShareEntity> retrieve(final Long shareNo) {
+    return shareRepository.findByShareNo(shareNo);
   }
 
   public List<ShareEntity> update(final ShareEntity shareEntity) {
@@ -42,7 +49,7 @@ public class ShareService {
     if (!originalList.isEmpty()) {
       ShareEntity original = originalList.get(0);
       original.setGrade(shareEntity.getGrade());
-      // original.setChecked(shareEntity.isChecked());
+      original.setUpdateDate(new Date());
 
       shareRepository.save(original);
     }
@@ -51,11 +58,10 @@ public class ShareService {
     return shareRepository.findByShareNo(shareEntity.getShareNo());
   }
 
-  // public void delete(Long grade) {
-  // GradeEntity existingGrade = gradeRepository.findByGrade(grade);
-  // if (existingGrade != null) {
-  // gradeRepository.delete(existingGrade);
-  // }
-  // }
+  public List<ShareEntity> delete(final ShareEntity shareEntity) {
+    shareRepository.delete(shareEntity);
+
+    return shareRepository.findByShareNo(shareEntity.getShareNo());
+  }
 
 }
