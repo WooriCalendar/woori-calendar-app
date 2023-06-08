@@ -30,7 +30,7 @@ import java.util.Date;
 public class NotificationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long nNo; //알림 번호
+    private Long ntNo; //알림 번호
     private String sendEmail; //보낸 사람의 이메일
     private String revEmail; // 받는 사람의 이메일
     private String comment; // 알림의 내용

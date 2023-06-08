@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author : Hamdoson
@@ -20,6 +21,7 @@ import java.util.List;
  */
 @Repository
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {
+    List<NotificationEntity> findByNtNo(Long nNo);
     List<NotificationEntity> findByRevEmail(String revEmail);
     List<NotificationEntity> findByCalendarEntity_CalNo(Long calNo);
 }
