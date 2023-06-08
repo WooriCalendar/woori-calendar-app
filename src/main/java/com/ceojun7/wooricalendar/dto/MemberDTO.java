@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class MemberDTO {
+
     private String token;
     private String email;
     private String password;
