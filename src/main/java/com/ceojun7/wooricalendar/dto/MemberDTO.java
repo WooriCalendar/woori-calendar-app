@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * @author : DGeon,강태수
  * @packageName : com.ceojun7.wooricalendar.dto
@@ -28,5 +30,6 @@ public class MemberDTO {
     private String password;
     private String nickname;
     private String subemail;
-    private String birthday;
+    private String language;
+    private Date birthday;
 }
