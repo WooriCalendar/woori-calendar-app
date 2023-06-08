@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +30,8 @@ import lombok.extern.slf4j.Slf4j;
  *              DATE AUTHOR NOTE
  *              -----------------------------------------------------------
  *              2023.06.02 박현민 최초 생성
- *              2023.06.07 박현민 create 추가
+ *              2023.06.07 박현민 create, update 추가
+ *              2023.06.08 박현민 retrieve, delete 추가
  */
 
 @Slf4j
@@ -54,13 +57,40 @@ public class ShareController {
     }
   }
 
+  @GetMapping
+  public ResponseEntity<?> retrieveShare(@RequestBody ShareDTO dto) {
+    log.warn(String.valueOf(dto.getShareNo()));
+    List<ShareEntity> entities = service.retrieve(dto.getShareNo());
+    List<ShareDTO> dtos = entities.stream().map(ShareDTO::new).collect(Collectors.toList());
+    ResponseDTO<ShareDTO> response = ResponseDTO.<ShareDTO>builder().data(dtos).build();
+    return ResponseEntity.ok().body(response);
+  }
+
   @PutMapping
   public ResponseEntity<?> updateShare(@RequestBody ShareDTO dto) {
+    log.warn(String.valueOf(dto));
     ShareEntity entity = ShareDTO.toEntity(dto);
     List<ShareEntity> entities = service.update(entity);
     List<ShareDTO> dtos = entities.stream().map(ShareDTO::new).collect(Collectors.toList());
     ResponseDTO<ShareDTO> response = ResponseDTO.<ShareDTO>builder().data(dtos).build();
     return ResponseEntity.ok().body(response);
+  }
+
+  @DeleteMapping
+  public ResponseEntity<?> deleteShare(@RequestBody ShareDTO dto) {
+    log.warn(String.valueOf(dto));
+    try {
+      ShareEntity entity = ShareDTO.toEntity(dto);
+      List<ShareEntity> entities = service.delete(entity);
+      List<ShareDTO> dtos = entities.stream().map(ShareDTO::new).collect(Collectors.toList());
+      ResponseDTO<ShareDTO> response = ResponseDTO.<ShareDTO>builder().data(dtos).build();
+
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      String error = e.getMessage();
+      ResponseDTO<ShareDTO> response = ResponseDTO.<ShareDTO>builder().error(error).build();
+      return ResponseEntity.badRequest().body(response);
+    }
   }
 
 }
