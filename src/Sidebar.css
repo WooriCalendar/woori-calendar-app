@@ -1,0 +1,23 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px; /* 사이드바의 너비 */
+    height: 100vh; /* 사이드바의 높이 */
+    background-color: #f0f0f0; /* 사이드바의 배경색 */
+    transition: transform 0.3s ease-out; /* 애니메이션 효과를 위한 트랜지션 */
+    transform: translateX(-50%); /* 초기에 좌측으로 이동하여 사라지도록 설정 */
+}
+
+.sidebar.open {
+    transform: translateX(0); /* open 클래스가 추가되면 우측으로 이동하여 보이도록 설정 */
+}
+
+.sidebar button {
+    margin-bottom: 10px;
+    float: right;
+}
+
+.sidebar-content {
+    padding: 20px;
+}

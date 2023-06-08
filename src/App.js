@@ -6,6 +6,7 @@ import {useState} from "react";
 import FullCalendarDay from "./components/FullCalendarDay";
 import FullCalendarWeek from "./components/FullCalendarWeek";
 import FullCalendarDayDetail from "./components/FullCalendarDayDetail";
+import Sidebar from "./components/Sidebar";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <div className="App">
                 <Navigation />
                 <Container maxWidth="md">
+                    <Sidebar />
                     <div>
                         <button onClick={() => handleButtonClick('1')}>1</button>
                         <button onClick={() => handleButtonClick('2')}>2</button>
