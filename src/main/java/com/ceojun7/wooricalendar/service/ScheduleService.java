@@ -8,8 +8,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * @packageName : com.ceojun7.wooricalendar.service
+ * @fileName : CalendarService.java
+ * @author : 김설하, 강태수
+ * @date : 2023.05.31
+ * @description :
+ *              ===========================================================
+ *              DATE AUTHOR NOTE
+ *              -----------------------------------------------------------
+ *              2023.05.31 김설하 최초 생성
+ *              2023.06.01 김설하 create 기능추가
+ *              2023.06.02 강태수 update, delete, day 기능추가
+ */
 @Service
 @Slf4j
 public class ScheduleService {
@@ -28,5 +42,31 @@ public class ScheduleService {
 
     public List<ScheduleEntity> retrieve(Long calNo) {
         return scheduleRepository.findByCalendarEntity_CalNo(calNo);
+    }
+
+    public List<ScheduleEntity> day(Timestamp startDate) {
+        return scheduleRepository.findByStartDate(startDate);
+    }
+
+    public List<ScheduleEntity> update(final ScheduleEntity entity) {
+        final List<ScheduleEntity> originalList = scheduleRepository
+                .findByCalendarEntity_CalNo(entity.getCalendarEntity().getCalNo());
+        if (!originalList.isEmpty()) {
+            ScheduleEntity original = originalList.get(0);
+            original.setComment(entity.getComment());
+            original.setName(entity.getName());
+
+            scheduleRepository.save(original);
+        }
+        List<ScheduleEntity> updatedList = scheduleRepository
+                .findByCalendarEntity_CalNo(entity.getCalendarEntity().getCalNo());
+        return updatedList;
+    }
+
+    public List<ScheduleEntity> delete(final ScheduleEntity entity) {
+        scheduleRepository.delete(entity);
+        CalendarEntity calendarEntity = calendarRepository.findByCalNo(entity.getCalendarEntity().getCalNo()).get(0);
+
+        return scheduleRepository.findByCalendarEntity_CalNo(calendarEntity.getCalNo());
     }
 }

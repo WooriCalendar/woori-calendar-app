@@ -1,5 +1,6 @@
 package com.ceojun7.wooricalendar.dto;
 
+import com.ceojun7.wooricalendar.model.CalendarEntity;
 import com.ceojun7.wooricalendar.model.NotificationEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * The type Notification dto.
@@ -31,8 +33,9 @@ public class NotificationDTO {
     private String revEmail; // 받는 사람의 이메일
     private String comment; // 알림의 내용
     private String type; // 알림의 타입 ex) accept(캘린더 공유 승락), schReg(일정 등록), notReg(알림 등록), invite(캘린더 초대)
-    private LocalDateTime sdate; // 알림 발송 시간
-    private LocalDateTime rdate; // 알림 수신 시간 ( 수신 시간으로 check 여부 판단! )
+    private Date sdate; // 알림 발송 시간
+    private Date rdate; // 알림 수신 시간 ( 수신 시간으로 check 여부 판단! )
+    private Long calNo;
 
 
     /**
@@ -52,6 +55,7 @@ public class NotificationDTO {
         this.type = entity.getType();
         this.sdate = entity.getSdate();
         this.rdate = entity.getRdate();
+        this.calNo = entity.getCalendarEntity().getCalNo();
     }
 
     /**
@@ -72,6 +76,7 @@ public class NotificationDTO {
                 .type(dto.getType())
                 .sdate(dto.getSdate())
                 .rdate(dto.getRdate())
+                .calendarEntity(CalendarEntity.builder().calNo(dto.calNo).build())
                 .build();
     }
 }

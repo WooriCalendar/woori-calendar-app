@@ -6,15 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @author : DGeon
+ * @author : DGeon,강태수
  * @packageName : com.ceojun7.wooricalendar.dto
  * @fileName : MemberDTO
  * @date : 2023-06-01
  * @description :
- * ===========================================================
- * DATE           AUTHOR             NOTE
- * -----------------------------------------------------------
- * 2023-06-01        DGeon         최초 생성
+ *              ===========================================================
+ *              DATE AUTHOR NOTE
+ *              -----------------------------------------------------------
+ *              2023-06-01 DGeon 최초 생성
+ *              2023-06-04 강태수 birthday 생성
  **/
 @Builder
 @NoArgsConstructor
@@ -26,4 +27,5 @@ public class MemberDTO {
     private String password;
     private String nickname;
     private String subemail;
+    private String birthday;
 }
