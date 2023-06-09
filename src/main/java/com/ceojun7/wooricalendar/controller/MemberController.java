@@ -1,9 +1,12 @@
 package com.ceojun7.wooricalendar.controller;
 
+import com.ceojun7.wooricalendar.dto.CalendarDTO;
 import com.ceojun7.wooricalendar.dto.MemberDTO;
 import com.ceojun7.wooricalendar.dto.ResponseDTO;
+import com.ceojun7.wooricalendar.model.CalendarEntity;
 import com.ceojun7.wooricalendar.model.MemberEntity;
 import com.ceojun7.wooricalendar.security.TokenProvider;
+import com.ceojun7.wooricalendar.service.CalendarService;
 import com.ceojun7.wooricalendar.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +42,22 @@ public class MemberController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private CalendarService calendarService;
+
+    /**
+     * methodName : registerMember
+     * comment : 회원가입
+     * author : DGeon
+     * date : 2023-06-01
+     * description :
+     *
+     * @param memberDTO   the member dto
+     * @param calendarDTO the calendar dto
+     * @return response entity
+     */
     @PostMapping("signup")
-    public ResponseEntity<?> registerMember(@RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<?> registerMember(@RequestBody MemberDTO memberDTO, CalendarDTO calendarDTO) {
         try {
             if (memberDTO == null || memberDTO.getPassword() == null) {
                 throw new RuntimeException("Invalid Password value.");
@@ -58,10 +75,17 @@ public class MemberController {
                     .build();
             // 서비스를 이용해 레포지토리에 유저 저장
             MemberEntity registeredMember = memberService.create(member);
-            MemberDTO responseUserDTO = memberDTO.builder()
+            CalendarEntity calendar  = CalendarEntity.builder()
+                    .name(memberDTO.getNickname())
+                    .regdate(new Date())
+                    .updatedate(new Date())
+//                    .timezone()
+                    .build();
+            calendarService.create(calendar);
+            MemberDTO responseMemberDTO = memberDTO.builder()
                     .email(registeredMember.getEmail())
                     .build();
-            return ResponseEntity.ok().body(responseUserDTO);
+            return ResponseEntity.ok().body(responseMemberDTO);
         } catch (Exception e) {
             ResponseDTO responseDTO = ResponseDTO.builder().error(e.getLocalizedMessage()).build();
             return ResponseEntity
