@@ -46,7 +46,7 @@ public class CalendarController {
      * @DeleteMapping 생성
      */
     @PostMapping
-    public ResponseEntity<?> createSchedule(@RequestBody CalendarDTO dto) {
+    public ResponseEntity<?> createCalendar(@RequestBody CalendarDTO dto) {
         log.warn(String.valueOf(dto));
         try {
             CalendarEntity entity = CalendarDTO.toEntity(dto);
@@ -61,7 +61,7 @@ public class CalendarController {
     }
 
     @GetMapping
-    public ResponseEntity<?> retrieveSchedule(@RequestBody CalendarDTO dto) {
+    public ResponseEntity<?> retrieveCalendar(@RequestBody CalendarDTO dto) {
         log.warn(String.valueOf(dto.getCalNo()));
         List<CalendarEntity> entities = service.retrieve(dto.getCalNo());
         List<CalendarDTO> dtos = entities.stream().map(CalendarDTO::new).collect(Collectors.toList());
@@ -70,7 +70,7 @@ public class CalendarController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateSchedule(@RequestBody CalendarDTO dto) {
+    public ResponseEntity<?> updateCalendar(@RequestBody CalendarDTO dto) {
         CalendarEntity entity = CalendarDTO.toEntity(dto);
 
         List<CalendarEntity> entities = service.update(entity);
@@ -80,7 +80,7 @@ public class CalendarController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteSchedule(@RequestBody CalendarDTO dto) {
+    public ResponseEntity<?> deleteCalendar(@RequestBody CalendarDTO dto) {
 
         try {
             CalendarEntity entity = CalendarDTO.toEntity(dto);
