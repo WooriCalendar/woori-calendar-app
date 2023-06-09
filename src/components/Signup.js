@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {signup} from "../service/ApiService";
 import companyLogo from "../assets/logo(ver3).png";
 import SignupTextField from "./SignupTextField";
+
 /**
  * 파일명: Signup.js
  * 작성자: 이동건
@@ -11,7 +12,6 @@ import SignupTextField from "./SignupTextField";
  * 설명: 회원가입 폼을 위한 컴포넌트
  */
 const Signup = () => {
-
     const [isEmailVisible, setIsEmailVisible] = useState(true);
     const [isPassVisible, setIsPassVisible] = useState(true);
     const [isNicknameVisible, setIsNicknameVisible] = useState(true);
@@ -58,6 +58,7 @@ const Signup = () => {
         }
     }
 
+
     return (
         <Container component="main" maxWidth="xs" style={{marginTop: "8%"}}>
             <Grid container spacing={2}>
@@ -76,7 +77,10 @@ const Signup = () => {
                 <Grid container spacing={2} style={{marginTop: "5%"}}>
                     <Grid item xs={12}>
                         {isEmailVisible ? (
+                            <>
                             <SignupTextField value="email"/>
+                            <Button >인증번호 발송</Button>
+                            </>
                         ) : isPassVisible ? (
                             <SignupTextField value="password"/>
                         ) : isNicknameVisible ? (

@@ -21,14 +21,14 @@ export function call(api, method, request) {
     }
     return fetch(options.url, options)
         .then((resp) => {
-            alert("resp::"+resp.status);
+            // alert("resp::"+resp.status);
             console.log("callresp", resp);
             if (resp.status === 200) {
                 return resp.json();
             } else if (resp.status === 403) {
                 window.location.href = "/login";
             } else {
-                alert("아무것도 아님");
+
                 Promise.reject(resp);
                 throw Error(resp);
             }
