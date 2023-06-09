@@ -36,3 +36,32 @@
     transform: rotate(360deg);
   }
 }
+
+.fc-day-sun a {
+    color : red
+}
+
+.fc-day-sat a {
+    color : blue
+}
+
+@media all and (max-width:767px) {
+    html, body, #root, #root > div, .fc-theme-standard, .fc-daygrid-body, table[role="presentation"] {
+        height: 100%;
+    }
+
+    table[role="presentation"] tbody tr:last-child:not(.fc-day) {
+        display: none;
+    }
+
+    .fc .fc-daygrid-day-top {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .fc-header-toolbar {
+        padding: 10px;
+    }
+}
+
