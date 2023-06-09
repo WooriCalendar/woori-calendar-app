@@ -1,14 +1,28 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid'
+import momentPlugin from "@fullcalendar/moment";
+import interactionPlugin from "@fullcalendar/interaction";
+import {call} from "../service/ApiService";
 
 const FullCalendarMonth = () => {
+    const[items, setItems] = useState([]);
+
+    useEffect(() => {
+        call("/schedule", "GET", null)
+            .then((response) => {
+                setItems(response.data)
+            });
+        }, []
+    )
+
     /**
      * 이벤트 클릭시 발생 함수
      * @param eventInfo
      */
     const handleEventClick = (eventInfo) => {
-        console.log('클릭한 이벤트:', eventInfo.event);
+        // alert(eventInfo.event._def.extendedProps)
+        console.log('클릭한 이벤트:', eventInfo.event._def);
     };
 
     /**
@@ -28,22 +42,25 @@ const FullCalendarMonth = () => {
      */
     const startdate = '2023-05-31 00:00:00.000'
 
-    const events = [
-        {
-            sNo: '',
-            title: '서라',
-            comment: '테스트',
-            startTime: '',
-            endTime: '',
-            date: startdate,
-            endDate: '2023-05-31 00:00:00.000',
-            regDate: '2023-05-31 20:41:22.000',
-            updateDate: '2023-05-31 20:41:22.000',
-            calNo: '1',
-            place: ''
-        },
-        // 추가적인 이벤트 데이터...
-    ];
+    // const events = [
+    //     {
+    //         scNo: '',
+    //         title: '서라',
+    //         comment: '테스트',
+    //         startTime: '',
+    //         endTime: '',
+    //         date: startdate,
+    //         endDate: '2023-05-31 00:00:00.000',
+    //         regDate: '2023-05-31 20:41:22.000',
+    //         updateDate: '2023-05-31 20:41:22.000',
+    //         calNo: '1',
+    //         place: ''
+    //     },
+    //     // 추가적인 이벤트 데이터...
+    // ];
+
+    const events = [...items];
+    console.log(events)
 
     return (
         /**
@@ -52,11 +69,12 @@ const FullCalendarMonth = () => {
          * 2023-05-31
          */
         <FullCalendar
-            plugins={[dayGridPlugin]}
+            plugins={[dayGridPlugin, momentPlugin, interactionPlugin]}
+            titleFormat={'YYYY.M'}
             initialView="dayGridMonth"
             events={events}
             eventClick={handleEventClick}
-            DateClick={handleDateClick}
+            dateClick={handleDateClick}
         />
     )
 }

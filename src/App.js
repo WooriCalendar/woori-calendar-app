@@ -11,7 +11,7 @@ import Sidebar from "./components/Sidebar";
 
 function App() {
 
-    const [currentPage, setCurrentPage] = useState('1');
+    const [currentPage, setCurrentPage] = useState('2');
 
     const handleButtonClick = (page) => {
         setCurrentPage(page);
@@ -21,7 +21,7 @@ function App() {
             <div className="App">
                 <Navigation />
                 <Container maxWidth="md">
-                    <Sidebar />
+                    {/*<Sidebar />*/}
                     <div>
                         <button onClick={() => handleButtonClick('1')}>1</button>
                         <button onClick={() => handleButtonClick('2')}>2</button>
