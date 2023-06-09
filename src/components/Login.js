@@ -1,7 +1,8 @@
 import React from "react";
-import { signin, socialLogin } from "../service/ApiService";
-import { Button, Container, Grid, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import {signin, socialLogin} from "../service/ApiService";
+import {Button, Container, Grid, TextField, Typography} from "@mui/material";
+import {Link} from "react-router-dom";
+import LoginSvg from "./LoginSvg";
 
 const Login = () => {
     const handleSubmit = (e) => {
@@ -11,7 +12,7 @@ const Login = () => {
         const password = data.get("password");
         console.log("email", email);
         console.log("password", password);
-        signin({ email: email, password: password }).then((resp) => {
+        signin({email: email, password: password}).then((resp) => {
             console.log("login", resp);
         });
     };
@@ -24,11 +25,11 @@ const Login = () => {
         <Container
             component="main"
             maxWidth="xs"
-            style={{ marginTop: "8%", marginBottom: 20 }}
+            style={{marginTop: "8%", marginBottom: "2%"}}
         >
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <Typography component="h1" variant="h5">
+                    <Typography component="h1" variant="h5" style={{marginBottom : "2%"}}>
                         Login
                     </Typography>
                 </Grid>
@@ -44,6 +45,7 @@ const Login = () => {
                             name="email"
                             label="email"
                             autoComplete="email"
+                            style={{marginBottom : "2%"}}
                         />
                     </Grid>
                 </Grid>
@@ -58,6 +60,7 @@ const Login = () => {
                             type="password"
                             label="password"
                             autoComplete="password"
+                            style={{marginBottom : "2%"}}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -65,7 +68,7 @@ const Login = () => {
                             Login
                         </Button>
                     </Grid>
-                   {/* <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                         <Button
                             fullWidth
                             variant="contained"
@@ -81,13 +84,15 @@ const Login = () => {
                         <Button
                             fullWidth
                             variant="contained"
-                            style={{ background: "#ff0", color: "#000" }}
+                            style={{background: "#fff", color: "#000" ,marginBottom : "2%"}}
                             onClick={() => {
                                 handleSocialLogin("google");
                             }}
                         >
+                            <LoginSvg/>
                             Google Login
                         </Button>
+
                     </Grid>
                 </Grid>
                 <Grid container>
