@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -29,6 +30,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "tbl_schedule")
 @DynamicInsert
+@Transactional
 public class ScheduleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

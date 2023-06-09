@@ -7,6 +7,7 @@ import com.ceojun7.wooricalendar.service.ScheduleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,10 +47,18 @@ public class ScheduleController {
         }
     }
 
+//    @GetMapping
+//    public ResponseEntity<?> retrieveSchedule(@RequestBody ScheduleDTO dto) {
+//        log.warn(String.valueOf(dto.getCalNo()));
+//        List<ScheduleEntity> entities = service.retrieve(dto.getCalNo());
+//        List<ScheduleDTO> dtos = entities.stream().map(ScheduleDTO::new).collect(Collectors.toList());
+//        ResponseDTO<ScheduleDTO> response = ResponseDTO.<ScheduleDTO>builder().data(dtos).build();
+//        return ResponseEntity.ok().body(response);
+//    }
+
     @GetMapping
-    public ResponseEntity<?> retrieveSchedule(@RequestBody ScheduleDTO dto) {
-        log.warn(String.valueOf(dto.getCalNo()));
-        List<ScheduleEntity> entities = service.retrieve(dto.getCalNo());
+    public ResponseEntity<?> retrieveSchedule(@AuthenticationPrincipal String email) {
+        List<ScheduleEntity> entities = service.retrieveByEmail(email);
         List<ScheduleDTO> dtos = entities.stream().map(ScheduleDTO::new).collect(Collectors.toList());
         ResponseDTO<ScheduleDTO> response = ResponseDTO.<ScheduleDTO>builder().data(dtos).build();
         return ResponseEntity.ok().body(response);
@@ -58,7 +67,7 @@ public class ScheduleController {
     @GetMapping("/day")
     public ResponseEntity<?> daySchedule(@RequestBody ScheduleDTO dto) {
         // log.warn(String.valueOf(dto.getCalNo()));
-        List<ScheduleEntity> entities = service.day(dto.getStartDate());
+        List<ScheduleEntity> entities = service.day(dto.getStart());
         List<ScheduleDTO> dtos = entities.stream().map(ScheduleDTO::new).collect(Collectors.toList());
         ResponseDTO<ScheduleDTO> response = ResponseDTO.<ScheduleDTO>builder().data(dtos).build();
         return ResponseEntity.ok().body(response);
