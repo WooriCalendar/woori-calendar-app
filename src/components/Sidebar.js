@@ -10,7 +10,9 @@ const Sidebar = () => {
 
     return (
         <div className={`sidebar ${isOpen ? 'open' : ''}`}>
-            <button onClick={toggleSidebar}><FontAwesomeIcon icon="fa-solid fa-bars" /></button>
+            <button onClick={toggleSidebar}>
+                {/*<FontAwesomeIcon icon="fa-solid fa-bars" />*/}
+            </button>
             <div className="sidebar-content">여기다가 이것저것만들거에요</div>
         </div>
     );

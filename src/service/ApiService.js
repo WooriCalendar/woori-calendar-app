@@ -1,5 +1,10 @@
 import { API_BASE_URL } from "../api-config";
 
+/**
+ * @author: DGeon
+ * @comment: 토큰검증 및 callback
+ * @date: 2023-06-08
+ */
 export function call(api, method, request) {
     let headers = new Headers({
         "Content-Type": "application/json",
@@ -39,6 +44,11 @@ export function call(api, method, request) {
         });
 }
 
+/**
+ * @author: DGeon
+ * @comment: Login Token 생성
+ * @date: 2023-06-08
+ */tjf
 export function signin(memberDTO) {
     return call("/member/signin", "POST", memberDTO)
         .then((response) => {
@@ -59,6 +69,11 @@ export function signin(memberDTO) {
         });
 }
 
+/**
+ * @author: DGeon
+ * @comment: 소셜Login
+ * @date: 2023-06-08
+ */
 export function socialLogin(provider) {
     window.location.href =
         API_BASE_URL +
@@ -68,12 +83,22 @@ export function socialLogin(provider) {
         (window.location.protocol + "//" + window.location.host);
 }
 
+/**
+ * @author: DGeon
+ * @comment: 로그아웃 시 토큰 삭제
+ * @date: 2023-06-08
+ */
 export function signout() {
     // localStorage.setItem("ACCESS_TOKEN", null);
     localStorage.removeItem("ACCESS_TOKEN");
     window.location.href = "/login";
 }
 
+/**
+ * @author: DGeon
+ * @comment: 회원가입
+ * @date: 2023-06-08
+ */
 export function signup(memberDTO) {
     return call("/member/signup", "POST", memberDTO);
 }
