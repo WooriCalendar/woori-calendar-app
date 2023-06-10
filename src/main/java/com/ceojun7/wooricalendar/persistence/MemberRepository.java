@@ -6,18 +6,48 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @author : DGeon
- * @packageName : com.ceojun7.wooricalendar.persistence
+ * @packageName :
  * @fileName : MemberRepository
  * @date : 2023-06-01
- * @description :
- * ===========================================================
- * DATE           AUTHOR             NOTE
- * -----------------------------------------------------------
- * 2023-06-01        DGeon             최초 생성
- **/
+ * @packageName : com.ceojun7.wooricalendar.persistence
+ * @description : =========================================================== DATE           AUTHOR             NOTE ----------------------------------------------------------- 2023-06-01        DGeon             최초 생성
+ */
 @Repository
 public interface MemberRepository extends JpaRepository<MemberEntity, String> {
+    /**
+     * methodName : findByEmail
+     * comment : 회원 조회
+     * author : DGeon
+     * date : 2023-06-05
+     * description :
+     *
+     * @param email the email
+     * @return member entity
+     */
     MemberEntity findByEmail(String email);
+
+    /**
+     * methodName : existsByEmail
+     * comment : 회원 존재 여부 확인
+     * author : DGeon
+     * date : 2023-06-05
+     * description :
+     *
+     * @param email the email
+     * @return boolean
+     */
     boolean existsByEmail(String email);
+
+    /**
+     * methodName : findByEmailAndPassword
+     * comment : email과 password를 기반으로 DB와 일치하는 회원 조회
+     * author : DGeon
+     * date : 2023-06-05
+     * description :
+     *
+     * @param email    the email
+     * @param password the password
+     * @return member entity
+     */
     MemberEntity findByEmailAndPassword(String email, String password);
 }

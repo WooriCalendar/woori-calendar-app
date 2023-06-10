@@ -48,6 +48,7 @@ public class MemberController {
     /**
      * methodName : registerMember
      * comment : 회원가입
+     * 2023-06-08 : 회원가입을 하면서 기본적인 Nickname의 캘린더 생성, language 추가
      * author : DGeon
      * date : 2023-06-01
      * description :
@@ -94,6 +95,16 @@ public class MemberController {
         }
     }
 
+    /**
+     * methodName : authenticate
+     * comment : 로그인 및 토큰발급
+     * author : DGeon
+     * date : 2023-06-05
+     * description :
+     *
+     * @param memberDTO the member dto
+     * @return response entity
+     */
     @PostMapping("signin")
     public ResponseEntity<?> authenticate(@RequestBody MemberDTO memberDTO) {
         log.info("{}", memberDTO);

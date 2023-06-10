@@ -17,16 +17,12 @@ import javax.transaction.Transactional;
 
 /**
  * @author : DGeon
- * @packageName : com.ceojun7.wooricalendar.service
+ * @packageName :
  * @fileName : MemberService
  * @date : 2023-06-01
- * @description :
- *              ===========================================================
- *              DATE AUTHOR NOTE
- *              -----------------------------------------------------------
- *              2023-06-01 DGeon 최초 생성
- *              2023-06-04 getMemberByEmail,updateMember 최초 생성
- **/
+ * @packageName : com.ceojun7.wooricalendar.service
+ * @description :              ===========================================================              DATE AUTHOR NOTE              -----------------------------------------------------------              2023-06-01 DGeon 최초 생성              2023-06-04 getMemberByEmail,updateMember 최초 생성
+ */
 @Slf4j
 @Service
 public class MemberService {
@@ -35,7 +31,7 @@ public class MemberService {
 
     /**
      * methodName : create
-     * comment :
+     * comment : 회원 생성
      * author : DGeon
      * date : 2023-06-01
      * description :
@@ -55,6 +51,18 @@ public class MemberService {
         return memberRepository.save(memberEntity);
     }
 
+    /**
+     * Gets by credentials.
+     * comment : 비밀번호(Bycrpt) 인증
+     * author : DGeon
+     * date : 2023-06-10
+     * description :
+     *
+     * @param email    the email
+     * @param password the password
+     * @param encoder  the encoder
+     * @return the by credentials
+     */
     public MemberEntity getByCredentials(final String email, final String password, PasswordEncoder encoder) {
         MemberEntity memberEntity = memberRepository.findByEmail(email);
         if (memberEntity != null && encoder.matches(password, memberEntity.getPassword())) {
