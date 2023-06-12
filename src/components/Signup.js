@@ -60,7 +60,7 @@ const Signup = () => {
                 (resp) => (window.location.href = "/login")
             );
         }
-        sliderRef.current.slickNext();
+
     }
 
 
