@@ -73,9 +73,8 @@ public class CalendarController {
     }
 
     @GetMapping
-    public ResponseEntity<?> retrieveCalendar(@RequestBody CalendarDTO dto) {
-        log.warn(String.valueOf(dto.getCalNo()));
-        List<CalendarEntity> entities = service.retrieve(dto.getCalNo());
+    public ResponseEntity<?> retrieveCalendar(@AuthenticationPrincipal String email) {
+        List<CalendarEntity> entities = service.retrieveByEmail(email);
         List<CalendarDTO> dtos = entities.stream().map(CalendarDTO::new).collect(Collectors.toList());
         ResponseDTO<CalendarDTO> response = ResponseDTO.<CalendarDTO>builder().data(dtos).build();
         return ResponseEntity.ok().body(response);
