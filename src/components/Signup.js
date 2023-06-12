@@ -61,6 +61,10 @@ const Signup = () => {
             );
         }
         sliderRef.current.slickNext();
+        sliderRef.current.slickNext();
+        sliderRef.current.slickNext();
+        sliderRef.current.slickNext();
+
 
     }
 
