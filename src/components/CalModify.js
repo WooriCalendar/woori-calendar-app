@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ShareModal from "./ShareModal";
 import {
   Button,
@@ -8,7 +8,8 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import Sidebar from "./Sidebar";
+import Navigation from "./Navigation";
+import { call } from "../service/ApiService";
 
 const CalModify = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -19,10 +20,16 @@ const CalModify = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
+  // const [cal, setCal] = useState([]);
+
+  // useEffect(() => {
+  //   call("/calendar", "GET", null).then((resp) => setCal(resp.data));
+  // }, []);
+
   return (
     <div>
-      <Sidebar />
-      <div className="main">
+      <Navigation />
+      <div className="main" style={{ width: "440px", margin: "0 auto" }}>
         <div style={{ textAlign: "center" }}>
           <h2>캘린더 수정</h2>
         </div>
@@ -48,7 +55,6 @@ const CalModify = () => {
             <InputLabel id="demo-simple-select-label">시간대</InputLabel>
             <Select
               id="outlined-select-currency"
-              select
               label="시간대"
               defaultValue="0"
             >
@@ -68,19 +74,19 @@ const CalModify = () => {
             variant="outlined"
           />
         </div>
-        <div style={{ textAlign: "center", margin: "20px" }}>
+        <div style={{ textAlign: "left", margin: "20px" }}>
           <Button variant="outlined" onClick={openModal}>
             사용자 초대
           </Button>
         </div>
         <ShareModal open={modalOpen} close={closeModal} />
-        <div style={{ textAlign: "center", margin: "20px" }}>
-          <Button variant="contained">구독 취소</Button>
-          <Button variant="contained" color="error">
+        <div style={{ textAlign: "left", margin: "20px" }}>
+          <Button variant="text">구독 취소</Button>
+          <Button variant="text" color="error">
             캘린더 삭제
           </Button>
         </div>
-        <div style={{ textAlign: "center", margin: "20px" }}>
+        <div style={{ textAlign: "right", margin: "20px" }}>
           <Button variant="contained">완료</Button>
         </div>
       </div>
