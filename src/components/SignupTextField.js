@@ -1,6 +1,11 @@
 import React from 'react';
 import {TextField} from "@mui/material";
 
+/**
+ * @author: DGeon
+ * @comment: 회원정보를 위한 컴포넌트
+ * @date: 2023-06-08
+ */
 const SignupTextField = (props) => {
 
     return (

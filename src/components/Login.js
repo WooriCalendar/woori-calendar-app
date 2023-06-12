@@ -4,7 +4,19 @@ import {Button, Container, Grid, TextField, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import LoginSvg from "./LoginSvg";
 
+/**
+ * @author        : DGeon
+ * @Comment       : 로그인, Oauth로그인
+ * @date          : 2023-06-07
+ *
+ */
 const Login = () => {
+    /**
+     * @author        : DGeon
+     * @Comment       : TextField에 입력된 email, password를 MemberDTO형태로 백엔드에 전송
+     * @date          : 2023-06-07
+     *
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = new FormData(e.target);
@@ -17,6 +29,12 @@ const Login = () => {
         });
     };
 
+    /**
+     * @author        : DGeon
+     * @Comment       : Google 로그인
+     * @date          : 2023-06-07
+     *
+     */
     const handleSocialLogin = (provider) => {
         socialLogin(provider);
     };
