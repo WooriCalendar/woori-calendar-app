@@ -15,10 +15,10 @@ import java.util.Date;
  * @fileName : RepeatDTO
  * @date : 2023-06-08
  * @description :
- * ===========================================================
- * DATE           AUTHOR             NOTE
- * -----------------------------------------------------------
- * 2023-06-08        김설하             최초 생성
+ *              ===========================================================
+ *              DATE AUTHOR NOTE
+ *              -----------------------------------------------------------
+ *              2023-06-08 김설하 최초 생성
  */
 
 @Builder
@@ -26,17 +26,20 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 public class RepeatDTO {
+    private Long reNo;
     private Date endDate;
     private String rePeriod;
     private Long scNo;
 
     public RepeatDTO(final RepeatEntity entity) {
+        this.reNo = entity.getReNo();
         this.endDate = entity.getEndDate();
         this.rePeriod = entity.getRePeriod();
         this.scNo = entity.getScheduleEntity().getScNo();
     }
 
     public static RepeatEntity toEntity(final RepeatDTO dto) {
-        return RepeatEntity.builder().endDate(dto.getEndDate()).rePeriod(dto.getRePeriod()).scheduleEntity(ScheduleEntity.builder().scNo(dto.getScNo()).build()).build();
+        return RepeatEntity.builder().reNo(dto.getReNo()).endDate(dto.getEndDate()).rePeriod(dto.getRePeriod())
+                .scheduleEntity(ScheduleEntity.builder().scNo(dto.getScNo()).build()).build();
     }
 }
