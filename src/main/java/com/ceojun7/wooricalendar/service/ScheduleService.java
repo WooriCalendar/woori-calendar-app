@@ -79,7 +79,7 @@ public class ScheduleService {
     }
 
     public List<ScheduleEntity> retrieveByEmail(String email) {
-        List<ShareEntity> list = shareRepository.findByMemberEntity_Email(email);
+        List<ShareEntity> list = shareRepository.findByMemberEntity_EmailAndChecked(email, true);
         List<ScheduleEntity> scheduleList = new ArrayList<>();
 
         for (ShareEntity shareEntity : list) {

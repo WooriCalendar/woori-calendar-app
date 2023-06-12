@@ -47,15 +47,6 @@ public class ScheduleController {
         }
     }
 
-//    @GetMapping
-//    public ResponseEntity<?> retrieveSchedule(@RequestBody ScheduleDTO dto) {
-//        log.warn(String.valueOf(dto.getCalNo()));
-//        List<ScheduleEntity> entities = service.retrieve(dto.getCalNo());
-//        List<ScheduleDTO> dtos = entities.stream().map(ScheduleDTO::new).collect(Collectors.toList());
-//        ResponseDTO<ScheduleDTO> response = ResponseDTO.<ScheduleDTO>builder().data(dtos).build();
-//        return ResponseEntity.ok().body(response);
-//    }
-
     @GetMapping
     public ResponseEntity<?> retrieveSchedule(@AuthenticationPrincipal String email) {
         List<ScheduleEntity> entities = service.retrieveByEmail(email);

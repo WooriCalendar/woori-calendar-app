@@ -30,7 +30,6 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "tbl_schedule")
 @DynamicInsert
-@Transactional
 public class ScheduleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
