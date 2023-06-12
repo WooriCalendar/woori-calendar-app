@@ -1,11 +1,5 @@
 import React from 'react';
 
-/**
- * @author        : DGeon
- * @Comment       : 구글 로그인 Logo
- * @date          : 2023-06-10
- *
- */
 const LoginSvg = () => {
     return (
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="LgbsSe-Bz112c" width={20} style={{marginRight : 10}}>

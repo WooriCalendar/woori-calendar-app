@@ -7,12 +7,6 @@ import App from "../App";
 import Signup from "./Signup";
 import CalModify from "./CalModify";
 
-/**
- * @author        : DGeon
- * @Comment       : 웹 하단에 표시 하는 부분
- * @date          : 2023-06-07
- * 
- */
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">

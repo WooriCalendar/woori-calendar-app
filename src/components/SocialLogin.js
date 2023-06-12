@@ -1,11 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 
-/**
- * @author: DGeon
- * @comment: 구글 oauth 토큰 localstorage 저장
- * @date: 2023-06-08
- */
 const socialLogin = (props) => {
     const getUrlParameter = (name) => {
         let search = window.location.search;

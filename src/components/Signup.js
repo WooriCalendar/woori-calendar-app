@@ -6,9 +6,10 @@ import companyLogo from "../assets/logo(ver3).png";
 import SignupTextField from "./SignupTextField";
 
 /**
- * @author: DGeon
- * @comment: 회원가입 폼을 위한 컴포넌트
- * @date: 2023-05-31
+ * 파일명: Signup.js
+ * 작성자: 이동건
+ * 작성일: 2023-05-31
+ * 설명: 회원가입 폼을 위한 컴포넌트
  */
 const Signup = () => {
     const [isEmailVisible, setIsEmailVisible] = useState(true);
@@ -23,11 +24,6 @@ const Signup = () => {
     const [birthday, setBirthday] = useState();
     const [language, setLanguage] = useState();
 
-    /**
-     * @author: DGeon
-     * @comment: 입력폼에 대한 visible 및 회원 가입 memberDTO 백엔드 전송
-     * @date: 2023-06-08
-     */
     const handleButtonClick = (event) => {
         if(isEmailVisible || isPassVisible || isNicknameVisible || isBirthdayVisible) {
             event.preventDefault();
