@@ -77,3 +77,7 @@ export function signout() {
 export function signup(memberDTO) {
     return call("/member/signup", "POST", memberDTO);
 }
+
+export function signupemail(emailPostDto){
+    return call("/sendmail/email", "POST", emailPostDto);
+}

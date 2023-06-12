@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Button, Container, Grid, TextField, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
-import {signup} from "../service/ApiService";
+import {signup, signupemail} from "../service/ApiService";
 import companyLogo from "../assets/logo(ver3).png";
 import SignupTextField from "./SignupTextField";
 import "slick-carousel/slick/slick.css";
@@ -72,6 +72,11 @@ const Signup = () => {
         sliderRef.current.slickNext();
     }
 
+    const handleEmail = (event) =>{
+        setEmail(document.getElementById('email').value);
+        signupemail({email}).then();
+    }
+
 
     return (
         <Container component="main" maxWidth="xs" style={{marginTop: "8%"}}>
@@ -112,7 +117,7 @@ const Signup = () => {
                         <Slider ref={sliderRef} {...settings}>
                             <div>
                                 <SignupTextField value="email"/>
-                                <Button >인증번호 발송</Button>
+                                <Button onClick={handleEmail}>인증번호 발송</Button>
                             </div>
                             <div>
                              <SignupTextField value="password"/>
