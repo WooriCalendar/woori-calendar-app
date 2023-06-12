@@ -60,7 +60,12 @@ const Signup = () => {
                 (resp) => (window.location.href = "/login")
             );
         }
-
+        sliderRef.current.slickNext();
+        sliderRef.current.slickNext();
+        sliderRef.current.slickNext();
+        sliderRef.current.slickNext();
+        sliderRef.current.slickNext();
+        sliderRef.current.slickNext();
     }
 
 
