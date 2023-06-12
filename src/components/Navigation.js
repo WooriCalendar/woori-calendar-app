@@ -5,14 +5,15 @@ import {faBars} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import logoImage from '../assets/logo(ver3)small.png';
 
-const Navigation = () => {
-
+const Navigation = (
+    {SideBar}
+) => {
     return (
         <AppBar position="static" color="default">
             <Toolbar>
                 <Grid container spacing={2} alignItem="center">
                     <Grid item style={{ marginTop : '10px'}}>
-                        <FontAwesomeIcon icon={faBars} className="bar fa-2x"/>
+                        <FontAwesomeIcon onClick={SideBar} icon={faBars} className="bar fa-2x"/>
                     </Grid>
                     <Grid item style={{ marginTop : '0px'}}>
                         <img src={logoImage} alt="Logo Image"/>
