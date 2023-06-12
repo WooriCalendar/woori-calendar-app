@@ -1,16 +1,14 @@
 import '../css/Sidebar.css';
-import FullCalendarMonth from "./FullCalendarMonth";
+import FullCalendars from "./FullCalendars";
 
 const Sidebar = (
     {visible}
 ) => {
     return (
-
-
         <div>
             {visible && (
                 <div className="slide-out">
-                    <FullCalendarMonth
+                    <FullCalendars
                     />
                 </div>
             )}
