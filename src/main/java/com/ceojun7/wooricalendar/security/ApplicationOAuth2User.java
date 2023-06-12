@@ -10,15 +10,13 @@ import java.util.Map;
 
 /**
  * @author : DGeon
- * @packageName : com.ceojun7.wooricalendar.security
+ * @packageName :
  * @fileName : ApplicationOAuth2User
  * @date : 2023-06-01
- * @description :
- * ===========================================================
- * DATE           AUTHOR             NOTE
- * -----------------------------------------------------------
- * 2023-06-01        DGeon             최초 생성
- **/
+ * @packageName :
+ * @packageName : com.ceojun7.wooricalendar.security
+ * @description : =========================================================== DATE           AUTHOR             NOTE ----------------------------------------------------------- 2023-06-01        DGeon             최초 생성
+ */
 public class ApplicationOAuth2User implements OAuth2User {
 
     private String id;
