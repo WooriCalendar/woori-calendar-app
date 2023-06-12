@@ -1,12 +1,15 @@
 package com.ceojun7.wooricalendar.service;
 
 import com.ceojun7.wooricalendar.model.CalendarEntity;
+import com.ceojun7.wooricalendar.model.ShareEntity;
 import com.ceojun7.wooricalendar.persistence.CalendarRepository;
+import com.ceojun7.wooricalendar.persistence.ShareRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +35,9 @@ public class CalendarService {
     @Autowired
     private CalendarRepository calendarRepository;
 
+    @Autowired
+    private ShareRepository shareRepository;
+
     /**
      * methodName : create
      * comment : 새 calendar 생성
@@ -50,6 +56,17 @@ public class CalendarService {
     public List<CalendarEntity> retrieve(Long calNo) {
         return calendarRepository.findByCalNo(calNo);
     };
+
+    public List<CalendarEntity> retrieveByEmail(String email) {
+        List<ShareEntity> shareList = shareRepository.findByMemberEntity_Email(email);
+        List<CalendarEntity> calendarList = new ArrayList<>();
+
+        for (ShareEntity shareEntity : shareList) {
+            calendarList.add(shareEntity.getCalendarEntity());
+        }
+
+        return calendarList;
+    }
 
     public List<CalendarEntity> delete(final CalendarEntity entity) {
 
