@@ -1,11 +1,12 @@
 import '../css/Sidebar.css';
 import FullCalendars from "./FullCalendars";
 import Category from "./Category";
-import {Button, IconButton, TextField} from "@mui/material";
-import {Search} from "@mui/icons-material";
-import {Container, Grid} from "@mui/material";
+import {Button, TextField} from "@mui/material";
 
 const Sidebar = (
+
+
+
     {visible, aspectRatio, height, contentHeight}
 ) => {
     const headerToolbar = {
