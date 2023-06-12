@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Button, Container, Grid, TextField, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import {signup} from "../service/ApiService";
 import companyLogo from "../assets/logo(ver3).png";
 import SignupTextField from "./SignupTextField";
-
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from 'react-slick';
 /**
  * @author: DGeon
  * @comment: 회원가입 폼을 위한 컴포넌트
@@ -22,7 +24,13 @@ const Signup = () => {
     const [subemail, setSubemail] = useState();
     const [birthday, setBirthday] = useState();
     const [language, setLanguage] = useState();
-
+    const sliderRef = useRef(null);
+    const settings = {
+        infinite: false,
+        speed: 500,
+        slidesToShow: 1,
+        draggable: false
+    };
     /**
      * @author: DGeon
      * @comment: 입력폼에 대한 visible 및 회원 가입 memberDTO 백엔드 전송
@@ -50,6 +58,7 @@ const Signup = () => {
                 document.getElementById('subemail').value = null;
             } else if (isBirthdayVisible) {
                 setBirthday(document.getElementById('birthday').value);
+                setIsEmailVisible(false);
                 setIsBirthdayVisible(false);
                 document.getElementById('birthday').value = null;
                 document.getElementById('handleButton').innerText = "Account Create";
@@ -61,11 +70,6 @@ const Signup = () => {
             );
         }
         sliderRef.current.slickNext();
-        sliderRef.current.slickNext();
-        sliderRef.current.slickNext();
-        sliderRef.current.slickNext();
-
-
     }
 
 
@@ -84,22 +88,47 @@ const Signup = () => {
                         </Typography>
                     </Grid>
                 </Grid>
+                {/*<Grid container spacing={2} style={{marginTop: "5%"}}>*/}
+                {/*    <Grid item xs={12}>*/}
+                {/*        {isEmailVisible ? (*/}
+                {/*            <>*/}
+                {/*            <SignupTextField value="email"/>*/}
+                {/*            <Button >인증번호 발송</Button>*/}
+                {/*            </>*/}
+                {/*        ) : isPassVisible ? (*/}
+                {/*            <SignupTextField value="password"/>*/}
+                {/*        ) : isNicknameVisible ? (*/}
+                {/*            <SignupTextField  value="nickname"/>*/}
+                {/*        ) : isSubemailVisible ? (*/}
+                {/*            <SignupTextField  value="subemail"/>*/}
+                {/*        ) : isBirthdayVisible ? (*/}
+                {/*            <SignupTextField value="birthday"/>*/}
+                {/*        ) : ''}*/}
+                {/*    </Grid>*/}
+                {/*</Grid>*/}
+
                 <Grid container spacing={2} style={{marginTop: "5%"}}>
                     <Grid item xs={12}>
-                        {isEmailVisible ? (
-                            <>
-                            <SignupTextField value="email"/>
-                            <Button >인증번호 발송</Button>
-                            </>
-                        ) : isPassVisible ? (
-                            <SignupTextField value="password"/>
-                        ) : isNicknameVisible ? (
-                            <SignupTextField  value="nickname"/>
-                        ) : isSubemailVisible ? (
-                            <SignupTextField  value="subemail"/>
-                        ) : isBirthdayVisible ? (
-                            <SignupTextField value="birthday"/>
-                        ) : ''}
+                        <Slider ref={sliderRef} {...settings}>
+                            <div>
+                                <SignupTextField value="email"/>
+                                <Button >인증번호 발송</Button>
+                            </div>
+                            <div>
+                             <SignupTextField value="password"/>
+                            </div>
+                            <div>
+                                <SignupTextField  value="nickname"/>
+                            </div>
+                            <div>
+                                <SignupTextField  value="subemail"/>
+                            </div>
+                            <div>
+                                <SignupTextField value="birthday"/>
+                            </div>
+                            <div>
+                            </div>
+                        </Slider>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
