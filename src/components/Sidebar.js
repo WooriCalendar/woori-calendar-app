@@ -15,27 +15,27 @@ const Sidebar = (
     };
     return (
         <div>
-            <Button variant="contained" color="primary">
-                일정추가버튼
-            </Button>
             {visible && (
                 <div className="slide-out">
+                    <Button variant="contained" color="primary">
+                        일정추가버튼
+                    </Button>
                     <FullCalendars
                         headerToolbar={headerToolbar}
                         heigth={height}
                         contentHeight={contentHeight}
                         aspectRatio={aspectRatio}
                     />
+                    <form>
+                        <TextField
+                            label="검색"
+                            variant="outlined"
+                            size="small"
+                        />
+                    </form>
+                    <Category/>
                 </div>
-            )}
-            <form>
-                <TextField
-                    label="검색"
-                    variant="outlined"
-                    size="small"
-                />
-            </form>
-            <Category/>
+                )}
         </div>
     );
 };
