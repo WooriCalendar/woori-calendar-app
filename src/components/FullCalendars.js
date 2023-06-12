@@ -6,8 +6,9 @@ import {call} from "../service/ApiService";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 
-const FullCalendars = () => {
-
+const FullCalendars = (
+    {headerToolbar, height, aspectRatio, contentHeight}
+) => {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
@@ -47,19 +48,18 @@ const FullCalendars = () => {
 
     const events = [...items];
     console.log(events)
-    const headerToolbar = {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay',
-    };
+
     return (
             <FullCalendar
                 plugins={[dayGridPlugin, momentPlugin, interactionPlugin, timeGridPlugin]}
                 initialView='dayGridMonth'
                 headerToolbar={headerToolbar}
                 events={events}
+                height={height}
                 eventClick={handleEventClick}
                 dateClick={handleDateClick}
+                contentHeight={contentHeight}
+                aspectRatio={aspectRatio}
             />
     )
 }
