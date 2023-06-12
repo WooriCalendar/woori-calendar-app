@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../src/ShareModal.css";
 import {
   Button,
@@ -15,7 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 const ShareModal = (props) => {
   const { open, close, header } = props;
 
-  const [grade, setGrade] = React.useState("");
+  const [grade, setGrade] = useState("");
 
   const handleChange = (event) => {
     setGrade(event.target.value);
@@ -28,6 +28,7 @@ const ShareModal = (props) => {
         <section>
           <header>
             {header}
+            <span>특정 사용자와 공유</span>
             <button className="close" onClick={close}>
               <CloseIcon />
             </button>
@@ -52,7 +53,6 @@ const ShareModal = (props) => {
               <InputLabel id="demo-simple-select-label">권한</InputLabel>
               <Select
                 id="outlined-select-currency"
-                select
                 label="권한"
                 defaultValue="0"
                 onChange={handleChange}
