@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
-import '../../src/Sidebar.css'; // 스타일링을 위한 CSS 파일 import
+import '../css/Sidebar.css';
+import FullCalendarMonth from "./FullCalendarMonth";
 
-const Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(true);
-
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen);
-    };
-
+const Sidebar = (
+    {visible}
+) => {
     return (
-        <div className={`sidebar ${isOpen ? 'open' : ''}`}>
-            <button onClick={toggleSidebar}><FontAwesomeIcon icon="fa-solid fa-bars" /></button>
-            <div className="sidebar-content">여기다가 이것저것만들거에요</div>
+
+
+        <div>
+            {visible && (
+                <div className="slide-out">
+                    <FullCalendarMonth
+                    />
+                </div>
+            )}
         </div>
     );
 };
