@@ -1,5 +1,6 @@
 package com.ceojun7.wooricalendar.service;
 
+import com.ceojun7.wooricalendar.dto.RepeatDTO;
 import com.ceojun7.wooricalendar.model.RepeatEntity;
 import com.ceojun7.wooricalendar.model.ScheduleEntity;
 import com.ceojun7.wooricalendar.persistence.RepeatRepository;
@@ -17,10 +18,10 @@ import java.util.List;
  * @fileName : RepeatService
  * @date : 2023-06-08
  * @description :
- * ===========================================================
- * DATE           AUTHOR             NOTE
- * -----------------------------------------------------------
- * 2023-06-08        김설하             최초 생성
+ *              ===========================================================
+ *              DATE AUTHOR NOTE
+ *              -----------------------------------------------------------
+ *              2023-06-08 김설하 최초 생성
  */
 
 @Service
@@ -41,4 +42,39 @@ public class RepeatService {
     public List<RepeatEntity> retrieve(Long scNo) {
         return repeatRepository.findByScheduleEntity_ScNo(scNo);
     }
+
+    public List<RepeatEntity> update(final RepeatEntity entity) {
+        final List<RepeatEntity> originalList = repeatRepository.findByReNo(entity.getReNo());
+        if (!originalList.isEmpty()) {
+            RepeatEntity original = originalList.get(0);
+            original.setEndDate(entity.getEndDate());
+            original.setRePeriod(entity.getRePeriod());
+
+            repeatRepository.save(original);
+        }
+        return repeatRepository.findByReNo(entity.getReNo());
+    }
+
+    public List<RepeatEntity> view(Long reNo) {
+        return repeatRepository.findByReNo(reNo);
+    }
+
+    // public List<RepeatEntity> delete(final RepeatEntity entity) {
+    // repeatRepository.delete(entity);
+    // ScheduleEntity scheduleEntity =
+    // scheduleRepository.findByScNo(entity.getScheduleEntity().getScNo()).get(0);
+    // // ScheduleEntity scheduleEntity = scheduleRepository.fing
+    // return repeatRepository.findByScheduleEntity_ScNo(scheduleEntity.getScNo());
+    // // return repeatRepository.findByReNo(entity.getReNo());
+    // }
+
+    public List<RepeatEntity> delete(final RepeatEntity entity) {
+        repeatRepository.delete(entity);
+        // ScheduleEntity scheduleEntity =
+        // scheduleRepository.findByScNo(entity.getScheduleEntity().getScNo()).get(0);
+        // ScheduleEntity scheduleEntity = scheduleRepository.fing
+        return repeatRepository.findByReNo(entity.getReNo());
+        // return repeatRepository.findByReNo(entity.getReNo());
+    }
+
 }
