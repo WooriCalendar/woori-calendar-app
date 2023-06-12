@@ -14,11 +14,12 @@ const FullCalendars = (
     useEffect(() => {
             call("/schedule", "GET", null)
                 .then((response) => {
-                    // setItems(response.data)
+                    console.log("일정가져와지나?")
+                    console.log(response.data)
+                    setItems(response.data)
                 });
         }, []
     )
-
     /**
      * 이벤트 클릭시 발생 함수
      * @param eventInfo

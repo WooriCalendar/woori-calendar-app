@@ -11,6 +11,8 @@ function App() {
     const headerToolbar = {
         left: 'prev,next today',
         center: 'title',
+
+
         right: 'dayGridMonth,timeGridWeek,timeGridDay',
     };
     const sideBarButton = () => {
@@ -20,9 +22,9 @@ function App() {
     return (
         <div className="App">
             <Navigation SideBar={sideBarButton}/>
-            <Container maxWidth="md">
-                <Grid container spacing={4} style={{margin : '0px 0px'}}>
-                    <Grid item xs={4} style={{maxWidth: '300px'}}>
+            <Container maxWidth="md" style={{margin : '0px 0px'}}>
+                <Grid container spacing={4} style={{ margin : '0px 0px' }}>
+                    <Grid item xs={4} style={{ maxWidth: '300px' }}>
                         <Sidebar
                             visible={isSideBarVisible}
                             height={'400px'}
@@ -30,11 +32,11 @@ function App() {
                             aspectRatio={'2'}
                         />
                     </Grid>
-                    <Grid item xs={8} style={{width : 'calc(100% - 300px)' }}>
+                    <Grid item xs={8} style={{ width : 'calc(100% - 300px)' }}>
                         <FullCalendars
                             headerToolbar={headerToolbar}
                             height={'800px'}
-                            contentHeight={'100%'}
+                            contentHeight={'400px'}
                             aspectRatio={'3'}
                         />
                     </Grid>
