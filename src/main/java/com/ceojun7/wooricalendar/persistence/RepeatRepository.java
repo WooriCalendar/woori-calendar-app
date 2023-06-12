@@ -12,13 +12,15 @@ import java.util.List;
  * @fileName : RepeatRepository
  * @date : 2023-06-08
  * @description :
- * ===========================================================
- * DATE           AUTHOR             NOTE
- * -----------------------------------------------------------
- * 2023-06-08        김설하             최초 생성
+ *              ===========================================================
+ *              DATE AUTHOR NOTE
+ *              -----------------------------------------------------------
+ *              2023-06-08 김설하 최초 생성
  */
 
 @Repository
 public interface RepeatRepository extends JpaRepository<RepeatEntity, String> {
     List<RepeatEntity> findByScheduleEntity_ScNo(Long scNo);
+
+    List<RepeatEntity> findByReNo(Long reNo);
 }
