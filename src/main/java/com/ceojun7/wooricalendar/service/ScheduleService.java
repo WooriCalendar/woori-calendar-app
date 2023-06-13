@@ -18,14 +18,14 @@ import java.util.List;
 /**
  * @packageName : com.ceojun7.wooricalendar.service
  * @fileName : CalendarService.java
- * @author : 김설하, 강태수
+ * @author : seolha86, 강태수
  * @date : 2023.05.31
  * @description :
  *              ===========================================================
  *              DATE AUTHOR NOTE
  *              -----------------------------------------------------------
- *              2023.05.31 김설하 최초 생성
- *              2023.06.01 김설하 create 기능추가
+ *              2023.05.31 seolha86 최초 생성
+ *              2023.06.01 seolha86 create 기능추가
  *              2023.06.02 강태수 update, delete, day 기능추가
  */
 @Service

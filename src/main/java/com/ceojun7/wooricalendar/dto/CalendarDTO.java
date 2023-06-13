@@ -12,13 +12,13 @@ import java.util.Date;
 /**
  * @packageName    : com.ceojun7.wooricalendar.dto
  * @fileName       : CalendarDTO.java
- * @author         : 김설하
+ * @author         : seolha86
  * @date           : 2023.05.31
  * @description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023.05.31         김설하           최초 생성
+ * 2023.05.31         seolha86           최초 생성
  */
 
 @Builder
