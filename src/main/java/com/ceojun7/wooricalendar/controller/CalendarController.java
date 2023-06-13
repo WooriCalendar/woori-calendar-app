@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
  * @packageName : com.ceojun7.wooricalendar.contorller
 
  * @fileName    : CalendarController.java
- * @author      : 김설하, 강태수
+ * @author      : seolha86, 강태수
  * @date        : 2023.05.31
  * @description :
  *              ===========================================================
  *              DATE AUTHOR NOTE
  *              -----------------------------------------------------------
- *              2023.05.31 김설하 최초 생성
+ *              2023.05.31 seolha86 최초 생성
  *              2023.06.01 강태수 update, delete 생성
  * 
  */
@@ -64,6 +64,8 @@ public class CalendarController {
             // 캘린더 생성 시 생성된 캘린더 구독
             ShareEntity shareEntity = ShareEntity.builder().calendarEntity(entity).memberEntity(MemberEntity.builder().email(email).build()).checked(true).build();
             shareService.create(shareEntity);
+            log.warn("shareEntity");
+            log.warn(String.valueOf(shareEntity));
 
             return ResponseEntity.ok().body(response);
         } catch (Exception e) {
@@ -72,6 +74,16 @@ public class CalendarController {
         }
     }
 
+    /**
+     * methodName : retrieveCalendar
+     * comment : 회원의 이메일로 구독중인 캘린더 조회
+     * author : seolha86
+     * date : 2023-06-13
+     * description :
+     *
+     * @param email the email
+     * @return the response entity
+     */
     @GetMapping
     public ResponseEntity<?> retrieveCalendar(@AuthenticationPrincipal String email) {
         List<CalendarEntity> entities = service.retrieveByEmail(email);
