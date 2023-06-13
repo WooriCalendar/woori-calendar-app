@@ -9,6 +9,7 @@ import Slider from 'react-slick';
 import {Link} from "react-router-dom";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import moment from 'moment';
 /**
  * @author: DGeon
  * @comment: 회원가입 폼을 위한 컴포넌트
@@ -25,7 +26,7 @@ const Signup = () => {
     const [password, setPassword] = useState();
     const [nickname, setNickname] = useState();
     const [subemail, setSubemail] = useState();
-    const [birthday, setBirthday] = useState(new Date());
+    let [birthday, setBirthday] = useState(new Date());
     const [language, setLanguage] = useState();
     const [code, setCode] = useState();
     const [isCodeVisible, setIsCodeVisible] = useState(false);
@@ -66,14 +67,14 @@ const Signup = () => {
                 setIsSubemailVisible(false);
                 document.getElementById('subemail').value = null;
             } else if (isBirthdayVisible) {
-                // setBirthday(document.getElementById('birthday').value);
+                birthday = moment().format("yyyy-MM-DD");
+                // setBirthday(birthday);
                 setIsEmailVisible(false);
                 setIsBirthdayVisible(false);
-                document.getElementById('birthday').value = null;
                 document.getElementById('handleButton').innerText = "Account Create";
             }
         } else {
-            alert(birthday);
+
             signup({email, password, nickname, subemail, birthday, language}).then(()=>{
                 window.location.href = "/login";
             });
@@ -81,7 +82,6 @@ const Signup = () => {
         sliderRef.current.slickNext();
     }
     const handleEmail = () => {
-        // setEmail("test1@gmail.com");
         emailRef.current = document.getElementById('email').value;
         let email = emailRef.current;
         console.log(" emailRef.current :: " + emailRef.current);
@@ -174,7 +174,7 @@ const Signup = () => {
                             </div>
                             <div>
                                 {/*<SignupTextField value="birthday"/>*/}
-                                <Calendar onChange={setBirthday} value={birthday}/>
+                                <Calendar onChange={setBirthday} value={birthday} id={birthday}/>
                                 <div className="text-gray-500 mt-4">
 
                                 </div>
