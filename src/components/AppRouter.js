@@ -11,7 +11,7 @@ import CalModify from "./CalModify";
  * @author        : DGeon
  * @Comment       : 웹 하단에 표시 하는 부분
  * @date          : 2023-06-07
- * 
+ *
  */
 function Copyright() {
   return (
@@ -30,7 +30,7 @@ const AppRouter = () => {
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="socialLogin" element={<SocialLogin />} />
-          <Route path="calModify" element={<CalModify />} />
+          <Route path="calendar/:calNo" element={<CalModify />} />
         </Routes>
       </BrowserRouter>
       <Box mt={5}>
