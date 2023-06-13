@@ -32,17 +32,49 @@ public class ShareService {
   @Autowired
   private ShareRepository shareRepository;
 
+  /**
+   * methodName : create
+   * comment : 공유 권한 생성
+   * author : 박현민
+   * date : 2023-06-07
+   * description :
+   *
+   * @param shareEntity
+   * @return shareNo
+   * 
+   */
   public List<ShareEntity> create(final ShareEntity shareEntity) {
-    // if ()
     shareRepository.save(shareEntity);
 
     return shareRepository.findByShareNo(shareEntity.getShareNo());
   }
 
+  /**
+   * methodName : retrieve
+   * comment : 공유 권한 조회
+   * author : 박현민
+   * date : 2023-06-08
+   * description :
+   *
+   * @param shareNo
+   * @return shareNo
+   * 
+   */
   public List<ShareEntity> retrieve(final Long shareNo) {
     return shareRepository.findByShareNo(shareNo);
   }
 
+  /**
+   * methodName : update
+   * comment : 공유 권한 수정
+   * author : 박현민
+   * date : 2023-06-07
+   * description :
+   *
+   * @param shareEntity
+   * @return shareNo
+   * 
+   */
   public List<ShareEntity> update(final ShareEntity shareEntity) {
     final List<ShareEntity> originalList = shareRepository.findByShareNo(shareEntity.getShareNo());
     // 등급을 업데이트하고 저장
@@ -58,6 +90,17 @@ public class ShareService {
     return shareRepository.findByShareNo(shareEntity.getShareNo());
   }
 
+  /**
+   * methodName : update
+   * comment : 공유 권한 삭제
+   * author : 박현민
+   * date : 2023-06-08
+   * description :
+   *
+   * @param shareEntity
+   * @return shareNo
+   * 
+   */
   public List<ShareEntity> delete(final ShareEntity shareEntity) {
     shareRepository.delete(shareEntity);
 

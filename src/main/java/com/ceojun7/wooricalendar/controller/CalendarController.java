@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
  *              -----------------------------------------------------------
  *              2023.05.31 seolha86 최초 생성
  *              2023.06.01 강태수 update, delete 생성
+ *              2023.06.13 박현민 retrieveCalendar(calNo로 조회) 생성
  * 
  */
 @RestController
@@ -143,7 +144,16 @@ public class CalendarController {
 
     }
 
-    // 캘린더 번호로 조회해서 가져와서 수정
+    /**
+     * methodName : retrieveCalendar
+     * comment : 캘린더 번호로 조회
+     * author : 박현민
+     * date : 2023-06-13
+     * description : 사용자가 가지고 있는 캘린더만 조회되게 수정해야 함
+     *
+     * @param calNo the calNo
+     * @return the response entity
+     */
     @GetMapping("/{calNo}")
     public ResponseEntity<?> retrieveCalendar(@PathVariable Long calNo) {
         List<CalendarEntity> entities = service.retrieve(calNo);
