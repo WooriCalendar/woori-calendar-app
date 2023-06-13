@@ -35,7 +35,7 @@ public class EmailController {
 
     // 임시 비밀번호 발급
     @PostMapping("/password")
-    public ResponseEntity sendPasswordMail(@RequestBody EmailPostDTO emailPostDto) throws MessagingException {
+    public ResponseEntity<?> sendPasswordMail(@RequestBody EmailPostDTO emailPostDto) throws MessagingException {
         EmailMessageEntity emailMessage = EmailMessageEntity.builder()
                 .to(emailPostDto.getEmail())
                 .subject("[Woori] 임시 비밀번호 발급")
@@ -60,7 +60,7 @@ public class EmailController {
 
         EmailResponseDTO emailResponseDto = new EmailResponseDTO();
         emailResponseDto.setCode(code);
-
+        log.warn(code);
         return ResponseEntity.ok(emailResponseDto);
     }
 }
