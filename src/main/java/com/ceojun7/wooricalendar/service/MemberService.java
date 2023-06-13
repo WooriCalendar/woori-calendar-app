@@ -21,7 +21,11 @@ import javax.transaction.Transactional;
  * @fileName : MemberService
  * @date : 2023-06-01
  * @packageName : com.ceojun7.wooricalendar.service
- * @description :              ===========================================================              DATE AUTHOR NOTE              -----------------------------------------------------------              2023-06-01 DGeon 최초 생성              2023-06-04 getMemberByEmail,updateMember 최초 생성
+ * @description : ===========================================================
+ *              DATE AUTHOR NOTE
+ *              -----------------------------------------------------------
+ *              2023-06-01 DGeon 최초 생성 2023-06-04 getMemberByEmail,updateMember
+ *              최초 생성
  */
 @Slf4j
 @Service
@@ -89,6 +93,7 @@ public class MemberService {
             memberEntity.setNickname(memberDTO.getNickname());
             memberEntity.setSubemail(memberDTO.getSubemail());
             memberEntity.setBirthday(memberDTO.getBirthday());
+            memberEntity.setLanguage(memberDTO.getLanguage());
             memberRepository.save(memberEntity);
             return true;
         }
