@@ -52,9 +52,33 @@ public class ScheduleService {
         return scheduleRepository.findByCalendarEntity_CalNo(calNo);
     }
 
+    /**
+     * methodName : day
+     * comment : 시작날짜로 조회
+     * author : 강태수
+     * date : 2023-06-02
+     * description :
+     *
+     * @param startDate
+     * @return scheduleRepository
+     * 
+     */
+
     public List<ScheduleEntity> day(Timestamp startDate) {
         return scheduleRepository.findByStartDate(startDate);
     }
+
+    /**
+     * methodName : update
+     * comment : 캘린더 캘린더번호 내용 이름 시간대 수정
+     * author : 강태수
+     * date : 2023-06-02
+     * description :
+     *
+     * @param entity
+     * @return the list
+     * 
+     */
 
     public List<ScheduleEntity> update(final ScheduleEntity entity) {
         final List<ScheduleEntity> originalList = scheduleRepository
@@ -70,6 +94,18 @@ public class ScheduleService {
                 .findByCalendarEntity_CalNo(entity.getCalendarEntity().getCalNo());
         return updatedList;
     }
+
+    /**
+     * methodName : delete
+     * comment : 캘린더 삭제
+     * author : 강태수
+     * date : 2023-06-02
+     * description :
+     *
+     * @param entity
+     * @return scheduleRepository
+     * 
+     */
 
     public List<ScheduleEntity> delete(final ScheduleEntity entity) {
         scheduleRepository.delete(entity);
