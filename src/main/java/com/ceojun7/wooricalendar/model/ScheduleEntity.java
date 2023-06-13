@@ -14,13 +14,13 @@ import java.sql.Timestamp;
 /**
  * @packageName    : com.ceojun7.wooricalendar.model
  * @fileName       : ScheduleEntity.java
- * @author         : 김설하
+ * @author         : seolha86
  * @date           : 2023.05.31
  * @description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023.05.31         김설하           최초 생성
+ * 2023.05.31         seolha86           최초 생성
  */
 
 @Data
@@ -30,7 +30,6 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "tbl_schedule")
 @DynamicInsert
-@Transactional
 public class ScheduleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +45,9 @@ public class ScheduleEntity {
 
     private Date regDate;
     private Date updateDate;
+
+    private Timestamp reEndDate;
+    private String rePeriod;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "calNo")
@@ -64,6 +66,8 @@ public class ScheduleEntity {
                 ", endDate=" + endDate +
                 ", regDate=" + regDate +
                 ", updateDate=" + updateDate +
+                ", reEndDate=" + reEndDate +
+                ", rePeriod='" + rePeriod + '\'' +
                 '}';
     }
 }

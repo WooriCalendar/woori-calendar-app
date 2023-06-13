@@ -15,14 +15,14 @@ import java.util.stream.Collectors;
 /**
  * @packageName    : com.ceojun7.wooricalendar.model
  * @fileName       : CalendarEntity.java
- * @author         : 김설하
+ * @author         : seolha86
  * @date           : 2023.05.31
  * @description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023.05.31         김설하           최초 생성
- * 2023.06.01         김설하           @DynamicInsert 어노테이션 추가, @Column 어노테이션 추가 - default current_timestamp
+ * 2023.05.31         seolha86           최초 생성
+ * 2023.06.01         seolha86           @DynamicInsert 어노테이션 추가, @Column 어노테이션 추가 - default current_timestamp
  */
 
 @Data

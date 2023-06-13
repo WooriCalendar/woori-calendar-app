@@ -13,10 +13,23 @@ spring:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable : true
+
   config:
     import:
       - classpath:/application-datasource.yml
       - classpath:/application-oauth2.yml
+      - classpath:/application-mail.yml
+
 
 logging:
   level:

@@ -30,7 +30,7 @@ import java.util.Optional;
 @Slf4j
 public class NotificationService {
     @Autowired
-    NotificationRepository notificationRepository;
+    private NotificationRepository notificationRepository;
 
     @Autowired
     private CalendarRepository calendarRepository;
