@@ -24,8 +24,9 @@ import javax.transaction.Transactional;
  * @description : ===========================================================
  *              DATE AUTHOR NOTE
  *              -----------------------------------------------------------
- *              2023-06-01 DGeon 최초 생성 2023-06-04 getMemberByEmail,updateMember
- *              최초 생성
+ *              2023-06-01 DGeon 최초 생성
+ *              2023-06-04 강태수 getMemberByEmail,updateMember
+ * 
  */
 @Slf4j
 @Service
@@ -75,6 +76,18 @@ public class MemberService {
         return null;
     }
 
+    /**
+     * methodName : getMemberByEmail
+     * comment : 이메일로 회원정보 조회
+     * author : 강태수
+     * date : 2023-06-04
+     * description :
+     *
+     * @param email
+     * @return response entity
+     * 
+     */
+
     public MemberDTO getMemberByEmail(String email) {
         MemberEntity memberEntity = memberRepository.findByEmail(email);
         if (memberEntity != null) {
@@ -89,7 +102,7 @@ public class MemberService {
      * methodName : updateMember
      * comment : 패스워드,닉네임, 서브이메일, 생년월일, 언어 수정
      * author : 강태수
-     * date : 2023-06-01
+     * date : 2023-06-04
      * description :
      *
      * @param memberDTO
