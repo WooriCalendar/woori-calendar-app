@@ -21,7 +21,11 @@ import javax.transaction.Transactional;
  * @fileName : MemberService
  * @date : 2023-06-01
  * @packageName : com.ceojun7.wooricalendar.service
- * @description :              ===========================================================              DATE AUTHOR NOTE              -----------------------------------------------------------              2023-06-01 DGeon 최초 생성              2023-06-04 getMemberByEmail,updateMember 최초 생성
+ * @description : ===========================================================
+ *              DATE AUTHOR NOTE
+ *              -----------------------------------------------------------
+ *              2023-06-01 DGeon 최초 생성 2023-06-04 getMemberByEmail,updateMember
+ *              최초 생성
  */
 @Slf4j
 @Service
@@ -81,6 +85,19 @@ public class MemberService {
         return null;
     }
 
+    /**
+     * methodName : updateMember
+     * comment : 패스워드,닉네임, 서브이메일, 생년월일, 언어 수정
+     * author : 강태수
+     * date : 2023-06-01
+     * description :
+     *
+     * @param memberDTO
+     *
+     * @return
+     * 
+     */
+
     public boolean updateMember(MemberDTO memberDTO) {
         MemberEntity memberEntity = memberRepository.findByEmail(memberDTO.getEmail());
         if (memberEntity != null) {
@@ -89,6 +106,7 @@ public class MemberService {
             memberEntity.setNickname(memberDTO.getNickname());
             memberEntity.setSubemail(memberDTO.getSubemail());
             memberEntity.setBirthday(memberDTO.getBirthday());
+            memberEntity.setLanguage(memberDTO.getLanguage());
             memberRepository.save(memberEntity);
             return true;
         }
