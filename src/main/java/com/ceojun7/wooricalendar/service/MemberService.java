@@ -85,6 +85,19 @@ public class MemberService {
         return null;
     }
 
+    /**
+     * methodName : updateMember
+     * comment : 패스워드,닉네임, 서브이메일, 생년월일, 언어 수정
+     * author : 강태수
+     * date : 2023-06-01
+     * description :
+     *
+     * @param memberDTO
+     *
+     * @return
+     * 
+     */
+
     public boolean updateMember(MemberDTO memberDTO) {
         MemberEntity memberEntity = memberRepository.findByEmail(memberDTO.getEmail());
         if (memberEntity != null) {
