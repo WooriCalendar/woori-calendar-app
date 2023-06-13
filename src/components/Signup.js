@@ -10,6 +10,7 @@ import {Link} from "react-router-dom";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import moment from 'moment';
+
 /**
  * @author: DGeon
  * @comment: 회원가입 폼을 위한 컴포넌트
@@ -23,7 +24,7 @@ const Signup = () => {
     const [isSubemailVisible, setIsSubemailVisible] = useState(true);
     const [email, setEmail] = useState();
     const emailRef = useRef();
-    const [password, setPassword] = useState();
+    let [password, setPassword] = useState();
     const [nickname, setNickname] = useState();
     const [subemail, setSubemail] = useState();
     let [birthday, setBirthday] = useState(new Date());
@@ -47,6 +48,7 @@ const Signup = () => {
      * @date: 2023-06-08
      */
     const handleButtonClick = (event) => {
+
         if (isEmailVisible || isPassVisible || isNicknameVisible || isBirthdayVisible) {
             event.preventDefault();
             setLanguage(window.navigator.language);
@@ -54,23 +56,31 @@ const Signup = () => {
                 setEmail(document.getElementById('email').value);
                 setIsEmailVisible(false);
                 document.getElementById('email').value = "";
+                sliderRef.current.slickNext();
             } else if (isPassVisible) {
-                setPassword(document.getElementById('password').value);
-                setIsPassVisible(false);
-                document.getElementById('password').value = "";
+                if( document.getElementById('password').value===document.getElementById('passwordcheck').value) {
+                    setPassword(document.getElementById('password').value);
+                    setIsPassVisible(false);
+                    document.getElementById('password').value = "";
+                    sliderRef.current.slickNext();
+                }else{
+                    document.getElementById('passwordOut').innerText="Passwords do not match.";
+                }
             } else if (isNicknameVisible) {
                 setNickname(document.getElementById('nickname').value);
                 setIsNicknameVisible(false);
                 document.getElementById('nickname').value = null;
+                sliderRef.current.slickNext();
             } else if (isSubemailVisible) {
                 setSubemail(document.getElementById('subemail').value);
                 setIsSubemailVisible(false);
                 document.getElementById('subemail').value = null;
+                sliderRef.current.slickNext();
             } else if (isBirthdayVisible) {
                 birthday = moment().format("yyyy-MM-DD");
-                // setBirthday(birthday);
                 setIsEmailVisible(false);
                 setIsBirthdayVisible(false);
+                sliderRef.current.slickNext();
                 document.getElementById('handleButton').innerText = "Account Create";
             }
         } else {
@@ -79,7 +89,7 @@ const Signup = () => {
                 window.location.href = "/login";
             });
         }
-        sliderRef.current.slickNext();
+
     }
     const handleEmail = () => {
         emailRef.current = document.getElementById('email').value;
@@ -165,6 +175,8 @@ const Signup = () => {
                             </div>
                             <div>
                                 <SignupTextField value="password"/>
+                                <SignupTextField value="passwordcheck"/>
+                                <out id="passwordOut" style={{color : "red"}}></out>
                             </div>
                             <div>
                                 <SignupTextField value="nickname"/>
@@ -191,7 +203,7 @@ const Signup = () => {
                         Next
                     </Button>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} style={{marginTop: "5%"}}>
                     {languageCode === "ko" && (
                         <Link to="/PrivacyPolicyKo">개인정보 보호 정책</Link>
                     )}
