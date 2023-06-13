@@ -33,7 +33,18 @@ public class EmailController {
     private final EmailService emailService;
 
 
-    // 임시 비밀번호 발급
+    /**
+     * methodName : sendPasswordMail
+     * comment : 임시비밀번호 발급 및 전송 메서드
+     * author : DGeon
+     * date : 2023-06-12
+     * description :
+     *
+     * @param emailPostDto the email post dto
+     * @return response entity
+     * @throws MessagingException the messaging exception
+     */
+// 임시 비밀번호 발급
     @PostMapping("/password")
     public ResponseEntity<?> sendPasswordMail(@RequestBody EmailPostDTO emailPostDto) throws MessagingException {
         EmailMessageEntity emailMessage = EmailMessageEntity.builder()
@@ -46,7 +57,17 @@ public class EmailController {
         return ResponseEntity.ok().build();
     }
 
-    // 회원가입 이메일 인증 - 요청 시 body로 인증번호 반환하도록 작성하였음
+    /**
+     * methodName : sendJoinMail
+     * comment : 회원가입시 인증코드 보내는 메서드
+     * author : DGeon
+     * date : 2023-06-12
+     * description :
+     *
+     * @param emailPostDto the email post dto
+     * @return response entity
+     * @throws MessagingException the messaging exception
+     */
     @PostMapping("/email")
     public ResponseEntity<?> sendJoinMail(@RequestBody EmailPostDTO emailPostDto) throws MessagingException {
         log.warn(String.valueOf(emailPostDto));
