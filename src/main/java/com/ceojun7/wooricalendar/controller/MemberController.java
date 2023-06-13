@@ -31,7 +31,7 @@ import java.util.Date;
  *              DATE AUTHOR NOTE
  *              -----------------------------------------------------------
  *              2023-05-31 DGeon 최초 생성
- *              2023-06-04 get, update 생성
+ *              2023-06-04 강태수 getMemberByEmail,updateMember 생성
  **/
 @RestController
 @RequestMapping("member")
@@ -79,15 +79,15 @@ public class MemberController {
                     .birthday(memberDTO.getBirthday())
                     .regDate(new Date())
                     .updateDate(new Date())
-                    .language(memberDTO.getLanguage().substring(0,2))
+                    .language(memberDTO.getLanguage().substring(0, 2))
                     .build();
             // 서비스를 이용해 레포지토리에 유저 저장
             MemberEntity registeredMember = memberService.create(member);
-            CalendarEntity calendar  = CalendarEntity.builder()
+            CalendarEntity calendar = CalendarEntity.builder()
                     .name(memberDTO.getNickname())
                     .regdate(new Date())
                     .updatedate(new Date())
-//                    .timezone()
+                    // .timezone()
                     .build();
             calendarService.create(calendar);
             MemberDTO responseMemberDTO = memberDTO.builder()
@@ -137,6 +137,18 @@ public class MemberController {
         }
     }
 
+    /**
+     * methodName : getMemberByEmail
+     * comment : 이메일로 회원 이 가지고있는 내용 조회
+     * author : 강태수
+     * date : 2023-06-04
+     * description :
+     *
+     * @param email
+     * @return ResponseEntity
+     * 
+     */
+
     @GetMapping("/{email}")
     public ResponseEntity<MemberDTO> getMemberByEmail(@PathVariable String email) {
         MemberDTO memberDTO = memberService.getMemberByEmail(email);
@@ -145,6 +157,18 @@ public class MemberController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    /**
+     * methodName : updateMember
+     * comment : 패스워드,닉네임, 서브이메일, 생년월일, 언어 수정
+     * author : 강태수
+     * date : 2023-06-04
+     * description :
+     *
+     * @param memberDTO
+     * @return ResponseEntity
+     * 
+     */
 
     @PutMapping("/{email}")
     public ResponseEntity<String> updateMember(@PathVariable String email,
@@ -157,6 +181,5 @@ public class MemberController {
         }
         return new ResponseEntity<>("회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
     }
-
 
 }
