@@ -76,13 +76,12 @@ export function signout() {
 
 export function signup(memberDTO) {
     return call("/member/signup", "POST", memberDTO).then(()=>{
-        window.location.href = "/login";
+
     });
 }
 
 
 export function signupemail(emailPostDto) {
-
     return call("/sendmail/email", "POST", emailPostDto).then((resp)=>{
         console.log("ApiService::" + resp.code);
         return resp.code;

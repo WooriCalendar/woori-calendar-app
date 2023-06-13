@@ -7,6 +7,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick';
 import {Link} from "react-router-dom";
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 /**
  * @author: DGeon
  * @comment: 회원가입 폼을 위한 컴포넌트
@@ -23,7 +25,7 @@ const Signup = () => {
     const [password, setPassword] = useState();
     const [nickname, setNickname] = useState();
     const [subemail, setSubemail] = useState();
-    const [birthday, setBirthday] = useState();
+    const [birthday, setBirthday] = useState(new Date());
     const [language, setLanguage] = useState();
     const [code, setCode] = useState();
     const [isCodeVisible, setIsCodeVisible] = useState(false);
@@ -35,6 +37,7 @@ const Signup = () => {
         slidesToShow: 1,
         draggable: false
     };
+    const [date, setDate] = useState(new Date());
 
 
     /**
@@ -63,14 +66,17 @@ const Signup = () => {
                 setIsSubemailVisible(false);
                 document.getElementById('subemail').value = null;
             } else if (isBirthdayVisible) {
-                setBirthday(document.getElementById('birthday').value);
+                // setBirthday(document.getElementById('birthday').value);
                 setIsEmailVisible(false);
                 setIsBirthdayVisible(false);
                 document.getElementById('birthday').value = null;
                 document.getElementById('handleButton').innerText = "Account Create";
             }
         } else {
-            signup({email, password, nickname, subemail, birthday, language});
+            alert(birthday);
+            signup({email, password, nickname, subemail, birthday, language}).then(()=>{
+                window.location.href = "/login";
+            });
         }
         sliderRef.current.slickNext();
     }
@@ -167,7 +173,11 @@ const Signup = () => {
                                 <SignupTextField value="subemail"/>
                             </div>
                             <div>
-                                <SignupTextField value="birthday"/>
+                                {/*<SignupTextField value="birthday"/>*/}
+                                <Calendar onChange={setBirthday} value={birthday}/>
+                                <div className="text-gray-500 mt-4">
+
+                                </div>
                             </div>
                             <div>
                             </div>
