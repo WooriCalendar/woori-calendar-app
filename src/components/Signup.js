@@ -1,6 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Container, Grid, TextField, Typography} from "@mui/material";
-import {Link} from "react-router-dom";
+import {Button, Container, Grid, Typography} from "@mui/material";
 import {signup, signupemail} from "../service/ApiService";
 import companyLogo from "../assets/logo(ver3).png";
 import SignupTextField from "./SignupTextField";
@@ -19,18 +18,24 @@ const Signup = () => {
     const [isBirthdayVisible, setIsBirthdayVisible] = useState(true);
     const [isSubemailVisible, setIsSubemailVisible] = useState(true);
     const [email, setEmail] = useState();
+    const emailRef = useRef();
     const [password, setPassword] = useState();
     const [nickname, setNickname] = useState();
     const [subemail, setSubemail] = useState();
     const [birthday, setBirthday] = useState();
     const [language, setLanguage] = useState();
+    const [code, setCode] = useState();
+    const [isCodeVisible, setIsCodeVisible] = useState(false);
     const sliderRef = useRef(null);
+    const [buttonDisabled, setButtonDisabled] = useState(true);
     const settings = {
         infinite: false,
         speed: 500,
         slidesToShow: 1,
         draggable: false
     };
+
+
     /**
      * @author: DGeon
      * @comment: 입력폼에 대한 visible 및 회원 가입 memberDTO 백엔드 전송
@@ -65,16 +70,38 @@ const Signup = () => {
             }
         }
         else {
-            signup({email, password, nickname, subemail, birthday, language}).then(
-                (resp) => (window.location.href = "/login")
-            );
+            signup({email, password, nickname, subemail, birthday, language});
         }
         sliderRef.current.slickNext();
     }
+    const handleEmail = () =>{
+        // setEmail("test1@gmail.com");
+        emailRef.current = document.getElementById('email').value;
+        let email = emailRef.current;
+        console.log(" emailRef.current :: " +  emailRef.current);
+        console.log(" email :: " +  email);
+        console.log("발송전");
+        setTimeout(() => {
+            signupemail({email}).then((resp) => {
+                console.log("발송");
+                setCode(resp);
+                console.log(code);
+            });
+            setIsCodeVisible(true);
+        }, 100);
+        console.log("발송완료");
+    }
 
-    const handleEmail = (event) =>{
-        setEmail(document.getElementById('email').value);
-        signupemail({email}).then();
+    const confirm = ()=>{
+        let confirmCode = document.getElementById('code').value;
+        // alert("code::"+ code);
+        // alert("confirmCode::"+ confirmCode);
+        if(code===confirmCode) {
+            console.log("일치함");
+            setButtonDisabled(false);
+        }else{
+            alert("일치하지 않습니다. 다시 인증하세요");
+        }
     }
 
 
@@ -85,7 +112,8 @@ const Signup = () => {
                     <img src={companyLogo} alt="Woori. logo" style={{width: "100%", marginBottom: "10%"}}/>
                 </Grid>
             </Grid>
-            <form noValidate onSubmit={handleButtonClick}>
+            {/*onSubmit={handleButtonClick}*/}
+            <form noValidate >
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Typography component="h1" variant="h5">
@@ -118,6 +146,13 @@ const Signup = () => {
                             <div>
                                 <SignupTextField value="email"/>
                                 <Button onClick={handleEmail}>인증번호 발송</Button>
+                                {isCodeVisible ? (
+                                    <div>
+                                        <SignupTextField value="code"/>
+                                        <Button id="confirm" onClick={confirm}>인증확인</Button>
+                                    </div>):''
+                                }
+                                {/*loading ? ( <h1>메일 발송중..</h1> ):''*/}
                             </div>
                             <div>
                              <SignupTextField value="password"/>
@@ -138,7 +173,7 @@ const Signup = () => {
                 </Grid>
                 <Grid item xs={12}>
                     <Button id="handleButton" fullWidth variant="contained" color="primary"  type="submit"
-                            onClick={handleButtonClick}
+                            onClick={handleButtonClick} disabled={buttonDisabled}
                             style={{marginTop: "5%"}}>
                         Next
                     </Button>

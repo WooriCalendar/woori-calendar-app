@@ -28,7 +28,6 @@ export function call(api, method, request) {
             } else if (resp.status === 403) {
                 window.location.href = "/login";
             } else {
-
                 Promise.reject(resp);
                 throw Error(resp);
             }
@@ -37,6 +36,7 @@ export function call(api, method, request) {
             console.log("http error");
             console.log(error);
         });
+
 }
 
 export function signin(memberDTO) {
@@ -46,7 +46,7 @@ export function signin(memberDTO) {
             // alert('로그인 토큰 : ' + response.token);
             if (response.token) {
                 localStorage.setItem("ACCESS_TOKEN", response.token);
-                alert(window.navigator.language);
+                // alert(window.navigator.language);
 
                 window.location.href = "/";
 
@@ -75,9 +75,16 @@ export function signout() {
 }
 
 export function signup(memberDTO) {
-    return call("/member/signup", "POST", memberDTO);
+    return call("/member/signup", "POST", memberDTO).then((resp)=>{
+        window.location.href = "/login";
+    });
 }
 
-export function signupemail(emailPostDto){
-    return call("/sendmail/email", "POST", emailPostDto);
+
+export function signupemail(emailPostDto) {
+
+    return call("/sendmail/email", "POST", emailPostDto).then((resp)=>{
+        console.log("ApiService::" + resp.code);
+        return resp.code;
+    });
 }
