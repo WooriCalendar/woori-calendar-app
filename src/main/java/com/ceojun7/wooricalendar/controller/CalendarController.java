@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 
 /**
  * @packageName : com.ceojun7.wooricalendar.contorller
- * @fileName    : CalendarController.java
- * @author      : seolha86, 강태수
- * @date        : 2023.05.31
+ * @fileName : CalendarController.java
+ * @author : seolha86, 강태수
+ * @date : 2023.05.31
  * @description :
  *              ===========================================================
  *              DATE AUTHOR NOTE
@@ -61,7 +61,8 @@ public class CalendarController {
             ResponseDTO<CalendarDTO> response = ResponseDTO.<CalendarDTO>builder().data(dtos).build();
 
             // 캘린더 생성 시 생성된 캘린더 구독
-            ShareEntity shareEntity = ShareEntity.builder().calendarEntity(entity).memberEntity(MemberEntity.builder().email(email).build()).checked(true).build();
+            ShareEntity shareEntity = ShareEntity.builder().calendarEntity(entity)
+                    .memberEntity(MemberEntity.builder().email(email).build()).checked(true).build();
             shareService.create(shareEntity);
             log.warn("shareEntity");
             log.warn(String.valueOf(shareEntity));
@@ -91,6 +92,18 @@ public class CalendarController {
         return ResponseEntity.ok().body(response);
     }
 
+    /**
+     * methodName : updateCalendar
+     * comment : 캘린더 캘린더번호 내용 이름 시간대 수정
+     * author : 강태수
+     * date : 2023-06-01
+     * description :
+     *
+     * @param dto the dto
+     * @return the response entity
+     * 
+     */
+
     @PutMapping
     public ResponseEntity<?> updateCalendar(@RequestBody CalendarDTO dto) {
         CalendarEntity entity = CalendarDTO.toEntity(dto);
@@ -100,6 +113,18 @@ public class CalendarController {
         ResponseDTO<CalendarDTO> response = ResponseDTO.<CalendarDTO>builder().data(dtos).build();
         return ResponseEntity.ok().body(response);
     }
+
+    /**
+     * methodName : deleteCalendar
+     * comment : 캘린더 삭제
+     * author : 강태수
+     * date : 2023-06-01
+     * description :
+     *
+     * @param dto
+     * @return the response entity
+     * 
+     */
 
     @DeleteMapping
     public ResponseEntity<?> deleteCalendar(@RequestBody CalendarDTO dto) {

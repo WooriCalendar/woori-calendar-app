@@ -16,9 +16,9 @@ import java.util.Optional;
 
 /**
  * @packageName : com.ceojun7.wooricalendar.service
- * @fileName    : CalendarService.java
- * @author      : seolha86, 강태수
- * @date        : 2023.05.31
+ * @fileName : CalendarService.java
+ * @author : seolha86, 강태수
+ * @date : 2023.05.31
  * @description :
  *              ===========================================================
  *              DATE AUTHOR NOTE
@@ -68,12 +68,36 @@ public class CalendarService {
         return calendarList;
     }
 
+    /**
+     * methodName : delete
+     * comment : 캘린더 삭제
+     * author : 강태수
+     * date : 2023-06-01
+     * description :
+     *
+     * @param entity
+     * @return the list
+     * 
+     */
+
     public List<CalendarEntity> delete(final CalendarEntity entity) {
 
         calendarRepository.delete(entity);
 
         return calendarRepository.findByCalNo(entity.getCalNo());
     }
+
+    /**
+     * methodName : update
+     * comment : 캘린더 캘린더번호 내용 이름 시간대 수정
+     * author : 강태수
+     * date : 2023-06-01
+     * description :
+     *
+     * @param entity
+     * @return the list
+     * 
+     */
 
     public List<CalendarEntity> update(final CalendarEntity entity) {
 
