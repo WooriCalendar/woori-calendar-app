@@ -6,6 +6,9 @@ import SocialLogin from "./SocialLogin";
 import App from "../App";
 import Signup from "./Signup";
 import CalModify from "./CalModify";
+import PrivacyPolicyJa from "./PrivacyPolicyJa";
+import PrivacyPolicyKo from "./PrivacyPolicyKo";
+import PrivacyPolicyEn from "./PrivacyPolicyEn";
 
 /**
  * @author        : DGeon
@@ -31,6 +34,10 @@ const AppRouter = () => {
           <Route path="signup" element={<Signup />} />
           <Route path="socialLogin" element={<SocialLogin />} />
           <Route path="calendar/:calNo" element={<CalModify />} />
+          <Route path="calModify" element={<CalModify />} />
+          <Route path="PrivacyPolicyEn" element={<PrivacyPolicyEn />} />
+          <Route path="PrivacyPolicyKo" element={<PrivacyPolicyKo />} />
+          <Route path="PrivacyPolicyJa" element={<PrivacyPolicyJa />} />
         </Routes>
       </BrowserRouter>
       <Box mt={5}>
