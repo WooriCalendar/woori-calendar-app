@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 /**
  * @packageName : com.ceojun7.wooricalendar.contorller
-
  * @fileName    : CalendarController.java
  * @author      : seolha86, 강태수
  * @date        : 2023.05.31
@@ -117,5 +116,14 @@ public class CalendarController {
             return ResponseEntity.badRequest().body(ResponseDTO.<CalendarDTO>builder().error(e.getMessage()).build());
         }
 
+    }
+
+    // 캘린더 번호로 조회해서 가져와서 수정
+    @GetMapping("/{calNo}")
+    public ResponseEntity<?> retrieveCalendar(@PathVariable Long calNo) {
+        List<CalendarEntity> entities = service.retrieve(calNo);
+        List<CalendarDTO> dtos = entities.stream().map(CalendarDTO::new).collect(Collectors.toList());
+        ResponseDTO<CalendarDTO> response = ResponseDTO.<CalendarDTO>builder().data(dtos).build();
+        return ResponseEntity.ok().body(response);
     }
 }
