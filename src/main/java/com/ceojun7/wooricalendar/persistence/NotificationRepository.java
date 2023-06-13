@@ -1,5 +1,6 @@
 package com.ceojun7.wooricalendar.persistence;
 
+import com.ceojun7.wooricalendar.dto.NotificationDTO;
 import com.ceojun7.wooricalendar.model.NotificationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -21,7 +22,7 @@ import java.util.Optional;
  */
 @Repository
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {
-    List<NotificationEntity> findByNtNo(Long nNo);
+    NotificationEntity findByNtNo(Long nNo);
     List<NotificationEntity> findByRevEmail(String revEmail);
     List<NotificationEntity> findByCalendarEntity_CalNo(Long calNo);
 }
