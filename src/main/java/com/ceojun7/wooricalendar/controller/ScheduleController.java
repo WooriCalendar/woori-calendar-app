@@ -78,6 +78,19 @@ public class ScheduleController {
         return ResponseEntity.ok().body(response);
     }
 
+    /**
+     * methodName : daySchedule
+     * comment : 날짜로 조회
+     * author : 강태수
+     * date : 2023-06-01
+     * description :
+     *
+     * @param dto
+     * @return ResponseEntity
+     * 
+     * 
+     */
+
     @GetMapping("/day")
     public ResponseEntity<?> daySchedule(@RequestBody ScheduleDTO dto) {
         // log.warn(String.valueOf(dto.getCalNo()));
@@ -86,6 +99,18 @@ public class ScheduleController {
         ResponseDTO<ScheduleDTO> response = ResponseDTO.<ScheduleDTO>builder().data(dtos).build();
         return ResponseEntity.ok().body(response);
     }
+
+    /**
+     * methodName : updateCalendar
+     * comment : 캘린더 캘린더번호 내용 이름 시간대 수정
+     * author : 강태수
+     * date : 2023-06-01
+     * description :
+     *
+     * @param dto the dto
+     * @return the response entity
+     * 
+     */
 
     @PutMapping
     public ResponseEntity<?> updateSchedule(@RequestBody ScheduleDTO dto) {
@@ -101,6 +126,18 @@ public class ScheduleController {
             return ResponseEntity.badRequest().body(ResponseDTO.<ScheduleDTO>builder().error(e.getMessage()).build());
         }
     }
+
+    /**
+     * methodName : deleteCalendar
+     * comment : 캘린더 삭제
+     * author : 강태수
+     * date : 2023-06-01
+     * description :
+     *
+     * @param dto
+     * @return the response entity
+     * 
+     */
 
     @DeleteMapping
     public ResponseEntity<?> deleteSchedule(@RequestBody ScheduleDTO dto) {
