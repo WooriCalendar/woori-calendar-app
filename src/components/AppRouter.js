@@ -33,6 +33,7 @@ const AppRouter = () => {
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="socialLogin" element={<SocialLogin />} />
+          <Route path="calendar/:calNo" element={<CalModify />} />
           <Route path="calModify" element={<CalModify />} />
           <Route path="PrivacyPolicyEn" element={<PrivacyPolicyEn />} />
           <Route path="PrivacyPolicyKo" element={<PrivacyPolicyKo />} />

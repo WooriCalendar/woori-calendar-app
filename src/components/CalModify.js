@@ -8,8 +8,9 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import Navigation from "./Navigation";
+// import Navigation from "./Navigation";
 import { call } from "../service/ApiService";
+import { useParams } from "react-router-dom";
 
 const CalModify = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -20,27 +21,45 @@ const CalModify = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
-  // const [cal, setCal] = useState([]);
 
-  // useEffect(() => {
-  //   call("/calendar", "GET", null).then((resp) => setCal(resp.data));
-  // }, []);
+  const [calendar, setCalendar] = useState([]);
+  const { calNo } = useParams();
+  useEffect(() => {
+    call("/calendar/" + calNo, "GET", null).then((response) => {
+      console.log("캘린더 데이터");
+      setCalendar(response.data);
+    });
+  }, []);
 
   return (
     <div>
-      <Navigation />
+      {/* <Navigation /> */}
+
       <div className="main" style={{ width: "440px", margin: "0 auto" }}>
         <div style={{ textAlign: "center" }}>
           <h2>캘린더 수정</h2>
         </div>
-        <div style={{ textAlign: "center", margin: "20px" }}>
-          <TextField
-            style={{ width: "400px" }}
-            id="outlined-basic"
-            label="이름"
-            variant="outlined"
-          />
-        </div>
+        {calendar.map((item) => (
+          <div key={item.calNo} style={{ textAlign: "center", margin: "20px" }}>
+            <TextField
+              style={{ width: "400px" }}
+              id="outlined-required"
+              label="이름"
+              defaultValue={item.name}
+              variant="outlined"
+            />
+            <TextField
+              style={{ width: "400px" }}
+              id="outlined-required"
+              label="설명"
+              defaultValue={item.comment}
+              variant="outlined"
+              multiline
+              rows={4}
+            />
+          </div>
+        ))}
+
         <div style={{ textAlign: "center", margin: "20px" }}>
           <TextField
             style={{ width: "400px" }}
@@ -66,6 +85,7 @@ const CalModify = () => {
             </Select>
           </FormControl>
         </div>
+
         <div style={{ textAlign: "center", margin: "20px" }}>
           <TextField
             style={{ width: "400px" }}
