@@ -13,7 +13,9 @@ const Navigation = (
             <Toolbar>
                 <Grid container spacing={2} alignItem="center">
                     <Grid item style={{ marginTop : '10px'}}>
+                        <Button>
                         <FontAwesomeIcon onClick={SideBar} icon={faBars} className="bar fa-2x"/>
+                        </Button>
                     </Grid>
                     <Grid item style={{ marginTop : '0px'}}>
                         <img src={logoImage} alt="Logo Image"/>
