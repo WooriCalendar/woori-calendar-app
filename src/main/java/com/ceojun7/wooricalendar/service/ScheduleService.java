@@ -12,19 +12,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @packageName : com.ceojun7.wooricalendar.service
  * @fileName : CalendarService.java
- * @author : 김설하, 강태수
+ * @author : seolha86, 강태수
  * @date : 2023.05.31
  * @description :
  *              ===========================================================
  *              DATE AUTHOR NOTE
  *              -----------------------------------------------------------
- *              2023.05.31 김설하 최초 생성
- *              2023.06.01 김설하 create 기능추가
+ *              2023.05.31 seolha86 최초 생성
+ *              2023.06.01 seolha86 create 기능추가
  *              2023.06.02 강태수 update, delete, day 기능추가
  */
 @Service
@@ -36,6 +37,9 @@ public class ScheduleService {
 
     @Autowired
     private CalendarRepository calendarRepository;
+
+    @Autowired
+    private ShareRepository shareRepository;
 
     public List<ScheduleEntity> create(final ScheduleEntity entity) {
         scheduleRepository.save(entity);
@@ -74,8 +78,14 @@ public class ScheduleService {
         return scheduleRepository.findByCalendarEntity_CalNo(calendarEntity.getCalNo());
     }
 
-//    public List<ShareEntity> retrieveByEmail(String email) {
-//        return shareRepository.findByMemberEntity_Email(email);
-//    }
+    public List<ScheduleEntity> retrieveByEmail(String email) {
+        List<ShareEntity> list = shareRepository.findByMemberEntity_EmailAndChecked(email, true);
+        List<ScheduleEntity> scheduleList = new ArrayList<>();
 
+        for (ShareEntity shareEntity : list) {
+            scheduleList.addAll(shareEntity.getCalendarEntity().getSchedules());
+        }
+
+        return scheduleList;
+    }
 }

@@ -12,9 +12,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.util.Date;
 
 /**
@@ -45,9 +49,13 @@ public class MemberController {
     @Autowired
     private CalendarService calendarService;
 
+    @Autowired
+    private JavaMailSenderImpl mailSender;
+
     /**
      * methodName : registerMember
      * comment : 회원가입
+     * 2023-06-08 : 회원가입을 하면서 기본적인 Nickname의 캘린더 생성, language 추가
      * author : DGeon
      * date : 2023-06-01
      * description :
@@ -94,6 +102,16 @@ public class MemberController {
         }
     }
 
+    /**
+     * methodName : authenticate
+     * comment : 로그인 및 토큰발급
+     * author : DGeon
+     * date : 2023-06-05
+     * description :
+     *
+     * @param memberDTO the member dto
+     * @return response entity
+     */
     @PostMapping("signin")
     public ResponseEntity<?> authenticate(@RequestBody MemberDTO memberDTO) {
         log.info("{}", memberDTO);
@@ -139,5 +157,6 @@ public class MemberController {
         }
         return new ResponseEntity<>("회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
     }
+
 
 }
