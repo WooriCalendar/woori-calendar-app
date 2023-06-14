@@ -32,4 +32,9 @@ public class MemberDTO {
     private String subemail;
     private String language;
     private Date birthday;
+
+
+    public MemberDTO(String email) {
+        this.email = email;
+    }
 }

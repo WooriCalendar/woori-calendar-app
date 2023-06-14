@@ -1,6 +1,7 @@
 package com.ceojun7.wooricalendar.service;
 
 import com.ceojun7.wooricalendar.dto.MemberDTO;
+import com.ceojun7.wooricalendar.dto.ResponseDTO;
 import com.ceojun7.wooricalendar.model.MemberEntity;
 import com.ceojun7.wooricalendar.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Member;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -124,5 +126,22 @@ public class MemberService {
             return true;
         }
         return false;
+    }
+
+    /**
+     * methodName : findeamil
+     * comment : 읽기전용 형태로 email목록 반환하는 메서드
+     * author : DGeon
+     * date : 2023-06-13
+     * description :
+     *
+     * @return list
+     */
+    public List<String> findeamil() {
+        List<MemberEntity> entityList = memberRepository.findAll();
+        log.warn("{}",entityList);
+        return entityList.stream()
+                .map(MemberEntity::getEmail)
+                .collect(Collectors.toList());
     }
 }
