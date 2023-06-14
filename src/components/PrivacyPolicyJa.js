@@ -1,5 +1,25 @@
 import React from "react";
 import companyLogo from "../assets/logo(ver3).png";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
+
+const BackButton = () => {
+  const navigate = useNavigate();
+  const onClickBtn = () => {
+    navigate(-1);
+  };
+
+  return (
+    <FontAwesomeIcon
+      onClick={onClickBtn}
+      icon={faArrowRightToBracket}
+      beat
+      size="2xl"
+      style={{ color: "#9aaaac" }}
+    />
+  );
+};
 
 const PrivacyPolicyJa = () => {
   return (
@@ -353,6 +373,9 @@ const PrivacyPolicyJa = () => {
             <br /> 例）- 20XX.X.X を 20XX.X に適用します（クリック） <br />
             例）- 20XX.X.X を 20XX.X に適用します（クリック）
           </div>
+        </div>
+        <div style={{ float: "right" }}>
+          <BackButton />
         </div>
       </div>
     </div>
