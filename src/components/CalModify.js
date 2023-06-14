@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ShareModal from "./ShareModal";
-import {
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Button, TextField } from "@mui/material";
 // import Navigation from "./Navigation";
 import { call } from "../service/ApiService";
 import { useParams } from "react-router-dom";
+import CurrentTime from "./CurrentTime";
 
 const CalModify = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -24,6 +18,44 @@ const CalModify = () => {
 
   const [calendar, setCalendar] = useState([]);
   const { calNo } = useParams();
+
+  const [name, setName] = useState("");
+  const [comment, setComment] = useState("");
+
+  // const [items, setItems] = useState([]);
+  // const updateItem = (items) => {
+  //   call("/calendar/" + calNo, "PUT", items).then((resp) =>
+  //     setItems(resp.data)
+  //   );
+  // };
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+  const handleCommentChange = (e) => {
+    setComment(e.target.value);
+  };
+
+  const editEventHandler = () => {
+    const updatedItem = {
+      calNo: calNo,
+      name: document.getElementById("outlined-required-name").value,
+      comment: document.getElementById("outlined-required-com").value,
+    };
+    console.log("아이템", updatedItem);
+    console.log(name);
+    console.log(comment);
+    call("/calendar", "PUT", updatedItem).then((resp) => {
+      console.log(resp);
+      // setItems(resp);
+    });
+  };
+  // const editEventHandler = (e) => {
+  //   updateItem((items.name = e.target.value));
+  //   updateItem((items.comment = e.target.value));
+  // };
+
+  // calNo로 기존에 입력된 캘린더 가져오기
   useEffect(() => {
     call("/calendar/" + calNo, "GET", null).then((response) => {
       console.log("캘린더 데이터");
@@ -43,16 +75,19 @@ const CalModify = () => {
           <div key={item.calNo} style={{ textAlign: "center", margin: "20px" }}>
             <TextField
               style={{ width: "400px" }}
-              id="outlined-required"
+              id="outlined-required-name"
               label="이름"
               defaultValue={item.name}
+              // value={name}
+              onChange={handleNameChange}
               variant="outlined"
-            />
+            ></TextField>
             <TextField
               style={{ width: "400px" }}
-              id="outlined-required"
+              id="outlined-required-com"
               label="설명"
               defaultValue={item.comment}
+              onChange={handleCommentChange}
               variant="outlined"
               multiline
               rows={4}
@@ -69,8 +104,9 @@ const CalModify = () => {
             rows={4}
           />
         </div>
-        <div style={{ textAlign: "center", margin: "20px" }}>
-          <FormControl style={{ width: "400px", textAlign: "left" }}>
+        <div>
+          <CurrentTime />
+          {/* <FormControl style={{ width: "400px", textAlign: "left" }}>
             <InputLabel id="demo-simple-select-label">시간대</InputLabel>
             <Select
               id="outlined-select-currency"
@@ -83,7 +119,7 @@ const CalModify = () => {
               </MenuItem>
               <MenuItem value={2}>(GMT+05:00) 몰디브 시간</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
         </div>
 
         <div style={{ textAlign: "center", margin: "20px" }}>
@@ -107,7 +143,9 @@ const CalModify = () => {
           </Button>
         </div>
         <div style={{ textAlign: "right", margin: "20px" }}>
-          <Button variant="contained">완료</Button>
+          <Button variant="contained" onClick={editEventHandler}>
+            완료
+          </Button>
         </div>
       </div>
     </div>
