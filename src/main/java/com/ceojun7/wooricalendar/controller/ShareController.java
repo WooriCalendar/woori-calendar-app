@@ -42,6 +42,17 @@ public class ShareController {
   @Autowired
   private ShareService service;
 
+  /**
+   * methodName : createShare
+   * comment : 캘린더 사용 권한 생성
+   * author : 박현민
+   * date : 2023-06-07
+   * description :
+   *
+   * @param dto
+   * @return the response entity
+   */
+
   @PostMapping
   public ResponseEntity<?> createShare(@RequestBody ShareDTO dto) {
     log.warn(String.valueOf(dto));
@@ -57,6 +68,16 @@ public class ShareController {
     }
   }
 
+  /**
+   * methodName : retrieveShare
+   * comment : 캘린더 사용 권한 조회
+   * author : 박현민
+   * date : 2023-06-08
+   * description :
+   *
+   * @param dto
+   * @return the response entity
+   */
   @GetMapping
   public ResponseEntity<?> retrieveShare(@RequestBody ShareDTO dto) {
     log.warn(String.valueOf(dto.getShareNo()));
@@ -66,6 +87,16 @@ public class ShareController {
     return ResponseEntity.ok().body(response);
   }
 
+  /**
+   * methodName : updateShare
+   * comment : 캘린더 사용 권한 수정
+   * author : 박현민
+   * date : 2023-06-07
+   * description :
+   *
+   * @param dto
+   * @return the response entity
+   */
   @PutMapping
   public ResponseEntity<?> updateShare(@RequestBody ShareDTO dto) {
     log.warn(String.valueOf(dto));
@@ -76,6 +107,16 @@ public class ShareController {
     return ResponseEntity.ok().body(response);
   }
 
+  /**
+   * methodName : deleteShare
+   * comment : 캘린더 사용 권한 삭제
+   * author : 박현민
+   * date : 2023-06-08
+   * description :
+   *
+   * @param dto
+   * @return the response entity
+   */
   @DeleteMapping
   public ResponseEntity<?> deleteShare(@RequestBody ShareDTO dto) {
     log.warn(String.valueOf(dto));
