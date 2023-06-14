@@ -1,15 +1,18 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, Container, Grid, Typography} from "@mui/material";
-import {signup, signupemail} from "../service/ApiService";
+import {call, signup, signupemail} from "../service/ApiService";
 import companyLogo from "../assets/logo(ver3).png";
 import SignupTextField from "./SignupTextField";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick';
 import {Link} from "react-router-dom";
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
 import moment from 'moment';
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import {ko} from "date-fns/locale";
+import '../css/fullWidth.css';
 /**
  * @author: DGeon
  * @comment: 회원가입 폼을 위한 컴포넌트
@@ -23,7 +26,7 @@ const Signup = () => {
     const [isSubemailVisible, setIsSubemailVisible] = useState(true);
     const [email, setEmail] = useState();
     const emailRef = useRef();
-    const [password, setPassword] = useState();
+    let [password, setPassword] = useState();
     const [nickname, setNickname] = useState();
     const [subemail, setSubemail] = useState();
     let [birthday, setBirthday] = useState(new Date());
@@ -32,14 +35,21 @@ const Signup = () => {
     const [isCodeVisible, setIsCodeVisible] = useState(false);
     const sliderRef = useRef(null);
     const [buttonDisabled, setButtonDisabled] = useState(true);
+    const [btnSendEmailDisabled, setBtnSendEmailDisabled] = useState(true);
+    const [btnDatePickerDisabled, setBtnDatePickerDisabled] = useState(true);
+    const [checkEmail, setCheckEmail] = useState();
+
     const settings = {
         infinite: false,
         speed: 500,
         slidesToShow: 1,
         draggable: false
     };
-    const [date, setDate] = useState(new Date());
-
+    useEffect(() => {
+        call("/member/signup", "GET", null).then((response) => {
+            setCheckEmail(response.data);
+        });
+    }, []);
 
     /**
      * @author: DGeon
@@ -47,39 +57,50 @@ const Signup = () => {
      * @date: 2023-06-08
      */
     const handleButtonClick = (event) => {
+
         if (isEmailVisible || isPassVisible || isNicknameVisible || isBirthdayVisible) {
             event.preventDefault();
             setLanguage(window.navigator.language);
             if (isEmailVisible) {
+
                 setEmail(document.getElementById('email').value);
                 setIsEmailVisible(false);
                 document.getElementById('email').value = "";
+                sliderRef.current.slickNext();
             } else if (isPassVisible) {
-                setPassword(document.getElementById('password').value);
-                setIsPassVisible(false);
-                document.getElementById('password').value = "";
+                if (document.getElementById('password').value === document.getElementById('passwordcheck').value) {
+                    setPassword(document.getElementById('password').value);
+                    setIsPassVisible(false);
+                    document.getElementById('password').value = "";
+                    sliderRef.current.slickNext();
+                } else {
+                    document.getElementById('passwordOut').innerText = "Passwords do not match.";
+                }
             } else if (isNicknameVisible) {
                 setNickname(document.getElementById('nickname').value);
                 setIsNicknameVisible(false);
                 document.getElementById('nickname').value = null;
+                sliderRef.current.slickNext();
             } else if (isSubemailVisible) {
                 setSubemail(document.getElementById('subemail').value);
                 setIsSubemailVisible(false);
                 document.getElementById('subemail').value = null;
+                setBtnDatePickerDisabled(false);
+                sliderRef.current.slickNext();
             } else if (isBirthdayVisible) {
                 birthday = moment().format("yyyy-MM-DD");
-                // setBirthday(birthday);
                 setIsEmailVisible(false);
                 setIsBirthdayVisible(false);
+                sliderRef.current.slickNext();
                 document.getElementById('handleButton').innerText = "Account Create";
             }
         } else {
 
-            signup({email, password, nickname, subemail, birthday, language}).then(()=>{
+            signup({email, password, nickname, subemail, birthday, language}).then(() => {
                 window.location.href = "/login";
             });
         }
-        sliderRef.current.slickNext();
+
     }
     const handleEmail = () => {
         emailRef.current = document.getElementById('email').value;
@@ -87,6 +108,7 @@ const Signup = () => {
         console.log(" emailRef.current :: " + emailRef.current);
         console.log(" email :: " + email);
         console.log("발송전");
+
         setTimeout(() => {
             signupemail({email}).then((resp) => {
                 console.log("발송");
@@ -106,10 +128,23 @@ const Signup = () => {
             console.log("일치함");
             setButtonDisabled(false);
         } else {
-            alert("일치하지 않습니다. 다시 인증하세요");
+            alert("It doesn't match. please verify again");
         }
     }
 
+    const handleTextFieldBlur = (event) => {
+        const inputValue = event.target.value;
+        const isEmailExists = checkEmail.includes(inputValue);
+
+        if (isEmailExists) {
+            document.getElementById('emailCheck').innerText = "Duplicate emails exist.";
+
+        } else {
+            document.getElementById('emailCheck').innerText = "This email is available";
+            setBtnSendEmailDisabled(false);
+
+        }
+    };
     const languageCode = window.navigator.language.slice(0, 2);
     // const languageCode = "ja";
     //   const languageCode = "en";
@@ -151,10 +186,13 @@ const Signup = () => {
 
                 <Grid container spacing={2} style={{marginTop: "5%"}}>
                     <Grid item xs={12}>
-                        <Slider ref={sliderRef} {...settings}>
+
+                        <Slider ref={sliderRef} {...settings} style={{height: "10%"}}>
                             <div>
-                                <SignupTextField value="email"/>
-                                <Button onClick={handleEmail}>인증번호 발송</Button>
+                                <SignupTextField value="email" checkEmail={handleTextFieldBlur}/>
+                                <div id="emailCheck" style={{color: "red"}}></div>
+                                <Button onClick={handleEmail} disabled={btnSendEmailDisabled} id="sendEmail">인증번호
+                                    발송</Button>
                                 {isCodeVisible ? (
                                     <div>
                                         <SignupTextField value="code"/>
@@ -165,6 +203,8 @@ const Signup = () => {
                             </div>
                             <div>
                                 <SignupTextField value="password"/>
+                                <SignupTextField value="passwordcheck"/>
+                                <div id="passwordOut" style={{color: "red"}}></div>
                             </div>
                             <div>
                                 <SignupTextField value="nickname"/>
@@ -172,16 +212,21 @@ const Signup = () => {
                             <div>
                                 <SignupTextField value="subemail"/>
                             </div>
-                            <div>
-                                {/*<SignupTextField value="birthday"/>*/}
-                                <Calendar onChange={setBirthday} value={birthday} id={birthday}/>
-                                <div className="text-gray-500 mt-4">
 
+                            <div style={{outline: 'none'}} >
+                                {/*<SignupTextField value="birthday"/>*/}
+                                {/*<Calendar onChange={setBirthday} value={birthday} id={birthday} />*/}
+                                <div style={{marginTop: "5%", outline: 'none'}} >
+                                    <LocalizationProvider locale={ko} dateAdapter={AdapterDayjs} >
+                                        <DatePicker format={"YYYY-MM-DD"} onChange={setBirthday} id={birthday} disabled={btnDatePickerDisabled} required/>
+                                    </LocalizationProvider>
                                 </div>
                             </div>
+
                             <div>
                             </div>
                         </Slider>
+
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
@@ -191,7 +236,7 @@ const Signup = () => {
                         Next
                     </Button>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} style={{marginTop: "5%"}}>
                     {languageCode === "ko" && (
                         <Link to="/PrivacyPolicyKo">개인정보 보호 정책</Link>
                     )}
