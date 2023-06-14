@@ -4,6 +4,8 @@ import com.ceojun7.wooricalendar.model.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author : DGeon
  * @packageName :
@@ -50,4 +52,5 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
      * @return member entity
      */
     MemberEntity findByEmailAndPassword(String email, String password);
+
 }

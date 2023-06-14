@@ -5,9 +5,11 @@ import com.ceojun7.wooricalendar.dto.MemberDTO;
 import com.ceojun7.wooricalendar.dto.ResponseDTO;
 import com.ceojun7.wooricalendar.model.CalendarEntity;
 import com.ceojun7.wooricalendar.model.MemberEntity;
+import com.ceojun7.wooricalendar.model.ShareEntity;
 import com.ceojun7.wooricalendar.security.TokenProvider;
 import com.ceojun7.wooricalendar.service.CalendarService;
 import com.ceojun7.wooricalendar.service.MemberService;
+import com.ceojun7.wooricalendar.service.ShareService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author : DGeon
@@ -50,7 +53,7 @@ public class MemberController {
     private CalendarService calendarService;
 
     @Autowired
-    private JavaMailSenderImpl mailSender;
+    private ShareService shareService;
 
     /**
      * methodName : registerMember
@@ -81,7 +84,6 @@ public class MemberController {
                     .updateDate(new Date())
                     .language(memberDTO.getLanguage().substring(0, 2))
                     .build();
-            // 서비스를 이용해 레포지토리에 유저 저장
             MemberEntity registeredMember = memberService.create(member);
             CalendarEntity calendar = CalendarEntity.builder()
                     .name(memberDTO.getNickname())
@@ -90,6 +92,11 @@ public class MemberController {
                     // .timezone()
                     .build();
             calendarService.create(calendar);
+
+            ShareEntity shareEntity = ShareEntity.builder().calendarEntity(calendar)
+                    .memberEntity(MemberEntity.builder().email(memberDTO.getEmail()).build()).checked(true).build();
+            shareService.create(shareEntity);
+
             MemberDTO responseMemberDTO = memberDTO.builder()
                     .email(registeredMember.getEmail())
                     .build();
@@ -180,6 +187,25 @@ public class MemberController {
             return new ResponseEntity<>("회원 정보가 성공적으로 업데이트되었습니다.", HttpStatus.OK);
         }
         return new ResponseEntity<>("회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * methodName : getEmailList
+     * comment : email중복검사를 위한 회원email목록 불러오는 메서드
+     * author : DGeon
+     * date : 2023-06-13
+     * description :
+     *
+     * @return response entity
+     */
+    @GetMapping("signup")
+    public ResponseEntity<?> getEmailList(){
+        log.warn("email 중복검사 :: get호출됨");
+        List<String> entities = memberService.findeamil();
+        ResponseDTO<String> resp = ResponseDTO.<String>builder().data(entities).build();
+        log.warn("넘겨주는 값 확인 :::"+String.valueOf(ResponseEntity.ok().body(resp)));
+        return ResponseEntity.ok().body(resp);
+
     }
 
 }
