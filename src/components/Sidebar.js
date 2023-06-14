@@ -1,13 +1,9 @@
 import '../css/Sidebar.css';
 import FullCalendars from "./FullCalendars";
 import Category from "./Category";
-import {Button, IconButton, TextField} from "@mui/material";
-import {Search} from "@mui/icons-material";
-import {Container, Grid} from "@mui/material";
+import {Button, TextField} from "@mui/material";
 
-const Sidebar = (
-    {visible, aspectRatio, height, contentHeight}
-) => {
+const Sidebar = ({visible, aspectRatio, height, contentHeight}) => {
     const headerToolbar = {
         left: '',
         center: '',
@@ -15,27 +11,27 @@ const Sidebar = (
     };
     return (
         <div>
-            <Button variant="contained" color="primary">
-                일정추가버튼
-            </Button>
             {visible && (
                 <div className="slide-out">
+                    <Button variant="contained" color="primary">
+                        일정추가버튼
+                    </Button>
                     <FullCalendars
                         headerToolbar={headerToolbar}
                         heigth={height}
                         contentHeight={contentHeight}
                         aspectRatio={aspectRatio}
                     />
+                    <form>
+                        <TextField
+                            label="검색"
+                            variant="outlined"
+                            size="small"
+                        />
+                    </form>
+                    <Category/>
                 </div>
-            )}
-            <form>
-                <TextField
-                    label="검색"
-                    variant="outlined"
-                    size="small"
-                />
-            </form>
-            <Category/>
+                )}
         </div>
     );
 };

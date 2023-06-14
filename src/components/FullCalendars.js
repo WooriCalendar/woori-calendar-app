@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import momentPlugin from "@fullcalendar/moment";
 import interactionPlugin from "@fullcalendar/interaction";
+import rrulePlugin from '@fullcalendar/rrule'
 import {call} from "../service/ApiService";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import FullCalendar from '@fullcalendar/react' // must go before plugins
@@ -47,12 +48,23 @@ const FullCalendars = (
      */
     const startdate = '2023-05-31 00:00:00.000'
 
-    const events = [...items];
+    const events = [
+        ...items,
+        // {
+        //     title : "반복 테스트",
+        //     start : '2023-06-15',
+        //     interval : 3,
+        //     rrule : {
+        //         freq : "weekly",
+        //         dtstart : '2023-06-15'
+        //     },
+        // }
+    ];
     console.log(events)
 
     return (
             <FullCalendar
-                plugins={[dayGridPlugin, momentPlugin, interactionPlugin, timeGridPlugin]}
+                plugins={[dayGridPlugin, momentPlugin, interactionPlugin, timeGridPlugin, rrulePlugin]}
                 initialView='dayGridMonth'
                 headerToolbar={headerToolbar}
                 events={events}

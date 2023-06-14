@@ -18,6 +18,7 @@ const SignupTextField = (props) => {
             label={props.value}
             type={props.value === 'password' ? 'password' : ''}
             autoComplete={props.value}
+            style={{marginTop: "5%"}}
         />
     );
 };
