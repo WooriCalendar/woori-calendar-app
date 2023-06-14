@@ -3,12 +3,7 @@ import FullCalendars from "./FullCalendars";
 import Category from "./Category";
 import {Button, TextField} from "@mui/material";
 
-const Sidebar = (
-
-
-
-    {visible, aspectRatio, height, contentHeight}
-) => {
+const Sidebar = ({visible, aspectRatio, height, contentHeight}) => {
     const headerToolbar = {
         left: '',
         center: '',
