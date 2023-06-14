@@ -1,7 +1,6 @@
 package com.ceojun7.wooricalendar.service;
 
 import com.ceojun7.wooricalendar.dto.MemberDTO;
-import com.ceojun7.wooricalendar.dto.MemberListResponseDTO;
 import com.ceojun7.wooricalendar.dto.ResponseDTO;
 import com.ceojun7.wooricalendar.model.MemberEntity;
 import com.ceojun7.wooricalendar.persistence.MemberRepository;
