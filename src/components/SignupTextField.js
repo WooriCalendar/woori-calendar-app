@@ -7,7 +7,6 @@ import {TextField} from "@mui/material";
  * @date: 2023-06-08
  */
 const SignupTextField = (props) => {
-
     return (
         <TextField
             variant="outlined"
@@ -19,6 +18,9 @@ const SignupTextField = (props) => {
             type={props.value === 'password' ? 'password': props.value === 'passwordcheck' ? 'password' : '' }
             autoComplete={props.value}
             style={{marginTop: "5%"}}
+            tabIndex={-1}
+            inputProps={{ tabIndex: -1 }}
+            onBlur={props.checkEmail}
         />
     );
 };
