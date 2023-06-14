@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import ShareModal from "./ShareModal";
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  TextField,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 // import Navigation from "./Navigation";
 import { call } from "../service/ApiService";
 import { useParams } from "react-router-dom";
-import CurrentTime from "./CurrentTime";
 
 const CalModify = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -41,8 +47,12 @@ const CalModify = () => {
       calNo: calNo,
       name: document.getElementById("outlined-required-name").value,
       comment: document.getElementById("outlined-required-com").value,
+      timeZone: selectedTimezone,
+      // timeZone: document.getElementById("outlined-select-currency").value,
     };
+
     console.log("아이템", updatedItem);
+    console.log(document.getElementById("outlined-select-currency").value);
     console.log(name);
     console.log(comment);
     call("/calendar", "PUT", updatedItem).then((resp) => {
@@ -62,6 +72,65 @@ const CalModify = () => {
       setCalendar(response.data);
     });
   }, []);
+
+  const [selectedTimezone, setSelectedTimezone] = useState("");
+  const TimezoneSelector = ({ onChange }) => {
+    const timezones = [
+      {
+        value: "America/New_York",
+        label: "(GMT-04:00) 미국 동부  시간 - 뉴욕",
+      },
+      {
+        value: "America/Chicago",
+        label: "(GMT-05:00) 미국 중부 시간 - 시카고",
+      },
+      { value: "America/Denver", label: "(GMT-06:00) 미국 산지 시간 - 덴버" },
+      {
+        value: "America/Los_Angeles",
+        label: "(GMT-07:00) 미국 태평양시간 - 로스앤젤레스",
+      },
+      {
+        value: "America/Anchorage",
+        label: "(GMT-08:00) 알레스카 시간 - 앵커리지",
+      },
+      {
+        value: "Pacific/Honolulu",
+        label: "(GMT-10:00) 하와이 표준시 - 호놀룰루",
+      },
+      { value: "Asia/Seoul", label: "(GMT+09:00)한국 표준시 - 서울" },
+      { value: "Asia/Tokyo", label: "(GMT+09:00)일본 표준시 - 도쿄" }, //추후 라벨에 gmt+몇인지 적을지말지
+    ];
+
+    const handleTimezoneChange = (event) => {
+      const selectedTimezone = event.target.value; // 선택한 시간대 값을 가져옴
+      onChange(selectedTimezone);
+    };
+
+    return (
+      <div style={{ textAlign: "center", margin: "20px" }}>
+        <FormControl style={{ width: "400px", textAlign: "left" }}>
+          <InputLabel id="demo-simple-select-label">시간대</InputLabel>
+          <Select
+            id="outlined-select-currency"
+            label="시간대"
+            defaultValue={selectedTimezone}
+            onChange={handleTimezoneChange}
+          >
+            {timezones.map((timezone) => (
+              <MenuItem key={timezone.value} value={timezone.value}>
+                {timezone.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+    );
+  };
+
+  const handleTimezoneChange = (timezone) => {
+    setSelectedTimezone(timezone); // 선택한 시간대 값을 상태로 설정
+    console.log("cal::::::::", timezone);
+  };
 
   return (
     <div>
@@ -105,7 +174,9 @@ const CalModify = () => {
           />
         </div>
         <div>
-          <CurrentTime />
+          {/* <CurrentTime /> */}
+          <TimezoneSelector onChange={handleTimezoneChange} />
+
           {/* <FormControl style={{ width: "400px", textAlign: "left" }}>
             <InputLabel id="demo-simple-select-label">시간대</InputLabel>
             <Select
