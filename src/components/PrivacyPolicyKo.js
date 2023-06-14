@@ -1,5 +1,26 @@
 import React from "react";
 import companyLogo from "../assets/logo(ver3).png";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
+
+const BackButton = () => {
+  const navigate = useNavigate();
+  const onClickBtn = () => {
+    navigate(-1);
+  };
+
+  return (
+    <FontAwesomeIcon
+      onClick={onClickBtn}
+      icon={faArrowRightToBracket}
+      beat
+      size="2xl"
+      style={{ color: "#9aaaac" }}
+    />
+  );
+};
+
 const PrivacyPolicyKo = () => {
   return (
     <div
@@ -20,7 +41,7 @@ const PrivacyPolicyKo = () => {
       <div style={{ textAlign: "left" }}>
         <div>
           <h1>개인정보처리방침</h1>
-          <p>
+          <div>
             <strong>
               &lt;우리캘린더&gt;(&apos;www.WooriCalendar.com&apos;
             </strong>
@@ -30,11 +51,11 @@ const PrivacyPolicyKo = () => {
             수립·공개합니다.
             <br />
             <br />○ 이 개인정보처리방침은 2023년 6월 1부터 적용됩니다.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>제1조(개인정보의 처리 목적)</strong>
             </h3>
@@ -48,11 +69,11 @@ const PrivacyPolicyKo = () => {
             법정대리인의 동의여부 확인 목적으로 개인정보를 처리합니다.
             <br /> 2. 재화 또는 서비스 제공 본인인증을 목적으로 개인정보를
             처리합니다
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>제2조(개인정보의 처리 및 보유 기간)</strong>
             </h3>
@@ -63,22 +84,22 @@ const PrivacyPolicyKo = () => {
             관련한 개인정보는 수집.이용에 관한 동의일로부터까지 위 이용목적을
             위하여 보유.이용됩니다. 보유근거 : 법령 관련법령 : 계약 또는
             청약철회 등에 관한 기록 : 5년 예외사유 : 법령
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>제3조(처리하는 개인정보의 항목)</strong>
             </h3>{" "}
             ① &lt;우리캘린더&gt;은(는) 다음의 개인정보 항목을 처리하고 있습니다.
             1&lt; 홈페이지 회원가입 및 관리 &gt; 필수항목 : 이름, 생년월일,
             로그인ID, 비밀번호, 이메일, 접속 IP 정보 선택항목 :
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 제4조(만 14세 미만 아동의 개인정보 처리에 관한 사항)
@@ -107,11 +128,11 @@ const PrivacyPolicyKo = () => {
             인터넷주소 등 동의 내용을 확인할 수 있는 방법을 안내하고 재차 전화
             통화를 통하여 동의를 얻는 방법 • 그 밖에 위와 준하는 방법으로
             법정대리인에게 동의 내용을 알리고 동의의 의사표시를 확인하는 방법
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>제5조(개인정보의 제3자 제공에 관한 사항)</strong>
             </h3>{" "}
@@ -125,11 +146,11 @@ const PrivacyPolicyKo = () => {
             제공받는 자의 개인정보 이용목적 : 이름, 생년월일, 로그인ID, 이메일,
             접속 IP 정보, 쿠키, 접속 로그, 서비스 이용 기록 제공받는 자의
             보유.이용기간: 5년
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>제6조(개인정보처리의 위탁에 관한 사항)</strong>
             </h3>{" "}
@@ -143,11 +164,11 @@ const PrivacyPolicyKo = () => {
             개인정보를 안전하게 처리하는지를 감독하고 있습니다.
             <br />③ 위탁업무의 내용이나 수탁자가 변경될 경우에는 지체없이 본
             개인정보 처리방침을 통하여 공개하도록 하겠습니다.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>제7조(개인정보의 파기절차 및 파기방법)</strong>
             </h3>{" "}
@@ -163,11 +184,11 @@ const PrivacyPolicyKo = () => {
             &lt;우리캘린더&gt; 은(는) 파기 사유가 발생한 개인정보를 선정하고,
             &lt;우리캘린더&gt; 의 개인정보 보호책임자의 승인을 받아 개인정보를
             파기합니다.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>제8조(미이용자의 개인정보 파기 등에 관한 조치)</strong>
             </h3>{" "}
@@ -179,11 +200,11 @@ const PrivacyPolicyKo = () => {
             이용자에게 통지 가능한 방법으로 알리고 있습니다. <br />③ 개인정보의
             파기를 원하지 않으시는 경우, 기간 만료 전 서비스 로그인을 하시면
             됩니다.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 제9조(정보주체와 법정대리인의 권리·의무 및 그 행사방법에 관한
@@ -205,11 +226,11 @@ const PrivacyPolicyKo = () => {
             없습니다. <br />⑥ 우리캘린더은(는) 정보주체 권리에 따른 열람의 요구,
             정정·삭제의 요구, 처리정지의 요구 시 열람 등 요구를 한 자가
             본인이거나 정당한 대리인인지를 확인합니다.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>제10조(개인정보의 안전성 확보조치에 관한 사항)</strong>
             </h3>
@@ -221,11 +242,11 @@ const PrivacyPolicyKo = () => {
             되어 저장 및 관리되고 있어, 본인만이 알 수 있으며 중요한 데이터는
             파일 및 전송 데이터를 암호화 하거나 파일 잠금 기능을 사용하는 등의
             별도 보안기능을 사용하고 있습니다.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 제11조(개인정보를 자동으로 수집하는 장치의 설치·운영 및 그
@@ -234,11 +255,11 @@ const PrivacyPolicyKo = () => {
             </h3>{" "}
             우리캘린더 은(는) 정보주체의 이용정보를 저장하고 수시로 불러오는
             ‘쿠키(cookie)’를 사용하지 않습니다.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 제12조(행태정보의 수집·이용·제공 및 거부 등에 관한 사항)
@@ -246,11 +267,11 @@ const PrivacyPolicyKo = () => {
             </h3>{" "}
             행태정보의 수집·이용·제공 및 거부등에 관한 사항 은(는) 온라인 맞춤형
             광고 등을 위한 행태정보를 수집·이용·제공하지 않습니다.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>제13조(추가적인 이용·제공 판단기준)</strong>
             </h3>{" "}
@@ -268,11 +289,11 @@ const PrivacyPolicyKo = () => {
             조치를 하였는지 여부
             <br /> ※ 추가적인 이용·제공 시 고려사항에 대한 판단기준은
             사업자/단체 스스로 자율적으로 판단하여 작성·공개함
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 제14조(가명정보를 처리하는 경우 가명정보 처리에 관한 사항)
@@ -289,11 +310,11 @@ const PrivacyPolicyKo = () => {
             법 제28조의4(가명정보에 대한 안전조치 의무 등)에 따른 가명정보의
             안전성 확보조치에 관한 사항 - 직접작성 가능합니다.
             {/* javascript:fnNextStep();   */}
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>제15조 (개인정보 보호책임자에 관한 사항)</strong>
             </h3>{" "}
@@ -316,11 +337,11 @@ const PrivacyPolicyKo = () => {
             모든 개인정보 보호 관련 문의, 불만처리, 피해구제 등에 관한 사항을
             개인정보 보호책임자 및 담당부서로 문의하실 수 있습니다. 우리캘린더
             은(는) 정보주체의 문의에 대해 지체 없이 답변 및 처리해드릴 것입니다.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>제16조(국내대리인의 지정)</strong>
             </h3>{" "}
@@ -336,11 +357,11 @@ const PrivacyPolicyKo = () => {
             영업소 소재지)
             <br /> - 국내대리인의 전화번호 : [대리인 전화번호_직접입력]
             <br /> - 국내대리인의 전자우편 주소 : [대리인 전자우편_직접입력]
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>제17조(개인정보의 열람청구를 접수·처리하는 부서)</strong>
             </h3>{" "}
@@ -349,11 +370,11 @@ const PrivacyPolicyKo = () => {
             개인정보 열람청구가 신속하게 처리되도록 노력하겠습니다.
             <br /> ▶ 개인정보 열람청구 접수·처리 부서 부서명 : 담당자 : 연락처 :
             , ,
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>제18조(정보주체의 권익침해에 대한 구제방법)</strong>
             </h3>{" "}
@@ -376,11 +397,11 @@ const PrivacyPolicyKo = () => {
             있습니다.
             <br /> ※ 행정심판에 대해 자세한 사항은
             중앙행정심판위원회(www.simpan.go.kr) 홈페이지를 참고하시기 바랍니다.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>제19조(개인정보 처리방침 변경)</strong>
             </h3>{" "}
@@ -390,7 +411,10 @@ const PrivacyPolicyKo = () => {
             <br /> 예시 - 20XX. X. X ~ 20XX. X. X 적용 (클릭)
             <br />
             예시 - 20XX. X. X ~ 20XX. X. X 적용 (클릭)
-          </p>
+          </div>
+        </div>
+        <div style={{ float: "right" }}>
+          <BackButton />
         </div>
       </div>
     </div>

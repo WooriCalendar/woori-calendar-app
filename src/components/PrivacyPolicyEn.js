@@ -1,5 +1,25 @@
 import React from "react";
 import companyLogo from "../assets/logo(ver3).png";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
+
+const BackButton = () => {
+  const navigate = useNavigate();
+  const onClickBtn = () => {
+    navigate(-1);
+  };
+
+  return (
+    <FontAwesomeIcon
+      onClick={onClickBtn}
+      icon={faArrowRightToBracket}
+      beat
+      size="2xl"
+      style={{ color: "#9aaaac" }}
+    />
+  );
+};
 const PrivacyPolicyEn = () => {
   return (
     <div
@@ -20,7 +40,7 @@ const PrivacyPolicyEn = () => {
       <div style={{ textAlign: "left" }}>
         <div>
           <h1>Personal information processing policy</h1>
-          <p>
+          <div>
             <strong>
               &lt;Woori Calendar&gt; (&apos;www.WooriCalendar.com&apos;
             </strong>
@@ -32,11 +52,11 @@ const PrivacyPolicyEn = () => {
             <br />
             <br />○ This personal information processing policy will take effect
             on June 1, 2023.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 1 (Purpose of Processing Personal Information)
@@ -57,11 +77,11 @@ const PrivacyPolicyEn = () => {
             children under the age of 14. <br />
             2. Provision of goods or services Personal information is processed
             for personal authentication purposes.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 2 (Period for processing and holding personal
@@ -79,11 +99,11 @@ const PrivacyPolicyEn = () => {
             regulations Related Acts: Records of contract or subscription
             withdrawal, etc.: 5 years Reason for exception: Act and subordinate
             statutes
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 3 (items of personal information to be processed)
@@ -93,11 +113,11 @@ const PrivacyPolicyEn = () => {
             information items. 1&lt;Register and manage membership on the
             homepage&gt; Required items: name, date of birth, login ID,
             password, email, access IP information Selections:
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 4 (Matters concerning the processing of personal
@@ -137,11 +157,11 @@ const PrivacyPolicyEn = () => {
             obtaining consent through a phone call again • Other methods of
             informing the legal representative of the consent and confirming the
             expression of intention of consent in the same manner as above
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 5 (Matters concerning the provision of personal
@@ -160,11 +180,11 @@ const PrivacyPolicyEn = () => {
             the recipient: Name, date of birth, login ID, email, access IP
             information, cookie, access log, service usage record the possession
             of the recipient.Period of use: 5 years
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 6 (Matters concerning the entrustment of personal
@@ -183,11 +203,11 @@ const PrivacyPolicyEn = () => {
             <br />③ If the contents of the entrusted work or the trustee
             changes, we will disclose it through this personal information
             processing policy without delay.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 7 (Procedure and Method of Destruction of Personal
@@ -208,11 +228,11 @@ const PrivacyPolicyEn = () => {
             selects personal information that has caused the reason for
             destruction and destroys the personal information with the approval
             of &lt;Woori Calendar&gt;'s personal information protection manager.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 8 (Measures concerning the destruction of personal
@@ -229,11 +249,11 @@ const PrivacyPolicyEn = () => {
             information that are destroyed by e-mail or text message. <br />③ If
             you don't want to destroy your personal information, you can log in
             to the service before the expiration of the period.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 9 (Matters concerning the rights and obligations of the
@@ -262,11 +282,11 @@ const PrivacyPolicyEn = () => {
             for access according to the right of the information subject, a
             request for correction and deletion, or a request for suspension of
             processing.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 10 (Matters concerning measures to ensure the safety of
@@ -282,11 +302,11 @@ const PrivacyPolicyEn = () => {
             information is encrypted, stored, and managed, so only you can know
             it, and important data uses separate security functions such as
             encrypting files and transmission data or using file lock functions.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 11 (Matters concerning the installation and operation of
@@ -296,11 +316,11 @@ const PrivacyPolicyEn = () => {
             </h3>{" "}
             Woori calendar does not use "cookie" that stores information on the
             use of the information subject and calls it from time to time.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 12 (Matters concerning collection, use, provision,
@@ -310,11 +330,11 @@ const PrivacyPolicyEn = () => {
             Matters concerning the collection, use, provision, refusal, etc. of
             behavioral information does not collect, use, or provide behavioral
             information for online customized advertisements.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 13 (Criteria for determining additional use and
@@ -341,11 +361,11 @@ const PrivacyPolicyEn = () => {
             for determining considerations for additional use and provision
             shall be prepared and disclosed autonomously by business
             operators/organizations
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 14 (Matters concerning the processing of pseudonym
@@ -366,11 +386,11 @@ const PrivacyPolicyEn = () => {
             to Take Safety Measures for pseudonym information, etc.) of the Act
             - You can write it yourself.
             {/* javascript:fnNextStep(); */}
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 15 (Matters concerning the person in charge of personal
@@ -395,11 +415,11 @@ const PrivacyPolicyEn = () => {
             relief that occurred while using Woori calendar's service (or
             business). Woori calendar will respond and handle inquiries from the
             information subject without delay.
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>Article 16 (Designation of Domestic Agents)</strong>
             </h3>{" "}
@@ -418,11 +438,11 @@ const PrivacyPolicyEn = () => {
             corporation, the location of the business office) <br />- Domestic
             agent's phone number: [Agent's phone number_directly entered] <br />
             - Domestic agent's e-mail address: [agent's e-mail_direct entry]
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 17 (Department that receives and processes requests for
@@ -435,11 +455,11 @@ const PrivacyPolicyEn = () => {
             request for personal information access by the information subject.
             <br />▶ Personal Information Access Request Receipt and Processing
             Department Department name: Contact Person: Contact: , ,
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 18 (Method of remedy for infringement of rights and
@@ -469,11 +489,11 @@ const PrivacyPolicyEn = () => {
             <br /> ※ For more information on administrative trials, please refer
             to the website of the Central Administrative Appeals Committee
             (www.simpan.go.kr ).
-          </p>
+          </div>
         </div>
         <hr />
         <div>
-          <p>
+          <div>
             <h3>
               <strong>
                 Article 19 (Change of Personal Information Processing Policy)
@@ -486,7 +506,10 @@ const PrivacyPolicyEn = () => {
             Example - Apply 20XX.X.X. to 20XX.X. (click)
             <br /> Example - Apply 20XX.X.X. to 20XX.X. (click) <br />
             Example - Apply 20XX.X.X. to 20XX.X. (click)
-          </p>
+          </div>
+        </div>
+        <div style={{ float: "right" }}>
+          <BackButton />
         </div>
       </div>
     </div>
