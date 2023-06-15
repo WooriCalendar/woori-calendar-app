@@ -2,6 +2,7 @@ import '../css/Sidebar.css';
 import FullCalendars from "./FullCalendars";
 import Category from "./Category";
 import {Button, TextField} from "@mui/material";
+import {Link} from "react-router-dom";
 
 const Sidebar = ({visible, aspectRatio, height, contentHeight}) => {
     const headerToolbar = {
@@ -13,9 +14,11 @@ const Sidebar = ({visible, aspectRatio, height, contentHeight}) => {
         <div>
             {visible && (
                 <div className="slide-out">
-                    <Button variant="contained" color="primary">
-                        일정추가버튼
-                    </Button>
+                    <Link to={"/schedule"}>
+                        <Button variant="contained" color="primary">
+                            일정추가버튼
+                        </Button>
+                    </Link>
                     <FullCalendars
                         headerToolbar={headerToolbar}
                         heigth={height}
