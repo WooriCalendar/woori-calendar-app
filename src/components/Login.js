@@ -26,6 +26,7 @@ const Login = () => {
         console.log("password", password);
         signin({email: email, password: password}).then((resp) => {
             console.log("login", resp);
+            localStorage.setItem("email", email);
         });
     };
 
@@ -113,10 +114,15 @@ const Login = () => {
 
                     </Grid>
                 </Grid>
-                <Grid container>
+                <Grid container direction="column">
                     <Grid item>
                         <Link to="/Signup" variant="body2">
                             Don't have an account? sign up here
+                        </Link>
+                    </Grid>
+                    <Grid item>
+                        <Link to="/Forgotpassword" variant="body2">
+                            Forgot password?
                         </Link>
                     </Grid>
                 </Grid>
