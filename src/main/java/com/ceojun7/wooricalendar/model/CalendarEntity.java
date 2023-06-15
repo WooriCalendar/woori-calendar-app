@@ -38,6 +38,7 @@ public class CalendarEntity {
     private Long calNo;
     private String name;
     private String comment;
+    private String color;
     private String timezone;
     private Date regdate;
     private Date updatedate;
@@ -51,6 +52,7 @@ public class CalendarEntity {
                 "calNo=" + calNo +
                 ", name='" + name + '\'' +
                 ", comment='" + comment + '\'' +
+                ", color='" + color + '\'' +
                 ", timezone='" + timezone + '\'' +
                 ", regdate=" + regdate +
                 ", updatedate=" + updatedate +

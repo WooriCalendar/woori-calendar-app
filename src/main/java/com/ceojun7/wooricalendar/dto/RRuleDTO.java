@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Date;
  * @packageName : com.ceojun7.wooricalendar.dto
  * @fileName : RRuleDTO
  * @date : 2023-06-13
- * @description :
+ * @description : 반복 규칙
  * ===========================================================
  * DATE           AUTHOR             NOTE
  * -----------------------------------------------------------
@@ -26,12 +27,18 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 public class RRuleDTO {
-    private Date dtstart;
+    private String dtstart;
     private Timestamp until;
     private String freq;
 
     public RRuleDTO(final ScheduleEntity entity) {
-        this.dtstart = entity.getStartDate();
+        SimpleDateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        if (entity.getStartDate() != null) {
+            this.dtstart = dtFormat.format(entity.getStartDate());
+        } else {
+            this.dtstart = String.valueOf(entity.getStartTime());
+        }
         this.until = entity.getReEndDate();
         this.freq = entity.getRePeriod();
     }

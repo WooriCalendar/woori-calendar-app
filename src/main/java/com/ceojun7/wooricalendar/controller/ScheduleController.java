@@ -2,7 +2,9 @@ package com.ceojun7.wooricalendar.controller;
 
 import com.ceojun7.wooricalendar.dto.ResponseDTO;
 import com.ceojun7.wooricalendar.dto.ScheduleDTO;
+import com.ceojun7.wooricalendar.model.CalendarEntity;
 import com.ceojun7.wooricalendar.model.ScheduleEntity;
+import com.ceojun7.wooricalendar.service.CalendarService;
 import com.ceojun7.wooricalendar.service.ScheduleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,9 @@ public class ScheduleController {
     @Autowired
     private ScheduleService service;
 
+    @Autowired
+    private CalendarService calendarService;
+
     /**
      * methodName : createSchedule
      * comment : 일정 생성
@@ -46,10 +51,11 @@ public class ScheduleController {
      * @return the response entity
      */
     @PostMapping
-    public ResponseEntity<?> createSchedule(@RequestBody ScheduleDTO dto) {
+    public ResponseEntity<?> createSchedule(@RequestBody ScheduleDTO dto, @AuthenticationPrincipal String email) {
         log.warn(String.valueOf(dto));
         try {
             ScheduleEntity entity = ScheduleDTO.toEntity(dto);
+            entity.setCalendarEntity(CalendarEntity.builder().calNo(calendarService.retrieveByEmail(email).stream().filter(calendarEntity -> calendarEntity.getName().equals(email)).collect(Collectors.toList()).get(0).getCalNo()).build());
             List<ScheduleEntity> entities = service.create(entity);
             List<ScheduleDTO> dtos = entities.stream().map(ScheduleDTO::new).collect(Collectors.toList());
             ResponseDTO<ScheduleDTO> response = ResponseDTO.<ScheduleDTO>builder().data(dtos).build();
@@ -78,19 +84,6 @@ public class ScheduleController {
         return ResponseEntity.ok().body(response);
     }
 
-    /**
-     * methodName : daySchedule
-     * comment : 날짜로 조회
-     * author : 강태수
-     * date : 2023-06-01
-     * description :
-     *
-     * @param dto
-     * @return ResponseEntity
-     * 
-     * 
-     */
-
     @GetMapping("/day")
     public ResponseEntity<?> daySchedule(@RequestBody ScheduleDTO dto) {
         // log.warn(String.valueOf(dto.getCalNo()));
@@ -99,18 +92,6 @@ public class ScheduleController {
         ResponseDTO<ScheduleDTO> response = ResponseDTO.<ScheduleDTO>builder().data(dtos).build();
         return ResponseEntity.ok().body(response);
     }
-
-    /**
-     * methodName : updateCalendar
-     * comment : 캘린더 캘린더번호 내용 이름 시간대 수정
-     * author : 강태수
-     * date : 2023-06-01
-     * description :
-     *
-     * @param dto the dto
-     * @return the response entity
-     * 
-     */
 
     @PutMapping
     public ResponseEntity<?> updateSchedule(@RequestBody ScheduleDTO dto) {
@@ -126,18 +107,6 @@ public class ScheduleController {
             return ResponseEntity.badRequest().body(ResponseDTO.<ScheduleDTO>builder().error(e.getMessage()).build());
         }
     }
-
-    /**
-     * methodName : deleteCalendar
-     * comment : 캘린더 삭제
-     * author : 강태수
-     * date : 2023-06-01
-     * description :
-     *
-     * @param dto
-     * @return the response entity
-     * 
-     */
 
     @DeleteMapping
     public ResponseEntity<?> deleteSchedule(@RequestBody ScheduleDTO dto) {
