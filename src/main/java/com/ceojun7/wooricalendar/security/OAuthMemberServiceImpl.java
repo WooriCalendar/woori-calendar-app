@@ -1,7 +1,12 @@
 package com.ceojun7.wooricalendar.security;
 
+import com.ceojun7.wooricalendar.model.CalendarEntity;
 import com.ceojun7.wooricalendar.model.MemberEntity;
+import com.ceojun7.wooricalendar.model.ShareEntity;
 import com.ceojun7.wooricalendar.persistence.MemberRepository;
+import com.ceojun7.wooricalendar.service.CalendarService;
+import com.ceojun7.wooricalendar.service.MemberService;
+import com.ceojun7.wooricalendar.service.ShareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -13,6 +18,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Date;
+import java.util.Objects;
+
 /**
  * @author : DGeon
  * @packageName : com.ceojun7.wooricalendar.security
@@ -30,6 +39,12 @@ public class OAuthMemberServiceImpl extends DefaultOAuth2UserService {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private CalendarService calendarService;
+
+    @Autowired
+    private ShareService shareService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -59,12 +74,22 @@ public class OAuthMemberServiceImpl extends DefaultOAuth2UserService {
         if (!memberRepository.existsByEmail(email)) {
             memberEntity = MemberEntity.builder().email(email).auth_Provider(authProvider).build();
             memberEntity = memberRepository.save(memberEntity);
+            CalendarEntity calendar = CalendarEntity.builder()
+                    .name(Objects.requireNonNull(email).substring(0, email.indexOf("@")))
+                    .regdate(new Date())
+                    .updatedate(new Date())
+                    // .timezone()
+                    .build();
+            calendarService.create(calendar);
+
+            ShareEntity shareEntity = ShareEntity.builder().calendarEntity(calendar)
+                    .memberEntity(MemberEntity.builder().email(email).build()).checked(true).build();
+            shareService.create(shareEntity);
         } else {
             memberEntity = memberRepository.findByEmail(email);
         }
 
         log.info("success pulled member info member {}, authProvider {}", email, authProvider);
-
         return new ApplicationOAuth2User(memberEntity.getEmail(), oAuth2User.getAttributes());
     }
 

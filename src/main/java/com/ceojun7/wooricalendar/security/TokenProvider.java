@@ -91,4 +91,17 @@ public class TokenProvider {
                 .getBody();
         return claims.getSubject();
     }
+
+    public String create(String email) {
+        // 기한은 지금으로부터 1일로 설정
+        Date expiryDate = Date.from(
+                Instant.now().plus(1, ChronoUnit.DAYS));
+        return Jwts.builder()
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .setSubject(email)
+                .setIssuer("Wa")
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .compact();
+    }
 }
