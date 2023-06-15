@@ -71,6 +71,7 @@ export function socialLogin(provider) {
 export function signout() {
     // localStorage.setItem("ACCESS_TOKEN", null);
     localStorage.removeItem("ACCESS_TOKEN");
+    localStorage.removeItem("email");
     window.location.href = "/login";
 }
 
