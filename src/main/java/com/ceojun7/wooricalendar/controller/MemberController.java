@@ -86,7 +86,7 @@ public class MemberController {
                     .build();
             MemberEntity registeredMember = memberService.create(member);
             CalendarEntity calendar = CalendarEntity.builder()
-                    .name(memberDTO.getNickname())
+                    .name(memberDTO.getEmail().substring(0, memberDTO.getEmail().indexOf("@")))
                     .regdate(new Date())
                     .updatedate(new Date())
                     // .timezone()
