@@ -7,6 +7,7 @@ import com.ceojun7.wooricalendar.service.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -70,13 +71,11 @@ public class NotificationController {
      * date : 2023-06-05
      * description : 받은이의 이메일로서의 조회
      *
-     * @param dto the dto
      * @return the response entity
      */
     @GetMapping
-    public ResponseEntity<?> retrieveNotificationList(@RequestBody NotificationDTO dto) {
-        log.info(String.valueOf(dto));
-        List<NotificationEntity> entities = service.retrieve(dto.getRevEmail());
+    public ResponseEntity<?> retrieveNotificationList(@AuthenticationPrincipal String email) {
+        List<NotificationEntity> entities = service.retrieve(email);
 
         List<NotificationDTO> dtos = entities.stream().map(NotificationDTO::new).collect(Collectors.toList());
 
