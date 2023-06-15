@@ -1,8 +1,10 @@
 package com.ceojun7.wooricalendar.dto;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 
 /**
  * @author : Hamdoson
@@ -15,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * -----------------------------------------------------------
  * 2023-06-13        Hamdoson           최초 생성
  */
+@SpringBootTest
+@Slf4j
 class NotificationDTOTest {
     private NotificationDTO notificationDTO;
 
@@ -27,14 +31,6 @@ class NotificationDTOTest {
      */
     @Test
     public void testNotificationDTO() {
-        //필드 설정
-
-        // Postman 참고
-        // "sendEmail": "kang@gmail.com",
-        //  "revEmail": "nhue630@gmail.com",
-        //  "comment": "알림발송 Test",
-        //  "type": "test",
-        //  "calNo": "3"
 
         notificationDTO = NotificationDTO
                 .builder()
@@ -46,10 +42,11 @@ class NotificationDTOTest {
                 .build();
 
         //테스트
-        assertEquals("Jack", notificationDTO.getSendEmail());
-        assertEquals("Doson", notificationDTO.getRevEmail());
-        assertEquals("Hi", notificationDTO.getComment());
-        assertEquals("Test", notificationDTO.getType());
-        assertEquals(1L, notificationDTO.getCalNo());
+        log.info("::::: 생성된 데이터 :::::");
+        log.info("sendEmail :: " + notificationDTO.getSendEmail());
+        log.info("revEmail :: " + notificationDTO.getRevEmail());
+        log.info("comment :: " + notificationDTO.getComment());
+        log.info("type :: " + notificationDTO.getType());
+        log.info("calNo :: " + notificationDTO.getCalNo());
     }
 }

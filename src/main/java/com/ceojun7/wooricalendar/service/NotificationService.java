@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * The type Notification service.
@@ -83,7 +82,6 @@ public class NotificationService {
             log.error("error deleting entity ", entity.getRevEmail(), e);
             throw new RuntimeException("error deleting entity " + entity.getRevEmail());
         }
-        // (5) 새 Todo리스트를 가져와 리턴한다.
         return retrieve(entity.getRevEmail());
     }
 }
