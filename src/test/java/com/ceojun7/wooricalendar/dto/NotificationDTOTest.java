@@ -48,5 +48,6 @@ class NotificationDTOTest {
         log.info("comment :: " + notificationDTO.getComment());
         log.info("type :: " + notificationDTO.getType());
         log.info("calNo :: " + notificationDTO.getCalNo());
+
     }
 }
