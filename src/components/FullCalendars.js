@@ -63,17 +63,17 @@ const FullCalendars = (
     console.log(events)
 
     return (
-            <FullCalendar
-                plugins={[dayGridPlugin, momentPlugin, interactionPlugin, timeGridPlugin, rrulePlugin]}
-                initialView='dayGridMonth'
-                headerToolbar={headerToolbar}
-                events={events}
-                height={height}
-                eventClick={handleEventClick}
-                dateClick={handleDateClick}
-                contentHeight={contentHeight}
-                aspectRatio={aspectRatio}
-            />
+        <FullCalendar
+            plugins={[dayGridPlugin, momentPlugin, interactionPlugin, timeGridPlugin, rrulePlugin]}
+            initialView='dayGridMonth'
+            headerToolbar={headerToolbar}
+            events={events}
+            height={height}
+            eventClick={handleEventClick}
+            dateClick={handleDateClick}
+            contentHeight={contentHeight}
+            aspectRatio={aspectRatio}
+        />
     )
 }
 
