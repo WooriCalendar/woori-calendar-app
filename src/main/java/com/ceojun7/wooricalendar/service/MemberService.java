@@ -1,8 +1,6 @@
 package com.ceojun7.wooricalendar.service;
 
 import com.ceojun7.wooricalendar.dto.MemberDTO;
-import com.ceojun7.wooricalendar.dto.MemberListResponseDTO;
-import com.ceojun7.wooricalendar.dto.ResponseDTO;
 import com.ceojun7.wooricalendar.model.MemberEntity;
 import com.ceojun7.wooricalendar.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -12,11 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Member;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
 
 /**
  * @author : DGeon
