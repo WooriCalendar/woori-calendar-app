@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -156,8 +157,8 @@ public class MemberController {
      * 
      */
 
-    @GetMapping("/{email}")
-    public ResponseEntity<MemberDTO> getMemberByEmail(@PathVariable String email) {
+    @GetMapping
+    public ResponseEntity<MemberDTO> getMemberByEmail(@AuthenticationPrincipal String email) {
         MemberDTO memberDTO = memberService.getMemberByEmail(email);
         if (memberDTO != null) {
             return new ResponseEntity<>(memberDTO, HttpStatus.OK);
@@ -177,11 +178,9 @@ public class MemberController {
      * 
      */
 
-    @PutMapping("/{email}")
-    public ResponseEntity<String> updateMember(@PathVariable String email,
-            @RequestHeader("Authorization") String token,
+    @PutMapping
+    public ResponseEntity<String> updateMember(@AuthenticationPrincipal String email,
             @RequestBody MemberDTO memberDTO) {
-
         boolean updated = memberService.updateMember(memberDTO);
         if (updated) {
             return new ResponseEntity<>("회원 정보가 성공적으로 업데이트되었습니다.", HttpStatus.OK);
@@ -199,11 +198,11 @@ public class MemberController {
      * @return response entity
      */
     @GetMapping("signup")
-    public ResponseEntity<?> getEmailList(){
+    public ResponseEntity<?> getEmailList() {
         log.warn("email 중복검사 :: get호출됨");
         List<String> entities = memberService.findeamil();
         ResponseDTO<String> resp = ResponseDTO.<String>builder().data(entities).build();
-        log.warn("넘겨주는 값 확인 :::"+String.valueOf(ResponseEntity.ok().body(resp)));
+        log.warn("넘겨주는 값 확인 :::" + String.valueOf(ResponseEntity.ok().body(resp)));
         return ResponseEntity.ok().body(resp);
 
     }
