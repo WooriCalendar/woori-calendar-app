@@ -40,8 +40,8 @@ public class ScheduleEntity {
 
     private Timestamp startTime;
     private Timestamp endTime;
-    private Timestamp startDate;
-    private Timestamp endDate;
+    private Date startDate;
+    private Date endDate;
 
     private Date regDate;
     private Date updateDate;

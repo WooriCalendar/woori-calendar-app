@@ -2,13 +2,15 @@ package com.ceojun7.wooricalendar.dto;
 
 import com.ceojun7.wooricalendar.model.CalendarEntity;
 import com.ceojun7.wooricalendar.model.ScheduleEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -29,6 +31,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Slf4j
 public class ScheduleDTO {
     private Long scNo;
     private String title;
@@ -43,6 +46,20 @@ public class ScheduleDTO {
     private Long calNo;
 
     private RRuleDTO rrule;
+
+    private boolean status;
+
+//    public ScheduleDTO(Long scNo, String title, String comment, String place, String start, String end, Date regDate, Date updateDate, Long calNo) {
+//        this.scNo = scNo;
+//        this.title = title;
+//        this.comment = comment;
+//        this.place = place;
+//        this.start = start;
+//        this.end = end;
+//        this.regDate = regDate;
+//        this.updateDate = updateDate;
+//        this.calNo = calNo;
+//    }
 
     public ScheduleDTO(final ScheduleEntity entity) {
         this.scNo = entity.getScNo();
@@ -70,10 +87,14 @@ public class ScheduleDTO {
     }
 
     public static ScheduleEntity toEntity(final ScheduleDTO dto) {
-        return ScheduleEntity.builder().scNo(dto.getScNo()).name(dto.getTitle()).comment(dto.getComment()).place(dto.getPlace())
-//                .startTime(dto.getStartTime()).endTime(dto.getEndTime())
-                .startDate(Timestamp.valueOf(dto.getStart())).endDate(Timestamp.valueOf(dto.getEnd()))
-//                .regDate(dto.getRegDate()).updateDate(dto.getUpdateDate())
-                .calendarEntity(CalendarEntity.builder().calNo(dto.calNo).build()).reEndDate(dto.rrule.getUntil()).rePeriod(dto.getRrule().getFreq()).build();
+        if (!dto.status) {
+            return ScheduleEntity.builder().scNo(dto.getScNo()).name(dto.getTitle()).comment(dto.getComment()).place(dto.getPlace())
+                    .startDate(Timestamp.valueOf(dto.getStart() + " 00:00:00")).endDate(Timestamp.valueOf(dto.getEnd() + " 00:00:00"))
+                    .calendarEntity(CalendarEntity.builder().calNo(dto.getCalNo()).build()).reEndDate(dto.getRrule().getUntil()).rePeriod(dto.getRrule().getFreq()).build();
+        } else {
+            return ScheduleEntity.builder().scNo(dto.getScNo()).name(dto.getTitle()).comment(dto.getComment()).place(dto.getPlace())
+                    .startTime(Timestamp.valueOf(dto.getStart())).endTime(Timestamp.valueOf(dto.getEnd()))
+                    .calendarEntity(CalendarEntity.builder().calNo(dto.calNo).build()).reEndDate(dto.rrule.getUntil()).rePeriod(dto.getRrule().getFreq()).build();
+        }
     }
 }
