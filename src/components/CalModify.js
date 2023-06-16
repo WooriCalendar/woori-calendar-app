@@ -7,6 +7,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Grid,
 } from "@mui/material";
 // import Navigation from "./Navigation";
 import { call } from "../service/ApiService";
@@ -44,7 +45,8 @@ const CalModify = () => {
 
   const editEventHandler = () => {
     const updatedItem = {
-      calNo: calNo,
+      calNo: document.getElementById("outlined-required-calno").value,
+      // calNo: calendar.calNo;
       name: document.getElementById("outlined-required-name").value,
       comment: document.getElementById("outlined-required-com").value,
       timeZone: selectedTimezone,
@@ -67,9 +69,11 @@ const CalModify = () => {
 
   // calNo로 기존에 입력된 캘린더 가져오기
   useEffect(() => {
-    call("/calendar/" + calNo, "GET", null).then((response) => {
+    call("/calendar", "GET", null).then((response) => {
       console.log("캘린더 데이터");
+      console.log("333333333", response);
       setCalendar(response.data);
+      // setCalendar(response.data);
     });
   }, []);
 
@@ -137,20 +141,54 @@ const CalModify = () => {
       {/* <Navigation /> */}
 
       <div className="main" style={{ width: "440px", margin: "0 auto" }}>
+        {/* <div style={{ textAlign: "center" }}>
         <div style={{ textAlign: "center" }}>
           <h2>캘린더 수정</h2>
-        </div>
+        </div> */}
         {calendar.map((item) => (
-          <div key={item.calNo} style={{ textAlign: "center", margin: "20px" }}>
+          <div key={item.calNo} style={{ textAlign: "center", margin: "10px" }}>
             <TextField
-              style={{ width: "400px" }}
-              id="outlined-required-name"
+              style={{ width: "400px", display: "none" }}
+              id="outlined-required-calno"
               label="이름"
-              defaultValue={item.name}
-              // value={name}
+              defaultValue={calendar.calNo}
+              value={item.calNo}
               onChange={handleNameChange}
               variant="outlined"
+              // disabled
+              // type="hidden"
             ></TextField>
+            {/* <div
+              id="outlined-required-calno"
+              style={{ display: "none" }}
+              onChange={handleNameChange}
+            >
+              {item.calNo}
+            </div> */}
+            {/* <Grid style={{ marginBottom: "10px" }}>
+              <TextField
+                style={{ width: "400px" }}
+                id="outlined-required-calno"
+                label="이름"
+                defaultValue={item.calNo}
+                // value={name}
+                onChange={handleNameChange}
+                variant="outlined"
+              ></TextField>
+            </Grid> */}
+            {/* style={{ marginBottom: "10px" }} */}
+            <Grid>
+              <TextField
+                style={{ width: "400px", marginBottom: "25px" }}
+                id="outlined-required-name"
+                label="이름"
+                defaultValue={item.name}
+                // value={name}
+                onChange={handleNameChange}
+                variant="outlined"
+                rows={4}
+              ></TextField>
+            </Grid>
             <TextField
               style={{ width: "400px" }}
               id="outlined-required-com"
@@ -164,7 +202,7 @@ const CalModify = () => {
           </div>
         ))}
 
-        <div style={{ textAlign: "center", margin: "20px" }}>
+        {/* <div style={{ textAlign: "center", margin: "20px" }}>
           <TextField
             style={{ width: "400px" }}
             id="outlined-textarea"
@@ -172,7 +210,7 @@ const CalModify = () => {
             multiline
             rows={4}
           />
-        </div>
+        </div> */}
         <div>
           {/* <CurrentTime /> */}
           <TimezoneSelector onChange={handleTimezoneChange} />

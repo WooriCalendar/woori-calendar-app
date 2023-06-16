@@ -110,18 +110,36 @@
 
 // export default Settings;
 
-import React from "react";
+import React, { useState } from "react";
 import SettingNavigation from "./SettingNavigation";
 import SettingSidebar from "./SettingSidebar";
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import CalModify from "./CalModify";
+import NicnameModal from "./NicnameModal";
 
 const Settings = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
   return (
     <div>
+      <Grid>
+        <Grid>
+          <Button riant="outlined" onClick={openModal}>
+            이것은모달
+          </Button>
+        </Grid>
+        <NicnameModal open={modalOpen} close={closeModal} />
+      </Grid>
       <Grid
         container
         // spacing={3}
+        item
         xs={12}
         style={
           {
@@ -135,7 +153,7 @@ const Settings = () => {
         <Grid item xs={2}>
           <SettingSidebar contentHeight={"410px"} aspectRatio={"2"} />
         </Grid>
-        <Grid style={{ margin: "30px" }} xs={9}>
+        <Grid style={{ margin: "30px" }} item xs={8}>
           <CalModify />
           <Grid>
             {/* 안녕하세요 의원을 제명하려면 국회재적의원 3분의 2 이상의 찬성이
