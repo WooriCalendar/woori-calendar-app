@@ -22,13 +22,14 @@ const Category = () => {
       setCalendar(response.data);
     });
   }, []);
+
   return (
     <div>
       {calendar.map((item) => (
         <div key={item.calNo}>
           <Link to={`/calendar/${item.calNo}`}>
             <FormControlLabel
-              control={<Checkbox name={item.name} checked={item.comment} />}
+              control={<Checkbox name={item.name} checked={true} />}
               label={item.name}
             />
           </Link>
