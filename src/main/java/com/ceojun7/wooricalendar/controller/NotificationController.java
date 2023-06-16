@@ -1,5 +1,6 @@
 package com.ceojun7.wooricalendar.controller;
 
+import com.ceojun7.wooricalendar.dto.CalendarDTO;
 import com.ceojun7.wooricalendar.dto.NotificationDTO;
 import com.ceojun7.wooricalendar.dto.ResponseDTO;
 import com.ceojun7.wooricalendar.model.NotificationEntity;
@@ -77,12 +78,33 @@ public class NotificationController {
     public ResponseEntity<?> retrieveNotificationList(@AuthenticationPrincipal String email) {
         List<NotificationEntity> entities = service.retrieve(email);
 
+
+
         List<NotificationDTO> dtos = entities.stream().map(NotificationDTO::new).collect(Collectors.toList());
 
         ResponseDTO<NotificationDTO> response = ResponseDTO.<NotificationDTO>builder().data(dtos).build();
         log.info(String.valueOf(response));
         return ResponseEntity.ok().body(response);
     }
+    /**
+     * methodName : retrieveNotificationList
+     * comment : Put
+     * author : Hamdoson
+     * date : 2023-06-05
+     * description : 알림의 수신일자가 null 값일 시에 현재시간으로 업데이트
+     *
+     * @return the response entity
+     */
+    @PutMapping
+    public ResponseEntity<?> updateNotificationRdate(@RequestBody NotificationDTO dto) {
+        NotificationEntity entity = NotificationDTO.toEntity(dto);
+
+        List<NotificationEntity> entities = service.update(entity);
+        List<NotificationDTO> dtos = entities.stream().map(NotificationDTO::new).collect(Collectors.toList());
+        ResponseDTO<NotificationDTO> response = ResponseDTO.<NotificationDTO>builder().data(dtos).build();
+        return ResponseEntity.ok().body(response);
+    }
+
 
     /**
      * methodName : deleteNotificiation
