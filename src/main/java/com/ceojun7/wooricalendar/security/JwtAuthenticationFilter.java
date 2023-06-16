@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  **/
 @Slf4j
 @Component
-@PropertySource("classpath:../resources/application.properties")
+
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private TokenProvider tokenProvider;
