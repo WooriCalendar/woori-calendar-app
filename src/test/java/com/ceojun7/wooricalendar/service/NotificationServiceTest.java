@@ -95,6 +95,28 @@ class NotificationServiceTest {
         log.info("::::: Retrieve 종료 :::::");
     }
 
+    @DisplayName("알림 수신일자 업데이트")
+    @Test
+    void update(){
+        log.info("::::: Retrieve 실행 :::::");
+        NotificationEntity entity = notificationService.retrieve(notificationEntity.getRevEmail()).get(0);
+        log.info("::::: RevEmail을 이용해 조회한 데이터 :::::");
+        log.info("sendEmail :: " + entity.getSendEmail());
+        log.info("revEmail :: " + entity.getRevEmail());
+        log.info("comment :: " + entity.getComment());
+        log.info("type :: " + entity.getType());
+        log.info("calNo :: " + entity.getCalendarEntity().getCalNo());
+        log.info("이전 rDate :: " + entity.getRdate());
+        log.info("::::: Retrieve 종료 :::::");
+        log.info("::::: Update 실행 :::::");
+        notificationService.update(entity);
+        entity = notificationService.retrieve(notificationEntity.getRevEmail()).get(0);
+        log.info("변경된 rDate :: " + entity.getRdate());
+        log.info("::::: Update 종료 :::::");
+
+
+
+    }
     @DisplayName("알림번호를 통한 알림 삭제")
     @Test
     void delete() {

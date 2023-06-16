@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,8 +62,29 @@ public class NotificationService {
      * @param revEmail the rev email
      * @return the list
      */
-    public List<NotificationEntity> retrieve(String revEmail){
+    public List<NotificationEntity> retrieve(String revEmail) {
         return notificationRepository.findByRevEmail(revEmail);
+    }
+    /**
+     * methodName : update
+     * comment : 알림 수신 업데이트
+     * author : Hamdoson
+     * date : 2023-06-16
+     * description : rDate를 현재시간으로 업데이트 함으로서 수신일 생성
+     *
+     * @param entity the entity
+     * @return the list
+     */
+    public List<NotificationEntity> update(final NotificationEntity entity) {
+
+        final List<NotificationEntity> entities = notificationRepository.findByRevEmail(entity.getRevEmail());
+        for (int i = 0; i < entities.size(); i++) {
+            if (entities.get(i).getRdate() == null) {
+                entities.get(i).setRdate(new Date());
+                notificationRepository.save(entities.get(i));
+            }
+        }
+        return notificationRepository.findByRevEmail(entity.getRevEmail());
     }
 
     /**
@@ -78,7 +100,7 @@ public class NotificationService {
     public List<NotificationEntity> delete(final NotificationEntity entity) {
         try {
             notificationRepository.delete(entity);
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.error("error deleting entity ", entity.getRevEmail(), e);
             throw new RuntimeException("error deleting entity " + entity.getRevEmail());
         }
