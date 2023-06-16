@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import dayjs from 'dayjs';
 import {Button, Grid, MenuItem, Switch, TextField} from "@mui/material";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -12,48 +12,59 @@ import moment from 'moment';
 
 const ScheduleCreate = () => {
     const [switchToggle, setSwitchToggle] = useState(false);
-    const [schedule, setSchedule] = useState({title : '', comment : '', start : '', end : '', place : '', rrule : '', status : ''})
-    const [date, setDate] = useState(new Date());
+    const [calendars, setCalendars] = useState([]);
+    const dateRef = useRef(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
+    const [schedule, setSchedule] = useState({title : '', comment : '', start : dateRef.current, end : dateRef.current, calNo : '', place : '', rrule : '', status : ''})
+
+    useEffect(() => {
+        call("/calendar", "GET", null).then((response) => {
+            console.log("캘린더 데이터");
+            setCalendars(response.data);
+        });
+    }, []);
 
     const onTitleChange = (e) => {
         setSchedule({...schedule, title : e.target.value})
-        console.log(schedule)
     }
 
     const onSwitchChange = () => {
         setSwitchToggle(!switchToggle);
         setSchedule({...schedule, status: switchToggle})
-        console.log(switchToggle)
     }
 
     const onDateChange = (e) => {
-        setDate(moment(dayjs(e).$d).format("YYYY-MM-DD"))
-        setSchedule({...schedule, start: date, end : date})
-        console.log(moment(dayjs(e).$d).format("YYYY-MM-DD"))
+        // setDate(moment(dayjs(e).$d).format("YYYY-MM-DD"))
+        dateRef.current = moment(dayjs(e).$d).format("YYYY-MM-DD")
+        // setDate(dateRef.current)
+        setSchedule({...schedule, start: dateRef.current, end : dateRef.current})
     }
 
     const onTimeChange = (e) => {
-        setDate(moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss"))
-        setSchedule({...schedule, start: date, end : date})
-        console.log(moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss"))
+        // setDate(moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss"))
+        dateRef.current = moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss")
+        // setDate(dateRef.current)
+        setSchedule({...schedule, start: dateRef.current, end : dateRef.current})
     }
 
     const onFreqChange = (e) => {
         setSchedule({...schedule, rrule : {freq : e.target.value}})
-        console.log(schedule)
+    }
+
+    const onCalendarChange = (e) => {
+        setSchedule({...schedule, calNo: e.target.value})
     }
 
     const onPlaceChange = (e) => {
         setSchedule({...schedule, place : e.target.value})
-        console.log(schedule)
     }
 
     const onCommentChange = (e) => {
         setSchedule({...schedule, comment: e.target.value})
-        console.log(schedule)
     }
 
     const addSchedule = () => {
+        console.log(schedule)
+
         call("/schedule",  "POST", schedule)
             .then((response) => {
                 console.log(response.data)
@@ -61,6 +72,8 @@ const ScheduleCreate = () => {
 
         window.location.pathname = "/"
     }
+
+    console.log(schedule)
 
     return (
         <Grid container className={"main"} style={{ width : 400, margin: "0 auto", justifyContent : "center"}}>
@@ -83,9 +96,9 @@ const ScheduleCreate = () => {
                         <LocalizationProvider locale={ko} dateAdapter={AdapterDayjs}>
                             {
                                 switchToggle ?
-                                    (<DatePicker defaultValue={dayjs(date)} format={"YYYY-MM-DD"} onChange={onDateChange} /> )
+                                    (<DatePicker defaultValue={dayjs(new Date())} format={"YYYY-MM-DD"} onChange={onDateChange} /> )
                                         :
-                                    (<DesktopDateTimePicker defaultValue={dayjs(date)} format={"YYYY-MM-DD HH:mm:ss"} onChange={onTimeChange} />)
+                                    (<DesktopDateTimePicker defaultValue={dayjs(new Date())} format={"YYYY-MM-DD HH:mm:ss"} onChange={onTimeChange} />)
                             }
                         </LocalizationProvider>
                     </Grid>
@@ -102,6 +115,20 @@ const ScheduleCreate = () => {
                         <MenuItem value={"weekly"}>매주</MenuItem>
                         <MenuItem value={"monthly"}>매월</MenuItem>
                         <MenuItem value={"yearly"}>매년</MenuItem>
+                    </TextField>
+                </Grid>
+                <Grid container style={{ marginTop : 20 }}>
+                    <TextField
+                        select
+                        style={{ width : 400}}
+                        label={"캘린더"}
+                        onChange={onCalendarChange}
+                    >
+                        {
+                            calendars.map((calendar) => (
+                                <MenuItem value={calendar.calNo}>{calendar.name}</MenuItem>
+                            ))
+                        }
                     </TextField>
                 </Grid>
             </Grid>
