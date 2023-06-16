@@ -5,6 +5,9 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +26,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
  * 2023-06-01        DGeon             최초 생성
  **/
 @Service
+
+@PropertySource("classpath:../resources/application.properties")
 public class TokenProvider {
-    private static final String SECRET_KEY = "WOORI";
+
+    private String SECRET_KEY = "WOORI";
+
+    @Value("${ISSUER}")
+    private String ISSUER = "WOORI";
+
 
     /**
      * methodName : create
@@ -38,13 +48,14 @@ public class TokenProvider {
      * @return string
      */
     public String create(MemberEntity memberEntity) {
+        System.out.println("회원:::::::::::::"+SECRET_KEY);
         // 기한은 지금으로부터 1일로 설정
         Date expiryDate = Date.from(
                 Instant.now().plus(1, ChronoUnit.DAYS));
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .setSubject(memberEntity.getEmail())//원래 id였음
-                .setIssuer("Wa")
+                .setIssuer(ISSUER)
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .compact();
@@ -62,12 +73,13 @@ public class TokenProvider {
      * @return string
      */
     public String create(Authentication authentication) {
+        System.out.println("SECRET_KEY:::::::::::::"+SECRET_KEY);
         Date expiryDate = Date.from(
                 Instant.now().plus(1, ChronoUnit.DAYS));
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .setSubject(((ApplicationOAuth2User) authentication.getPrincipal()).getName())
-                .setIssuer("Wa")
+                .setIssuer(ISSUER)
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .compact();
@@ -99,7 +111,7 @@ public class TokenProvider {
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .setSubject(email)
-                .setIssuer("Wa")
+                .setIssuer(ISSUER)
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .compact();

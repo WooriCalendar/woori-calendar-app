@@ -166,6 +166,8 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+
+
     /**
      * methodName : updateMember
      * comment : 패스워드,닉네임, 서브이메일, 생년월일, 언어 수정
@@ -206,5 +208,4 @@ public class MemberController {
         return ResponseEntity.ok().body(resp);
 
     }
-
 }

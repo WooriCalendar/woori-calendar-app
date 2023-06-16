@@ -40,3 +40,4 @@ out/
 src/main/resources/application-datasource.yml
 src/main/resources/application-oauth2.yml
 src/main/resources/application-mail.yml
+src/main/resources/application.properties
