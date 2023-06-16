@@ -10,6 +10,7 @@ import PrivacyPolicyJa from "./PrivacyPolicyJa";
 import PrivacyPolicyKo from "./PrivacyPolicyKo";
 import PrivacyPolicyEn from "./PrivacyPolicyEn";
 import ScheduleCreate from "./ScheduleCreate";
+import CalendarCreate from "./CalendarCreate";
 
 /**
  * @author        : DGeon
@@ -40,6 +41,7 @@ const AppRouter = () => {
           <Route path="PrivacyPolicyKo" element={<PrivacyPolicyKo />} />
           <Route path="PrivacyPolicyJa" element={<PrivacyPolicyJa />} />
           <Route path={"schedule"} element={<ScheduleCreate/>} />
+          <Route path={"calendar"} element={<CalendarCreate/>} />
         </Routes>
       </BrowserRouter>
       <Box mt={5}>

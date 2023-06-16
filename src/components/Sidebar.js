@@ -32,6 +32,11 @@ const Sidebar = ({visible, aspectRatio, height, contentHeight}) => {
                             size="small"
                         />
                     </form>
+                    <Link to={"/calendar"}>
+                        <Button variant="contained" color="primary">
+                            캘린더추가버튼
+                        </Button>
+                    </Link>
                     <Category/>
                 </div>
                 )}
