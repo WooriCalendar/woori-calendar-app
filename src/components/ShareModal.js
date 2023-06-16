@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../src/ShareModal.css";
 import {
   Button,
@@ -11,17 +11,74 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
+import { call } from "../service/ApiService";
 
 const ShareModal = (props) => {
-  const { open, close, header } = props;
+  const { open, close } = props;
 
   const [grade, setGrade] = useState("");
+
+  // const [search, setSearch] = useState(false);
 
   const handleChange = (event) => {
     setGrade(event.target.value);
   };
 
-  // const han
+  // const asd = (event) => {
+  //   setSearch(true);
+  // };
+  // console.log("설치값", search);
+
+  // 이메일 검색
+  const [searchEmail, setSearchEmail] = useState();
+  useEffect(() => {
+    call("/member/signup", "GET", null).then((resp) => {
+      setSearchEmail(resp.data);
+      console.log(resp.data);
+    });
+  }, []);
+
+  // "." 입력 후 1초 표시
+  const handleKeyDown = (e) => {
+    if (e.key === ".") {
+      setTimeout(() => {
+        const inputValue = e.target.value;
+        const isEmailExists = searchEmail.includes(inputValue);
+        const emailCheckElement = document.getElementById("emailCheck");
+        if (isEmailExists) {
+          emailCheckElement.innerHTML = inputValue;
+        } else {
+          document.getElementById("emailCheck").innerText =
+            "This email is available";
+        }
+        console.log("1초");
+        console.log(searchEmail.includes(inputValue));
+      }, 1000);
+    }
+    document.addEventListener("keydown", handleKeyDown);
+  };
+
+  // 버튼 클릭 이벤트
+  const buttonOnClick = () => {
+    console.log(setSearchEmail);
+  };
+
+  //함준혁이씀 이 함수는 중복확인 하는 함수 요청을 보내고 받는다. 그에대한 값 확인
+  // const handleKeyDown = (e) => {
+  //   console.log("handleKeyDown 함수 실행");
+  //   console.log(e.target.value);
+
+  //   if (search === true) {
+  //     // Enter시 실행
+
+  //     call("/member/signup", "GET", null).then((resp) => {
+  //       setSearchEmail(resp.data);
+  //       console.log(resp.data);
+  //     });
+
+  //     console.log("enter");
+  //   }
+  // };
 
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
@@ -29,7 +86,7 @@ const ShareModal = (props) => {
       {open ? (
         <section>
           <header>
-            {header}
+            {/* {header} */}
             <span>특정 사용자와 공유</span>
             <button className="close" onClick={close}>
               <CloseIcon />
@@ -39,9 +96,11 @@ const ShareModal = (props) => {
             <div style={{ marginBottom: "20px" }}>
               <TextField
                 fullWidth
-                id="standard-basic"
+                // id="standard-basic"
                 label="이메일로 추가"
                 variant="standard"
+                // value={inputValue}
+                onChange={handleKeyDown}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -50,6 +109,9 @@ const ShareModal = (props) => {
                   ),
                 }}
               />
+              {/* 함준혁이만든거 */}
+              {/* <Button onClick={asd}>hihi</Button> */}
+              <Button id="emailCheck" onClick={buttonOnClick} />
             </div>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">권한</InputLabel>
