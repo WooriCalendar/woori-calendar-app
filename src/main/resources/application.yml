@@ -29,7 +29,6 @@ spring:
       - classpath:/application-datasource.yml
       - classpath:/application-oauth2.yml
       - classpath:/application-mail.yml
-      - classpath:/application.properties
 
 
 logging:
