@@ -25,6 +25,9 @@ const Notification = () => {
         call("/notification", "GET", null).then((response) => {
             console.log("데이터 조회 :: ", ...response.data);
             setNotification(response.data);
+            for(let i = 0; i < response.data; i++){
+                console.log("로그찍어보장", response.data.get(i).rdate());
+            }
             setCount(response.data.length);
         });
     }, []);
@@ -33,6 +36,15 @@ const Notification = () => {
 
     const handleIconClick = () => {
         setIsOpen(!isOpen);
+        if(!isOpen) {
+            const fetchData = async () => {
+                const response = await call("/notification", "put", ...notification);
+                console.log("변경된 데이터 조회 :: ", ...response.data);
+                // 변경된 데이터를 처리하는 로직 추가
+                setNotification(response.data);
+            };
+            fetchData();
+        }
     };
 
     const [selectedIndex, setSelectedIndex] = React.useState(1);
@@ -49,12 +61,18 @@ const Notification = () => {
         <div>
             <Button onClick={handleIconClick}>
                 <Badge badgeContent={count} color="secondary">
-                <FontAwesomeIcon icon={faBell} size="2xl" style={{color: "black",}}/>
+                    <FontAwesomeIcon icon={faBell} size="2xl" style={{color: "black",}}/>
                 </Badge>
             </Button>
             <div className="className" style={{position: "fixed", right: "200px", zIndex: 9999}}>
                 {isOpen && (
-                    <Box sx={{width: '100%', minWidth: 100, maxWidth: 999999999, bgcolor: 'background.paper', borderColor: '1px solid darkgray'}}>
+                    <Box sx={{
+                        width: '100%',
+                        minWidth: 100,
+                        maxWidth: 999999999,
+                        bgcolor: 'background.paper',
+                        borderColor: '1px solid darkgray'
+                    }}>
                         <List component="nav" aria-label="main mailbox folders">
                             {notification.map((item) => (
                                 <div key={item.ntNo}>
@@ -71,20 +89,6 @@ const Notification = () => {
                                 </div>
                             ))}
                         </List>
-                        {/*<List component="nav" aria-label="secondary mailbox folder">*/}
-                        {/*    <ListItemButton*/}
-                        {/*        selected={selectedIndex === 2}*/}
-                        {/*        onClick={(event) => handleListItemClick(event, 2)}*/}
-                        {/*    >*/}
-                        {/*        <ListItemText primary="Trash"/>*/}
-                        {/*    </ListItemButton>*/}
-                        {/*    <ListItemButton*/}
-                        {/*        selected={selectedIndex === 3}*/}
-                        {/*        onClick={(event) => handleListItemClick(event, 3)}*/}
-                        {/*    >*/}
-                        {/*        <ListItemText primary="Spam"/>*/}
-                        {/*    </ListItemButton>*/}
-                        {/*</List>*/}
                     </Box>
                 )}
             </div>
