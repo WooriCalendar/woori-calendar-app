@@ -140,4 +140,9 @@ public class MemberService {
                 .map(MemberEntity::getEmail)
                 .collect(Collectors.toList());
     }
+
+    public String findByEmail(MemberDTO memberDTO){
+        MemberEntity memberEntity = memberRepository.findByEmail(memberDTO.getEmail());
+        return memberEntity.getEmail();
+    }
 }
