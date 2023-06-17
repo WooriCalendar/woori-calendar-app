@@ -9,6 +9,7 @@ import CalModify from "./CalModify";
 import PrivacyPolicyJa from "./PrivacyPolicyJa";
 import PrivacyPolicyKo from "./PrivacyPolicyKo";
 import PrivacyPolicyEn from "./PrivacyPolicyEn";
+import Forgot from "./Forgotpassword";
 import ScheduleCreate from "./ScheduleCreate";
 import CalendarCreate from "./CalendarCreate";
 
