@@ -3,6 +3,7 @@ import {signin, socialLogin} from "../service/ApiService";
 import {Button, Container, Grid, TextField, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import LoginSvg from "./LoginSvg";
+import companyLogo from "../assets/logo(ver3).png";
 
 /**
  * @author        : DGeon
@@ -26,7 +27,7 @@ const Login = () => {
         console.log("password", password);
         signin({email: email, password: password}).then((resp) => {
             console.log("login", resp);
-            localStorage.setItem("email", email);
+            // localStorage.setItem("email", email); 로컬스토리지에 이메일만 저장 필요없어짐 
         });
     };
 
@@ -46,6 +47,12 @@ const Login = () => {
             maxWidth="xs"
             style={{marginTop: "8%", marginBottom: "2%"}}
         >
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <img src={companyLogo} alt="Woori. logo" style={{width: "100%", marginBottom: "10%"}}/>
+                </Grid>
+            </Grid>
+
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Typography component="h1" variant="h5" style={{marginBottom : "2%"}}>
