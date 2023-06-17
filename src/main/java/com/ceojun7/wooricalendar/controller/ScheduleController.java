@@ -55,7 +55,9 @@ public class ScheduleController {
         log.warn(String.valueOf(dto));
         try {
             ScheduleEntity entity = ScheduleDTO.toEntity(dto);
-            entity.setCalendarEntity(CalendarEntity.builder().calNo(calendarService.retrieveByEmail(email).stream().filter(calendarEntity -> calendarEntity.getName().equals(email)).collect(Collectors.toList()).get(0).getCalNo()).build());
+            if (dto.getCalNo() == null) {
+                entity.setCalendarEntity(CalendarEntity.builder().calNo(calendarService.retrieveByEmail(email).stream().filter(calendarEntity -> calendarEntity.getName().equals(email)).collect(Collectors.toList()).get(0).getCalNo()).build());
+            }
             List<ScheduleEntity> entities = service.create(entity);
             List<ScheduleDTO> dtos = entities.stream().map(ScheduleDTO::new).collect(Collectors.toList());
             ResponseDTO<ScheduleDTO> response = ResponseDTO.<ScheduleDTO>builder().data(dtos).build();

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -33,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  **/
 @Slf4j
 @Component
+
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private TokenProvider tokenProvider;
@@ -45,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (token != null && !token.equalsIgnoreCase("null")) {
                 String memberId = tokenProvider.validateAndGetId(token);
-                log.info("Authenticated userId : {}" + memberId);
+                log.info("Authenticated userId : {}" , memberId);
 
                 AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, null,
                         AuthorityUtils.NO_AUTHORITIES);

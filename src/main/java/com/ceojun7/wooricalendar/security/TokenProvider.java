@@ -24,7 +24,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
  **/
 @Service
 public class TokenProvider {
-    private static final String SECRET_KEY = "WOORI";
+
+    private static final String SECRET_KEY = "WOORI";//수정
+
 
     /**
      * methodName : create

@@ -32,6 +32,7 @@ public class CalendarDTO {
     private String timeZone;
     private Date regDate;
     private Date updateDate;
+    private String color;
 
     // entity > dto
     public CalendarDTO(final CalendarEntity entity) {
@@ -41,10 +42,11 @@ public class CalendarDTO {
         this.timeZone = entity.getTimezone();
         this.regDate = entity.getRegdate();
         this.updateDate = entity.getUpdatedate();
+        this.color = entity.getColor();
     }
 
     // dto > entity
     public static CalendarEntity toEntity(final CalendarDTO dto) {
-        return CalendarEntity.builder().calNo(dto.getCalNo()).name(dto.getName()).comment(dto.getComment()).timezone(dto.getTimeZone()).regdate(dto.getRegDate()).updatedate(dto.getUpdateDate()).build();
+        return CalendarEntity.builder().calNo(dto.getCalNo()).name(dto.getName()).comment(dto.getComment()).timezone(dto.getTimeZone()).regdate(dto.getRegDate()).updatedate(dto.getUpdateDate()).color(dto.getColor()).build();
     }
 }
