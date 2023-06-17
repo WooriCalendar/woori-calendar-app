@@ -1,5 +1,6 @@
 package com.ceojun7.wooricalendar.dto;
 
+import com.ceojun7.wooricalendar.model.MemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +35,14 @@ public class MemberDTO {
     private Date birthday;
 
 
-    public MemberDTO(String email) {
-        this.email = email;
+    public MemberDTO(final MemberEntity  memberEntity) {
+        this.email = memberEntity.getEmail();
+        this.password = memberEntity.getPassword();
     }
+
+    public static MemberEntity toEntity(final MemberDTO memberDTO) {
+        return  MemberEntity.builder().email(memberDTO.getEmail()).password(memberDTO.getPassword()).build();
+    }
+
+
 }
