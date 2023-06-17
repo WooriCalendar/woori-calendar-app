@@ -9,6 +9,7 @@ import CalModify from "./CalModify";
 import PrivacyPolicyJa from "./PrivacyPolicyJa";
 import PrivacyPolicyKo from "./PrivacyPolicyKo";
 import PrivacyPolicyEn from "./PrivacyPolicyEn";
+import Forgot from "./Forgotpassword";
 import ScheduleCreate from "./ScheduleCreate";
 import CalendarCreate from "./CalendarCreate";
 
@@ -40,6 +41,7 @@ const AppRouter = () => {
           <Route path="PrivacyPolicyEn" element={<PrivacyPolicyEn />} />
           <Route path="PrivacyPolicyKo" element={<PrivacyPolicyKo />} />
           <Route path="PrivacyPolicyJa" element={<PrivacyPolicyJa />} />
+          <Route path="Forgotpassword" element={<Forgot />}/>
           <Route path={"schedule"} element={<ScheduleCreate/>} />
           <Route path={"calendar"} element={<CalendarCreate/>} />
         </Routes>
