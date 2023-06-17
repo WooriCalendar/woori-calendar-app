@@ -77,13 +77,8 @@ public class NotificationController {
     @GetMapping
     public ResponseEntity<?> retrieveNotificationList(@AuthenticationPrincipal String email) {
         List<NotificationEntity> entities = service.retrieve(email);
-
-
-
         List<NotificationDTO> dtos = entities.stream().map(NotificationDTO::new).collect(Collectors.toList());
-
         ResponseDTO<NotificationDTO> response = ResponseDTO.<NotificationDTO>builder().data(dtos).build();
-        log.info(String.valueOf(response));
         return ResponseEntity.ok().body(response);
     }
     /**
