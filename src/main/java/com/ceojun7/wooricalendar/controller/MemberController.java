@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -157,16 +156,14 @@ public class MemberController {
      * 
      */
 
-    @GetMapping
-    public ResponseEntity<MemberDTO> getMemberByEmail(@AuthenticationPrincipal String email) {
+    @GetMapping("/{email}")
+    public ResponseEntity<MemberDTO> getMemberByEmail(@PathVariable String email) {
         MemberDTO memberDTO = memberService.getMemberByEmail(email);
         if (memberDTO != null) {
             return new ResponseEntity<>(memberDTO, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-
 
     /**
      * methodName : updateMember
@@ -180,9 +177,11 @@ public class MemberController {
      * 
      */
 
-    @PutMapping
-    public ResponseEntity<String> updateMember(@AuthenticationPrincipal String email,
+    @PutMapping("/{email}")
+    public ResponseEntity<String> updateMember(@PathVariable String email,
+            @RequestHeader("Authorization") String token,
             @RequestBody MemberDTO memberDTO) {
+
         boolean updated = memberService.updateMember(memberDTO);
         if (updated) {
             return new ResponseEntity<>("회원 정보가 성공적으로 업데이트되었습니다.", HttpStatus.OK);
@@ -200,12 +199,23 @@ public class MemberController {
      * @return response entity
      */
     @GetMapping("signup")
-    public ResponseEntity<?> getEmailList() {
+    public ResponseEntity<?> getEmailList(){
         log.warn("email 중복검사 :: get호출됨");
         List<String> entities = memberService.findeamil();
         ResponseDTO<String> resp = ResponseDTO.<String>builder().data(entities).build();
-        log.warn("넘겨주는 값 확인 :::" + String.valueOf(ResponseEntity.ok().body(resp)));
+        log.warn("넘겨주는 값 확인 :::"+String.valueOf(ResponseEntity.ok().body(resp)));
         return ResponseEntity.ok().body(resp);
 
     }
+
+    @PutMapping("updatePassword")
+    public ResponseEntity<String> updatePassword(@RequestBody MemberDTO memberDTO) {
+
+        boolean updated = memberService.updatePassword(memberDTO.getEmail(), passwordEncoder.encode(memberDTO.getPassword()));
+        if (updated) {
+            return new ResponseEntity<>("회원 정보가 성공적으로 업데이트되었습니다.", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+    }
+
 }

@@ -145,4 +145,14 @@ public class MemberService {
         MemberEntity memberEntity = memberRepository.findByEmail(memberDTO.getEmail());
         return memberEntity.getEmail();
     }
+
+    public boolean updatePassword(String email, String password) {
+        MemberEntity memberEntity = memberRepository.findByEmail(email);
+        if (memberEntity != null) {
+            memberEntity.setPassword(password);
+            memberRepository.save(memberEntity);
+            return true;
+        }
+        return false;
+    }
 }
