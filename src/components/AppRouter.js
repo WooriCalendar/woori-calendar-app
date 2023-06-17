@@ -41,6 +41,7 @@ const AppRouter = () => {
           <Route path="PrivacyPolicyEn" element={<PrivacyPolicyEn />} />
           <Route path="PrivacyPolicyKo" element={<PrivacyPolicyKo />} />
           <Route path="PrivacyPolicyJa" element={<PrivacyPolicyJa />} />
+          <Route path="Forgotpassword" element={<Forgot />}/>
           <Route path={"schedule"} element={<ScheduleCreate/>} />
           <Route path={"calendar"} element={<CalendarCreate/>} />
         </Routes>
