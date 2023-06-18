@@ -40,27 +40,31 @@ const ShareModal = (props) => {
 
   // "." 입력 후 1초 표시
   const handleKeyDown = (e) => {
-    if (e.key === ".") {
-      setTimeout(() => {
-        const inputValue = e.target.value;
-        const isEmailExists = searchEmail.includes(inputValue);
-        const emailCheckElement = document.getElementById("emailCheck");
-        if (isEmailExists) {
-          emailCheckElement.innerHTML = inputValue;
-        } else {
-          document.getElementById("emailCheck").innerText =
-            "This email is available";
-        }
-        console.log("1초");
-        console.log(searchEmail.includes(inputValue));
-      }, 1000);
+    if (e.key === "Enter") {
+      // setTimeout(() => {
+      const inputValue = e.target.value;
+      const isEmailExists = searchEmail.includes(inputValue);
+      if (isEmailExists) {
+        document.getElementById(
+          "emailCheck"
+        ).innerHTML = `<button>${inputValue}</button>`;
+      } else {
+        // document.innerText = "검색 결과가 없습니다.";
+        document.getElementById("emailCheck").innerText =
+          "검색 결과가 없습니다.";
+      }
+      // console.log("1초");
+      console.log(inputValue);
+      console.log(searchEmail.includes(inputValue));
+      // }, 1000);
     }
     document.addEventListener("keydown", handleKeyDown);
   };
 
   // 버튼 클릭 이벤트
-  const buttonOnClick = () => {
-    console.log(setSearchEmail);
+  const invite = () => {
+    let email = document.getElementById("emailCheck").value;
+    console.log(email);
   };
 
   //함준혁이씀 이 함수는 중복확인 하는 함수 요청을 보내고 받는다. 그에대한 값 확인
@@ -111,7 +115,12 @@ const ShareModal = (props) => {
               />
               {/* 함준혁이만든거 */}
               {/* <Button onClick={asd}>hihi</Button> */}
-              <Button id="emailCheck" onClick={buttonOnClick} />
+              {/* <button id="emailCheckButton" onClick={buttonOnClick} /> */}
+
+              <div
+                id="emailCheck"
+                style={{ color: "red", fontSize: "12px" }}
+              ></div>
             </div>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">권한</InputLabel>
@@ -128,7 +137,7 @@ const ShareModal = (props) => {
             </FormControl>
           </main>
           <footer>
-            <Button variant="contained" className="invite">
+            <Button variant="contained" className="invite" onClick={invite}>
               초대
             </Button>
           </footer>
