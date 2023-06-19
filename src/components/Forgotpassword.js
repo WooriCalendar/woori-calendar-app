@@ -50,7 +50,7 @@ const Forgotpassword = () => {
     })
 
 
-    const handleEmail = (e) => {
+    const handleEmail = () => {
         setLoding(false);
         // emailRef.current = document.getElementById('email').value;
         // let email = emailRef.current;
@@ -167,8 +167,8 @@ const Forgotpassword = () => {
                             <ForgotTextField value={{value: "email", btnSendEmailDisabled : btnSendEmailDisabled}} onChange={handleEmailChange} />
                             <div id="emailCheck" style={{color: "red"}}></div>
                             {loding ? (
-                                <Button onClick={handleEmail} id="sendEmail" disabled={sendEmailDisabled} >인증번호
-                                    발송</Button>
+                                <Button onClick={handleEmail} id="sendEmail" disabled={sendEmailDisabled} >
+                                    Send verification code</Button>
                             ) : (
                                 <div style={{width : 400, textAlign : "center", marginTop : 20}}>
                                     <div style={{display : "inline-block"}}>
@@ -186,10 +186,10 @@ const Forgotpassword = () => {
                             {isCodeVisible ? (
                                 <div>
                                     <ForgotTextField value={{value: "code", sendCodeDisabled:sendCodeDisabled}} onChange={handleCodeChange}/>
-                                    <Button id="confirm" onClick={confirm} disabled={sendCodeDisabled}>인증확인</Button>
+                                    <Button id="confirm" onClick={confirm} disabled={sendCodeDisabled}>Confirm verification code</Button>
                                 </div>) : ''
                             }
-                            <Button fullWidth variant="contained" color="success" id={"resetBtn"} onClick={resetBtn} style={{display}} >다시 입력하기</Button>
+                            <Button fullWidth variant="contained" color="success" id={"resetBtn"} onClick={resetBtn} style={{display}} >reset</Button>
 
                             {/*loading ? ( <h1>메일 발송중..</h1> ):''*/}
                         </div>
