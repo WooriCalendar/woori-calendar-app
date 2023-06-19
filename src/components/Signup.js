@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Container, Grid, Typography} from "@mui/material";
-import {call, signup, signupemail} from "../service/ApiService";
+import {call, findemail, signup, signupemail} from "../service/ApiService";
 import companyLogo from "../assets/logo(ver3).png";
 import SignupTextField from "./SignupTextField";
 import "slick-carousel/slick/slick.css";
@@ -13,6 +13,8 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {ko} from "date-fns/locale";
 import '../css/fullWidth.css';
+import ForgotTextField from "./ForgotTextField";
+import {TailSpin} from "react-loader-spinner";
 /**
  * @author: DGeon
  * @comment: 회원가입 폼을 위한 컴포넌트
@@ -39,17 +41,31 @@ const Signup = () => {
     const [btnDatePickerDisabled, setBtnDatePickerDisabled] = useState(true);
     const [checkEmail, setCheckEmail] = useState();
 
+
+    const [emailConfirm, setEmailConfirm] = useState();
+
+    const [loding, setLoding] = useState(true);
+    const [sendEmailDisabled, setSendEmailDisabled] = useState(false);
+    const [sendCodeDisabled, setSendCodeDisabled] = useState(false);
+    const [sendCodeConfirmDisabled, setSendCodeConfirmDisabled] = useState(false);
+    const [display, setDisplay] = useState('none');
+
     const settings = {
         infinite: false,
         speed: 500,
         slidesToShow: 1,
         draggable: false
     };
-    useEffect(() => {
-        call("/member/signup", "GET", null).then((response) => {
-            setCheckEmail(response.data);
-        });
-    }, []);
+    // useEffect(() => {
+    //     call("/member/signup", "GET", null).then((response) => {
+    //         setCheckEmail(response.data);
+    //     });
+    // }, []);
+
+    useEffect(()=>{
+        setEmail(document.getElementById('email').value);
+        console.log(email);
+    }, [email]);
 
     /**
      * @author: DGeon
@@ -102,32 +118,50 @@ const Signup = () => {
 
     }
     const handleEmail = () => {
-        emailRef.current = document.getElementById('email').value;
-        let email = emailRef.current;
-        console.log(" emailRef.current :: " + emailRef.current);
-        console.log(" email :: " + email);
-        console.log("발송전");
+        // emailRef.current = document.getElementById('email').value;
+        // let email = emailRef.current;
+        setLoding(false);
+        setBtnSendEmailDisabled(true);
+        // console.log(" emailRef.current :: " + emailRef.current);
+        // console.log(" email :: " + email);
+        // console.log("발송전");
+        call("/member/findemail", "POST", {email}).then((resp)=>{
 
-        const inputValue = emailRef.current;
-        const isEmailExists = checkEmail.includes(inputValue);
+            if(!resp.email) {
+                document.getElementById('emailCheck').innerText = "This email is available";
+                // setBtnSendEmailDisabled(true);
+                setTimeout(() => {
+                    signupemail({email}).then((resp) => {
+                        setCode(resp);
+                        setIsCodeVisible(true);
+                        setLoding(true);
+                        setDisplay('block');
+                    });
 
-        console.log(inputValue);
-        if (isEmailExists) {
-            document.getElementById('emailCheck').innerText = "Duplicate emails exist.";//중복
-
-        } else {
-            document.getElementById('emailCheck').innerText = "This email is available";
-
-            setTimeout(() => {
-                signupemail({email}).then((resp) => {
-                    console.log("발송");
-                    setCode(resp);
-                    console.log(code);
                 });
-                setIsCodeVisible(true);
-            }, 100);
-            setBtnSendEmailDisabled(false);
-        }
+
+                //이메일 사용가능
+            }else{
+                //중복된 이메일
+                document.getElementById('emailCheck').innerText = "Duplicate emails exist.";
+                setLoding(true);
+                setBtnSendEmailDisabled(false);
+            }
+        });
+
+        // const inputValue = emailRef.current;
+        // const isEmailExists = checkEmail.includes(inputValue);
+        //
+        // console.log(inputValue);
+        // if (isEmailExists) {
+        //     document.getElementById('emailCheck').innerText = "Duplicate emails exist.";//중복
+        //
+        // } else {
+        //     document.getElementById('emailCheck').innerText = "This email is available";
+        //
+        //
+        //     setBtnSendEmailDisabled(false);
+        // }
 
 
     }
@@ -139,27 +173,38 @@ const Signup = () => {
         if (code === confirmCode) {
             console.log("일치함");
             setButtonDisabled(false);
+            setSendEmailDisabled(true);
+            setSendCodeDisabled(true);
+            setSendCodeConfirmDisabled(true);
         } else {
             alert("It doesn't match. please verify again");
         }
     }
 
-    const handleTextFieldBlur = (event) => {
-        // const inputValue = event.target.value;
-        // const isEmailExists = checkEmail.includes(inputValue);
-        //
-        // if (isEmailExists) {
-        //     document.getElementById('emailCheck').innerText = "Duplicate emails exist.";//중복
-        //
-        // } else {
-        //     document.getElementById('emailCheck').innerText = "This email is available";
-        //     setBtnSendEmailDisabled(false);
-        // }
-    };
     const languageCode = window.navigator.language.slice(0, 2);
     // const languageCode = "ja";
     //   const languageCode = "en";
 
+    const resetBtn = (e)=>{
+        document.getElementById('email').value="";
+        document.getElementById('code').value=null;
+        setSendEmailDisabled(false);
+        setSendCodeDisabled(false);
+        setBtnSendEmailDisabled(false);
+        setSendCodeConfirmDisabled(false)
+
+        e.target.display = "block";
+    }
+
+    const handleEmailChange = (Email) => {
+        setEmail(Email);
+        console.log(Email);
+    };
+
+    const handleCodeChange = (code) => {
+        setCode(code);
+        console.log(code);
+    };
     return (
         <Container component="main" maxWidth="xs" style={{marginTop: "8%"}}>
             <Grid container spacing={2}>
@@ -200,17 +245,30 @@ const Signup = () => {
 
                         <Slider ref={sliderRef} {...settings} style={{height: "10%"}}>
                             <div>
-                                <SignupTextField value="email" checkEmail={handleTextFieldBlur}/>
+                                <ForgotTextField value={{ value:"email", btnSendEmailDisabled : btnSendEmailDisabled}} onChange={handleEmailChange}/>
                                 <div id="emailCheck" style={{color: "red"}}></div>
-                                <Button onClick={handleEmail} disabled={btnSendEmailDisabled} id="sendEmail">인증번호
-                                    발송</Button>
+                                {loding ? (
+                                <Button onClick={handleEmail} id="sendEmail">
+                                    Send verification code</Button>
+                                ) : (
+                                    <div style={{width : 400, textAlign : "center", marginTop : 20}}>
+                                        <div style={{display : "inline-block"}}>
+                                            <TailSpin
+                                                color="#7cc6ff"
+                                                height={50}
+                                                width={50}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
                                 {isCodeVisible ? (
                                     <div>
-                                        <SignupTextField value="code"/>
-                                        <Button id="confirm" onClick={confirm}>인증확인</Button>
+                                        <ForgotTextField value={{value: "code", sendCodeDisabled:sendCodeDisabled}} onChange={handleCodeChange}/>
+                                        <Button id="confirm" onClick={confirm}>Confirm verification code</Button>
                                     </div>) : ''
                                 }
                                 {/*loading ? ( <h1>메일 발송중..</h1> ):''*/}
+                                <Button fullWidth variant="contained" color="success" id={"resetBtn"} onClick={resetBtn} style={{display}} >reset</Button>
                             </div>
                             <div>
                                 <SignupTextField value="password"/>
