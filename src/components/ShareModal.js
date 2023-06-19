@@ -11,13 +11,18 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { call } from "../service/ApiService";
+import { call, inviteEmail } from "../service/ApiService";
 
 const ShareModal = (props) => {
-  const { open, close } = props;
+  const { open, close, calNo, name } = props;
 
   const [grade, setGrade] = useState("");
+  const [email, setEmail] = useState();
+  const [code, setCode] = useState();
+  const [isCodeVisible, setIsCodeVisible] = useState(false);
 
+  console.log({ calNo });
+  console.log({ name });
   // const [search, setSearch] = useState(false);
 
   const handleChange = (event) => {
@@ -47,7 +52,9 @@ const ShareModal = (props) => {
       if (isEmailExists) {
         document.getElementById(
           "emailCheck"
-        ).innerHTML = `<button>${inputValue}</button>`;
+        ).innerHTML = `<button id="email">${inputValue}</button>`;
+        setEmail(e.target.value);
+        // alert(email);
       } else {
         // document.innerText = "검색 결과가 없습니다.";
         document.getElementById("emailCheck").innerText =
@@ -61,10 +68,19 @@ const ShareModal = (props) => {
     document.addEventListener("keydown", handleKeyDown);
   };
 
-  // 버튼 클릭 이벤트
+  // 캘린더 초대 이벤트
   const invite = () => {
-    let email = document.getElementById("emailCheck").value;
-    console.log(email);
+    // const email = document.getElementById("email").value;
+    console.log("메일 : ", email);
+    console.log("캘린더 번호 : ", calNo);
+    console.log("캘린더 이름 : ", name);
+    setTimeout(() => {
+      inviteEmail({ email, calNo, name }).then((resp) => {
+        console.log("발송");
+        setCode(resp);
+        console.log(code);
+      });
+    }, 100);
   };
 
   //함준혁이씀 이 함수는 중복확인 하는 함수 요청을 보내고 받는다. 그에대한 값 확인
@@ -137,7 +153,7 @@ const ShareModal = (props) => {
             </FormControl>
           </main>
           <footer>
-            <Button variant="contained" className="invite" onClick={invite}>
+            <Button variant="contained" id="invite" onClick={invite}>
               초대
             </Button>
           </footer>
