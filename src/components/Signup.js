@@ -50,6 +50,9 @@ const Signup = () => {
     const [sendCodeConfirmDisabled, setSendCodeConfirmDisabled] = useState(false);
     const [display, setDisplay] = useState('none');
 
+    const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
+    const passwordRegEx = /^[A-Za-z0-9]{8,20}$/
+
     const settings = {
         infinite: false,
         speed: 500,
@@ -84,13 +87,17 @@ const Signup = () => {
                 document.getElementById('email').value = "";
                 sliderRef.current.slickNext();
             } else if (isPassVisible) {
-                if (document.getElementById('password').value === document.getElementById('passwordcheck').value) {
-                    setPassword(document.getElementById('password').value);
-                    setIsPassVisible(false);
-                    document.getElementById('password').value = "";
-                    sliderRef.current.slickNext();
-                } else {
-                    document.getElementById('passwordOut').innerText = "Passwords do not match.";
+                if(passwordRegEx.test(document.getElementById('password').value) || passwordRegEx.test(document.getElementById('passwordcheck').value)) {
+                    if (document.getElementById('password').value === document.getElementById('passwordcheck').value) {
+                        setPassword(document.getElementById('password').value);
+                        setIsPassVisible(false);
+                        document.getElementById('password').value = "";
+                        sliderRef.current.slickNext();
+                    } else {
+                        document.getElementById('passwordOut').innerText = "Passwords do not match.";
+                    }
+                }else {
+                    document.getElementById('passwordOut').innerText = "Please enter a password between 8 and 20 characters with a mixture of uppercase and lowercase letters and numbers.";
                 }
             } else if (isNicknameVisible) {
                 setNickname(document.getElementById('nickname').value);
@@ -125,9 +132,9 @@ const Signup = () => {
         // console.log(" emailRef.current :: " + emailRef.current);
         // console.log(" email :: " + email);
         // console.log("발송전");
-        call("/member/findemail", "POST", {email}).then((resp)=>{
-
-            if(!resp.email) {
+        if(emailRegEx.test(email)) {
+        call("/member/findemail", "POST", {email}).then((resp)=> {
+            if (!resp.email) {
                 document.getElementById('emailCheck').innerText = "This email is available";
                 // setBtnSendEmailDisabled(true);
                 setTimeout(() => {
@@ -141,13 +148,21 @@ const Signup = () => {
                 });
 
                 //이메일 사용가능
-            }else{
+            } else {
                 //중복된 이메일
                 document.getElementById('emailCheck').innerText = "Duplicate emails exist.";
                 setLoding(true);
                 setBtnSendEmailDisabled(false);
             }
         });
+        }else{
+            setLoding(true);
+            setBtnSendEmailDisabled(false);
+            document.getElementById('emailCheck').innerText = "다릅니다";
+        }
+
+
+
 
         // const inputValue = emailRef.current;
         // const isEmailExists = checkEmail.includes(inputValue);
