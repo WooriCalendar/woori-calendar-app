@@ -1,6 +1,4 @@
 import * as React from 'react';
-import MenuItem from '@mui/material/MenuItem';
-import Select, {SelectChangeEvent} from '@mui/material/Select';
 import Badge from '@mui/material/Badge';
 import {faBell} from "@fortawesome/free-regular-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -8,13 +6,12 @@ import {useEffect, useState} from "react";
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import InboxIcon from '@mui/icons-material/Inbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import {Button} from "@mui/material";
+import {Avatar, Button, css, ListItem, ListItemAvatar, ListItemText, Typography} from "@mui/material";
 import {call} from "../service/ApiService";
+import moment from "moment/moment";
+import '../css/./Notification.css';
+import {TransitionGroup, CSSTransition} from "react-transition-group";
 
 const Notification = () => {
     const [notification, setNotification] = useState([]);
@@ -23,12 +20,8 @@ const Notification = () => {
 
     useEffect(() => {
         call("/notification", "GET", null).then((response) => {
-            console.log("데이터 조회 :: ", ...response.data);
             setNotification(response.data);
-            for(let i = 0; i < response.data; i++){
-                console.log("로그찍어보장", response.data.get(i).rdate());
-            }
-            setCount(response.data.length);
+            setCount(response.data.filter(item => item.rdate == null).length);
         });
     }, []);
 
@@ -36,7 +29,7 @@ const Notification = () => {
 
     const handleIconClick = () => {
         setIsOpen(!isOpen);
-        if(!isOpen) {
+        if (!isOpen) {
             const fetchData = async () => {
                 const response = await call("/notification", "put", ...notification);
                 console.log("변경된 데이터 조회 :: ", ...response.data);
@@ -56,7 +49,6 @@ const Notification = () => {
         setSelectedIndex(index);
     };
 
-
     return (
         <div>
             <Button onClick={handleIconClick}>
@@ -65,14 +57,17 @@ const Notification = () => {
                 </Badge>
             </Button>
             <div className="className" style={{position: "fixed", right: "200px", zIndex: 9999}}>
+                <TransitionGroup>
                 {isOpen && (
+                    <CSSTransition timeout={300} classNames="notification-fade">
                     <Box sx={{
                         width: '100%',
                         minWidth: 100,
                         maxWidth: 999999999,
                         bgcolor: 'background.paper',
-                        borderColor: '1px solid darkgray'
+                        // borderLeft: '1px solid #444444',
                     }}>
+                        <Divider/>
                         <List component="nav" aria-label="main mailbox folders">
                             {notification.map((item) => (
                                 <div key={item.ntNo}>
@@ -80,17 +75,52 @@ const Notification = () => {
                                         selected={selectedIndex === 0}
                                         onClick={(event) => handleListItemClick(event, item.ntNo)}
                                     >
-                                        <ListItemIcon>
-                                            <InboxIcon/>
-                                        </ListItemIcon>
-                                        <ListItemText primary={item.comment}/>
+                                        <List sx={{width: '100%', maxWidth: 360}}>
+                                            <ListItem alignItems="flex-start">
+                                                <ListItemAvatar>
+                                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>
+                                                </ListItemAvatar>
+                                                <ListItemText
+                                                    primary={
+                                                        <React.Fragment>
+                                                            <Typography
+                                                                sx={{display: 'flex', justifyContent: 'space-between'}}
+                                                            >
+                                                                <span
+                                                                    style={{wordWrap: 'break-word'}}>{item.comment}</span>
+                                                                <span><Typography color="red" variant="caption"
+                                                                                  display="block"
+                                                                                  gutterBottom>
+            {new Date(item.rdate) > new Date(Date.now() - 100) ? "New!" : ""}
+      </Typography></span>
+                                                            </Typography>
+                                                        </React.Fragment>
+                                                    }
+                                                    secondary={
+                                                        <React.Fragment>
+                                                            <Typography
+                                                                sx={{display: 'inline'}}
+                                                                component="span"
+                                                                variant="body2"
+                                                                color="text.primary"
+                                                            >
+                                                                {item.sendEmail}
+                                                            </Typography>
+                                                            {" — " + moment(new Date(item.sdate)).format("YYYY-MM-DD HH:mm:ss")}
+                                                        </React.Fragment>
+                                                    }
+                                                />
+                                            </ListItem>
+                                        </List>
                                     </ListItemButton>
-                                    <Divider/>
+                                        <Divider/>
                                 </div>
                             ))}
                         </List>
                     </Box>
+                    </CSSTransition>
                 )}
+                </TransitionGroup>
             </div>
         </div>
     );

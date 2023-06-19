@@ -35,7 +35,7 @@ const Signup = () => {
     const [isCodeVisible, setIsCodeVisible] = useState(false);
     const sliderRef = useRef(null);
     const [buttonDisabled, setButtonDisabled] = useState(true);
-    const [btnSendEmailDisabled, setBtnSendEmailDisabled] = useState(true);
+    const [btnSendEmailDisabled, setBtnSendEmailDisabled] = useState(false);
     const [btnDatePickerDisabled, setBtnDatePickerDisabled] = useState(true);
     const [checkEmail, setCheckEmail] = useState();
 
@@ -95,7 +95,6 @@ const Signup = () => {
                 document.getElementById('handleButton').innerText = "Account Create";
             }
         } else {
-
             signup({email, password, nickname, subemail, birthday, language}).then(() => {
                 window.location.href = "/login";
             });
@@ -109,15 +108,28 @@ const Signup = () => {
         console.log(" email :: " + email);
         console.log("발송전");
 
-        setTimeout(() => {
-            signupemail({email}).then((resp) => {
-                console.log("발송");
-                setCode(resp);
-                console.log(code);
-            });
-            setIsCodeVisible(true);
-        }, 100);
-        console.log("발송완료");
+        const inputValue = emailRef.current;
+        const isEmailExists = checkEmail.includes(inputValue);
+
+        console.log(inputValue);
+        if (isEmailExists) {
+            document.getElementById('emailCheck').innerText = "Duplicate emails exist.";//중복
+
+        } else {
+            document.getElementById('emailCheck').innerText = "This email is available";
+
+            setTimeout(() => {
+                signupemail({email}).then((resp) => {
+                    console.log("발송");
+                    setCode(resp);
+                    console.log(code);
+                });
+                setIsCodeVisible(true);
+            }, 100);
+            setBtnSendEmailDisabled(false);
+        }
+
+
     }
 
     const confirm = () => {
@@ -133,17 +145,16 @@ const Signup = () => {
     }
 
     const handleTextFieldBlur = (event) => {
-        const inputValue = event.target.value;
-        const isEmailExists = checkEmail.includes(inputValue);
-
-        if (isEmailExists) {
-            document.getElementById('emailCheck').innerText = "Duplicate emails exist.";
-
-        } else {
-            document.getElementById('emailCheck').innerText = "This email is available";
-            setBtnSendEmailDisabled(false);
-
-        }
+        // const inputValue = event.target.value;
+        // const isEmailExists = checkEmail.includes(inputValue);
+        //
+        // if (isEmailExists) {
+        //     document.getElementById('emailCheck').innerText = "Duplicate emails exist.";//중복
+        //
+        // } else {
+        //     document.getElementById('emailCheck').innerText = "This email is available";
+        //     setBtnSendEmailDisabled(false);
+        // }
     };
     const languageCode = window.navigator.language.slice(0, 2);
     // const languageCode = "ja";

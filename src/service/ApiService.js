@@ -88,3 +88,10 @@ export function signupemail(emailPostDto) {
         return resp.code;
     });
 }
+
+export function signuppassword(emailPostDto) {
+    return call("/sendmail/password", "POST", emailPostDto).then((resp)=>{
+        console.log("ApiService::" + resp.code);
+        return resp.code;
+    });
+}
