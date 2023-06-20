@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../src/ShareModal.css";
 import {
   Button,
@@ -11,17 +11,94 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
+import { call, inviteEmail } from "../service/ApiService";
 
 const ShareModal = (props) => {
-  const { open, close, header } = props;
+  const { open, close, calNo, name } = props;
 
   const [grade, setGrade] = useState("");
+  const [email, setEmail] = useState();
+  const [code, setCode] = useState();
+  const [isCodeVisible, setIsCodeVisible] = useState(false);
+
+  console.log({ calNo });
+  console.log({ name });
+  // const [search, setSearch] = useState(false);
 
   const handleChange = (event) => {
     setGrade(event.target.value);
   };
 
-  // const han
+  // const asd = (event) => {
+  //   setSearch(true);
+  // };
+  // console.log("설치값", search);
+
+  // 이메일 검색
+  const [searchEmail, setSearchEmail] = useState();
+  useEffect(() => {
+    call("/member/signup", "GET", null).then((resp) => {
+      setSearchEmail(resp.data);
+      console.log(resp.data);
+    });
+  }, []);
+
+  // "." 입력 후 1초 표시
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      // setTimeout(() => {
+      const inputValue = e.target.value;
+      const isEmailExists = searchEmail.includes(inputValue);
+      if (isEmailExists) {
+        document.getElementById(
+          "emailCheck"
+        ).innerHTML = `<button id="email">${inputValue}</button>`;
+        setEmail(e.target.value);
+        // alert(email);
+      } else {
+        // document.innerText = "검색 결과가 없습니다.";
+        document.getElementById("emailCheck").innerText =
+          "검색 결과가 없습니다.";
+      }
+      // console.log("1초");
+      console.log(inputValue);
+      console.log(searchEmail.includes(inputValue));
+      // }, 1000);
+    }
+    document.addEventListener("keydown", handleKeyDown);
+  };
+
+  // 캘린더 초대 이벤트
+  const invite = () => {
+    // const email = document.getElementById("email").value;
+    console.log("메일 : ", email);
+    console.log("캘린더 번호 : ", calNo);
+    console.log("캘린더 이름 : ", name);
+    setTimeout(() => {
+      inviteEmail({ email, calNo, name }).then((resp) => {
+        console.log("발송");
+        setCode(resp);
+        console.log(code);
+      });
+    }, 100);
+  };
+
+  //함준혁이씀 이 함수는 중복확인 하는 함수 요청을 보내고 받는다. 그에대한 값 확인
+  // const handleKeyDown = (e) => {
+  //   console.log("handleKeyDown 함수 실행");
+  //   console.log(e.target.value);
+
+  //   if (search === true) {
+  //     // Enter시 실행
+
+  //     call("/member/signup", "GET", null).then((resp) => {
+  //       setSearchEmail(resp.data);
+  //       console.log(resp.data);
+  //     });
+
+  //     console.log("enter");
+  //   }
+  // };
 
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
@@ -29,7 +106,7 @@ const ShareModal = (props) => {
       {open ? (
         <section>
           <header>
-            {header}
+            {/* {header} */}
             <span>특정 사용자와 공유</span>
             <button className="close" onClick={close}>
               <CloseIcon />
@@ -39,9 +116,11 @@ const ShareModal = (props) => {
             <div style={{ marginBottom: "20px" }}>
               <TextField
                 fullWidth
-                id="standard-basic"
+                // id="standard-basic"
                 label="이메일로 추가"
                 variant="standard"
+                // value={inputValue}
+                onChange={handleKeyDown}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -50,6 +129,14 @@ const ShareModal = (props) => {
                   ),
                 }}
               />
+              {/* 함준혁이만든거 */}
+              {/* <Button onClick={asd}>hihi</Button> */}
+              {/* <button id="emailCheckButton" onClick={buttonOnClick} /> */}
+
+              <div
+                id="emailCheck"
+                style={{ color: "red", fontSize: "12px" }}
+              ></div>
             </div>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">권한</InputLabel>
@@ -66,7 +153,7 @@ const ShareModal = (props) => {
             </FormControl>
           </main>
           <footer>
-            <Button variant="contained" className="invite">
+            <Button variant="contained" id="invite" onClick={invite}>
               초대
             </Button>
           </footer>

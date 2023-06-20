@@ -69,7 +69,7 @@ const CalModify = () => {
 
   // calNo로 기존에 입력된 캘린더 가져오기
   useEffect(() => {
-    call("/calendar", "GET", null).then((response) => {
+    call("/calendar/" + calNo, "GET", null).then((response) => {
       console.log("캘린더 데이터");
       console.log("333333333", response);
       setCalendar(response.data);
@@ -244,7 +244,14 @@ const CalModify = () => {
             사용자 초대
           </Button>
         </div>
-        <ShareModal open={modalOpen} close={closeModal} />
+        {calendar.map((item) => (
+          <ShareModal
+            open={modalOpen}
+            close={closeModal}
+            calNo={calNo}
+            name={item.name}
+          />
+        ))}
         <div style={{ textAlign: "left", margin: "20px" }}>
           <Button variant="text">구독 취소</Button>
           <Button variant="text" color="error">
