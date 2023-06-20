@@ -39,7 +39,7 @@ const Forgotpassword = () => {
     };
 
     const [loding, setLoding] = useState(true);
-
+    const passwordRegEx = /^[A-Za-z0-9]{8,20}$/
     useEffect(()=>{
         setEmail(document.getElementById('email').value);
         console.log(email);
@@ -50,25 +50,35 @@ const Forgotpassword = () => {
     })
 
 
-    const handleEmail = (e) => {
+    const handleEmail = () => {
         setLoding(false);
         // emailRef.current = document.getElementById('email').value;
         // let email = emailRef.current;
         // console.log(" emailRef.current :: " + emailRef.current);
         console.log("발송전");
         setBtnSendEmailDisabled(true);
-        setTimeout(() => {
-            signuppassword({email}).then((resp) => {
-                console.log("발송완료");
-                setCode(resp);
-                console.log(code);
-                setEmailConfirm(email);
-                setDisplay('block');
+        call("/member/findemail", "POST",
+            {email}).then((resp)=> {
+            if(resp.email) {
+                setTimeout(() => {
+                    signuppassword({email}).then((resp) => {
+                        console.log("발송완료");
+                        setCode(resp);
+                        console.log(code);
+                        setEmailConfirm(email);
+                        setDisplay('block');
 
-                setIsCodeVisible(true);
+                        setIsCodeVisible(true);
+                        setLoding(true);
+                    });
+                }, 100);
+            }else{
+                //중복된 이메일
+                document.getElementById('emailCheck').innerText = "This email is missing.";
                 setLoding(true);
-            });
-        }, 100);
+                setBtnSendEmailDisabled(false);
+            }
+        });
     }
 
 
@@ -104,18 +114,22 @@ const Forgotpassword = () => {
     }
     const nextBtn = (event)=>{
         sliderRef.current.slickNext();
-        if (document.getElementById('password').value === document.getElementById('passwordcheck').value) {
-            // setPassword(document.getElementById('password').value);
-            document.getElementById('nextBtn').innerText="Change Password";
-            setIsCheck(true);
-        }else {
+        event.preventDefault();
+        if(passwordRegEx.test(document.getElementById('password').value) && passwordRegEx.test(document.getElementById('passwordcheck').value)) {
+            if (document.getElementById('password').value === document.getElementById('passwordcheck').value) {
+                event.preventDefault();
+                // setPassword(document.getElementById('password').value);
+                document.getElementById('nextBtn').innerText = "Change Password";
+                setIsCheck(true);
+            } else {
+                event.preventDefault();
+                document.getElementById('passwordOut').innerText = "Passwords do not match.";
+            }
+        }else{
             event.preventDefault();
-            document.getElementById('passwordOut').innerText = "Passwords do not match.";
+            document.getElementById('passwordOut').innerText = "Please enter a password between 8 and 20 characters with a mixture of uppercase and lowercase letters and numbers.";
         }
         if(isCheck){
-            alert(isCheck);
-            alert(email);
-            alert(password);
             call("/member/updatePassword", "PUT", {email, password}).then(()=>{
                 window.location.href = "/login";
             });
@@ -167,8 +181,8 @@ const Forgotpassword = () => {
                             <ForgotTextField value={{value: "email", btnSendEmailDisabled : btnSendEmailDisabled}} onChange={handleEmailChange} />
                             <div id="emailCheck" style={{color: "red"}}></div>
                             {loding ? (
-                                <Button onClick={handleEmail} id="sendEmail" disabled={sendEmailDisabled} >인증번호
-                                    발송</Button>
+                                <Button onClick={handleEmail} id="sendEmail" disabled={sendEmailDisabled} >
+                                    Send verification code</Button>
                             ) : (
                                 <div style={{width : 400, textAlign : "center", marginTop : 20}}>
                                     <div style={{display : "inline-block"}}>
@@ -186,10 +200,10 @@ const Forgotpassword = () => {
                             {isCodeVisible ? (
                                 <div>
                                     <ForgotTextField value={{value: "code", sendCodeDisabled:sendCodeDisabled}} onChange={handleCodeChange}/>
-                                    <Button id="confirm" onClick={confirm} disabled={sendCodeDisabled}>인증확인</Button>
+                                    <Button id="confirm" onClick={confirm} disabled={sendCodeDisabled}>Confirm verification code</Button>
                                 </div>) : ''
                             }
-                            <Button fullWidth variant="contained" color="success" id={"resetBtn"} onClick={resetBtn} style={{display}} >다시 입력하기</Button>
+                            <Button fullWidth variant="contained" color="success" id={"resetBtn"} onClick={resetBtn} style={{display}} >reset</Button>
 
                             {/*loading ? ( <h1>메일 발송중..</h1> ):''*/}
                         </div>

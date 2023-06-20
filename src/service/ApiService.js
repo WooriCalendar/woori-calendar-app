@@ -78,15 +78,24 @@ export function signup(memberDTO) {
 
 export function signupemail(emailPostDto) {
   return call("/sendmail/email", "POST", emailPostDto).then((resp) => {
-    console.log("ApiService::" + resp.code);
+    console.log("test용 코드::" + resp.code);
     return resp.code;
   });
 }
 
 export function signuppassword(emailPostDto) {
   return call("/sendmail/password", "POST", emailPostDto).then((resp) => {
-    console.log("ApiService::" + resp.code);
+    console.log("test용 코드::" + resp.code);
     return resp.code;
+  });
+}
+
+export function findemail(email) {
+  console.log({ email });
+  return call("/findemail", "POST", { email }).then((resp) => {
+    console.log("findemail::" + resp);
+    console.log("email::" + email);
+    return resp;
   });
 }
 

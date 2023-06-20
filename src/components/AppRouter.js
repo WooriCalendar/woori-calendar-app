@@ -12,6 +12,7 @@ import PrivacyPolicyEn from "./PrivacyPolicyEn";
 import Forgot from "./Forgotpassword";
 import ScheduleCreate from "./ScheduleCreate";
 import CalendarCreate from "./CalendarCreate";
+import NotFound from "./NotFound";
 
 /**
  * @author        : DGeon
@@ -44,6 +45,7 @@ const AppRouter = () => {
           <Route path="Forgotpassword" element={<Forgot />}/>
           <Route path={"schedule"} element={<ScheduleCreate/>} />
           <Route path={"calendar"} element={<CalendarCreate/>} />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
       <Box mt={5}>
