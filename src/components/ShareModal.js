@@ -17,12 +17,12 @@ const ShareModal = (props) => {
   const { open, close, calNo, name } = props;
 
   const [grade, setGrade] = useState("");
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState("");
   const [code, setCode] = useState();
-
+  const [search, setSearch] = useState(false);
+    const [timerId, setTimerId] = useState(null);
   console.log("상위 컴포넌트에서 받아온 캘린더 번호", calNo);
   console.log("상위 컴포넌트에서 받아온 캘린더 이름", name);
-
   const handleChange = (event) => {
     setGrade(event.target.value);
   };
@@ -45,9 +45,25 @@ const ShareModal = (props) => {
 
 
   const handleInputChange = (event) => {
-    setEmail(event.target.value);
-    console.log(event.target.value)
+    setEmail( event.target.value);
   };
+
+  useEffect(() => {
+
+    if (email.includes(".")) {
+      setSearch(true);
+      console.log(".이 포함되어있는거 감지");
+      sendSearchRequest();
+    } else if(email.length < 8){
+      document.getElementById("emailCheck").innerText = "";
+    } {
+      setSearch(false);
+      console.log(".이 안포함되어있음");
+    }
+
+    // 다른 코드를 여기에 추가할 수 있습니다.
+
+  }, [email]); // 의존성 배열에 email 추가
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -61,16 +77,9 @@ const ShareModal = (props) => {
     // 검색 요청을 처리하는 로직을 구현하고, searchText를 활용합니다.
     console.log('검색 요청:', email);
     call("/member/findemail", "POST", {email}).then((resp)=> {
-      if (!resp.email) {
-        console.log("리스빤스", resp.email)
-        // document.innerText = "검색 결과가 없습니다.";
-        document.getElementById("emailCheck").innerText =
-            "검색 결과가 없습니다.";
-      } else {
-        document.getElementById(
-            "emailCheck"
-        ).innerHTML = `<button id="email">${email}</button>`;
-      }
+        if (resp.email){
+          document.getElementById("emailCheck").innerHTML = `<button id="email">${email}</button>`;
+        }
     });
   };
 
@@ -97,7 +106,9 @@ const ShareModal = (props) => {
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <SearchIcon Onclick={sendSearchRequest} />
+                      <Button onClick={sendSearchRequest}>
+                      <SearchIcon />
+                      </Button>
                     </InputAdornment>
                   ),
                 }}
