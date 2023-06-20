@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { call, inviteEmail } from "../service/ApiService";
+import {call, inviteEmail, signupemail} from "../service/ApiService";
 
 const ShareModal = (props) => {
   const { open, close, calNo, name } = props;
@@ -19,54 +19,14 @@ const ShareModal = (props) => {
   const [grade, setGrade] = useState("");
   const [email, setEmail] = useState();
   const [code, setCode] = useState();
-  const [isCodeVisible, setIsCodeVisible] = useState(false);
 
-  console.log({ calNo });
-  console.log({ name });
-  // const [search, setSearch] = useState(false);
+  console.log("상위 컴포넌트에서 받아온 캘린더 번호", calNo);
+  console.log("상위 컴포넌트에서 받아온 캘린더 이름", name);
 
   const handleChange = (event) => {
     setGrade(event.target.value);
   };
 
-  // const asd = (event) => {
-  //   setSearch(true);
-  // };
-  // console.log("설치값", search);
-
-  // 이메일 검색
-  const [searchEmail, setSearchEmail] = useState();
-  useEffect(() => {
-    call("/member/signup", "GET", null).then((resp) => {
-      setSearchEmail(resp.data);
-      console.log(resp.data);
-    });
-  }, []);
-
-  // "." 입력 후 1초 표시
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      // setTimeout(() => {
-      const inputValue = e.target.value;
-      const isEmailExists = searchEmail.includes(inputValue);
-      if (isEmailExists) {
-        document.getElementById(
-          "emailCheck"
-        ).innerHTML = `<button id="email">${inputValue}</button>`;
-        setEmail(e.target.value);
-        // alert(email);
-      } else {
-        // document.innerText = "검색 결과가 없습니다.";
-        document.getElementById("emailCheck").innerText =
-          "검색 결과가 없습니다.";
-      }
-      // console.log("1초");
-      console.log(inputValue);
-      console.log(searchEmail.includes(inputValue));
-      // }, 1000);
-    }
-    document.addEventListener("keydown", handleKeyDown);
-  };
 
   // 캘린더 초대 이벤트
   const invite = () => {
@@ -83,22 +43,36 @@ const ShareModal = (props) => {
     }, 100);
   };
 
-  //함준혁이씀 이 함수는 중복확인 하는 함수 요청을 보내고 받는다. 그에대한 값 확인
-  // const handleKeyDown = (e) => {
-  //   console.log("handleKeyDown 함수 실행");
-  //   console.log(e.target.value);
 
-  //   if (search === true) {
-  //     // Enter시 실행
+  const handleInputChange = (event) => {
+    setEmail(event.target.value);
+    console.log(event.target.value)
+  };
 
-  //     call("/member/signup", "GET", null).then((resp) => {
-  //       setSearchEmail(resp.data);
-  //       console.log(resp.data);
-  //     });
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      // 검색 값 보내기
+      console.log("엔터감지")
+      sendSearchRequest();
+    }
+  };
 
-  //     console.log("enter");
-  //   }
-  // };
+  const sendSearchRequest = () => {
+    // 검색 요청을 처리하는 로직을 구현하고, searchText를 활용합니다.
+    console.log('검색 요청:', email);
+    call("/member/findemail", "POST", {email}).then((resp)=> {
+      if (!resp.email) {
+        console.log("리스빤스", resp.email)
+        // document.innerText = "검색 결과가 없습니다.";
+        document.getElementById("emailCheck").innerText =
+            "검색 결과가 없습니다.";
+      } else {
+        document.getElementById(
+            "emailCheck"
+        ).innerHTML = `<button id="email">${email}</button>`;
+      }
+    });
+  };
 
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
@@ -116,22 +90,18 @@ const ShareModal = (props) => {
             <div style={{ marginBottom: "20px" }}>
               <TextField
                 fullWidth
-                // id="standard-basic"
                 label="이메일로 추가"
                 variant="standard"
-                // value={inputValue}
-                onChange={handleKeyDown}
+                onChange={handleInputChange}
+                onKeyUp={handleKeyPress}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <SearchIcon />
+                      <SearchIcon Onclick={sendSearchRequest} />
                     </InputAdornment>
                   ),
                 }}
               />
-              {/* 함준혁이만든거 */}
-              {/* <Button onClick={asd}>hihi</Button> */}
-              {/* <button id="emailCheckButton" onClick={buttonOnClick} /> */}
 
               <div
                 id="emailCheck"
