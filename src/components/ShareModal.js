@@ -54,7 +54,7 @@ const ShareModal = (props) => {
       setSearch(true);
       console.log(".이 포함되어있는거 감지");
       sendSearchRequest();
-    } else if(email.length < 8){
+    } else if(email.length < 8 && email.length > 1){
       document.getElementById("emailCheck").innerText = "";
     } {
       setSearch(false);
