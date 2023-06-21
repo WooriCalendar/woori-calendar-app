@@ -1,7 +1,6 @@
 import React from "react";
-import { AppBar, Button, Grid, Toolbar, Typography } from "@mui/material";
+import { AppBar, Grid, Toolbar, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 const BackButton = () => {
@@ -20,16 +19,22 @@ const BackButton = () => {
         cursor: "pointer",
       }}
     />
-    // <FontAwesomeIcon
-    //   onClick={onClickBtn}
-    //   icon={faAngleLeft}
-    //   size="2xl"
-    //   style={{ color: "#d2d8e0" }}
-    // />
   );
 };
 
-const SettingNavigation = () => {
+const SettingNavigation = ({ selectedCategory }) => {
+  const getCategoryTitle = (selectedCategory) => {
+    if (selectedCategory === "SettingPasword") {
+      return "MyPage";
+    } else if (selectedCategory === "Category") {
+      return "Modifying the Calendar";
+    } else if (selectedCategory === "Settings") {
+      return "Settings";
+    }
+    // 기본값 또는 빈 상태 처리
+    return "Settings";
+  };
+  const categoryTitle = getCategoryTitle(selectedCategory);
   return (
     <AppBar position="static" color="default">
       <Toolbar>
@@ -39,15 +44,10 @@ const SettingNavigation = () => {
           </Grid>
 
           <Grid item xs={4} textAlign={"center"} fontSize={"30px"}>
-            설정
+            <Typography variant="h6">{categoryTitle}</Typography>
+            {/* {console.log("123123213", selectedCategory)} */}
           </Grid>
-          <Grid item xs={4} textAlign={"right"}>
-            {/* <Button variant="contained">완료</Button> */}
-          </Grid>
-          {/* <Grid item style={{ marginTop: "10px" }}></Grid>
-          <Grid item style={{ marginTop: "0px" }}></Grid>
-          <Grid item style={{ marginTop: "10px" }}></Grid>
-          <Grid item style={{ marginLeft: "auto", marginTop: "10px" }}></Grid> */}
+          <Grid item xs={4} textAlign={"right"}></Grid>
         </Grid>
       </Toolbar>
     </AppBar>

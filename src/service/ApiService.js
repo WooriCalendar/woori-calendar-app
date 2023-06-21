@@ -108,3 +108,12 @@ export function inviteEmail(emailPostDto, calendarDTO) {
     }
   );
 }
+export function checkPassword(memberDTO) {
+  return call("/member/check", "POST", memberDTO)
+    .then((resp) => {
+      console.log("response: ", resp);
+
+      return resp;
+    })
+    .catch(() => {});
+}

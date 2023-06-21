@@ -13,6 +13,9 @@ import Forgot from "./Forgotpassword";
 import ScheduleCreate from "./ScheduleCreate";
 import CalendarCreate from "./CalendarCreate";
 import NotFound from "./NotFound";
+import Settings from "./Settings";
+import MyPage from "./MyPage";
+import SettingNavigation from "./SettingNavigation";
 
 /**
  * @author        : DGeon
@@ -42,10 +45,13 @@ const AppRouter = () => {
           <Route path="PrivacyPolicyEn" element={<PrivacyPolicyEn />} />
           <Route path="PrivacyPolicyKo" element={<PrivacyPolicyKo />} />
           <Route path="PrivacyPolicyJa" element={<PrivacyPolicyJa />} />
-          <Route path="Forgotpassword" element={<Forgot />}/>
-          <Route path={"schedule"} element={<ScheduleCreate/>} />
-          <Route path={"calendar"} element={<CalendarCreate/>} />
+          <Route path="Forgotpassword" element={<Forgot />} />
+          <Route path={"schedule"} element={<ScheduleCreate />} />
+          <Route path={"calendar"} element={<CalendarCreate />} />
           <Route path="/*" element={<NotFound />} />
+          <Route path="Settings" element={<Settings value={false} />} />
+          <Route path="MyPage" element={<MyPage />} />
+          <Route path="SettingNavigation" element={<SettingNavigation />} />
         </Routes>
       </BrowserRouter>
       <Box mt={5}>
