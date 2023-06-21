@@ -2,7 +2,7 @@ import * as React from 'react';
 import Badge from '@mui/material/Badge';
 import {faBell} from "@fortawesome/free-regular-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -16,12 +16,127 @@ import {TransitionGroup, CSSTransition} from "react-transition-group";
 const Notification = () => {
     const [notification, setNotification] = useState([]);
     const [count, setCount] = useState([]);
-    const email = localStorage.getItem("email");
+    const [msg, setMsg] = useState("");
+    const [email, setEmail] = useState("");
+    const [chatt, setChatt] = useState([]);
+    const [socketData, setSocketData] = useState();
+    const ws = useRef(null);
+
+    const msgBox = chatt.slice().reverse().map((item, idx) => (
+        // <div key={idx} className={item.name === name ? 'me' : 'other'}>
+        <div key={idx}>
+            <ListItemButton
+                // selected={selectedIndex === 0}
+                onClick={(event) => handleListItemClick(event, item.msg)}
+            >
+                <List sx={{width: '100%', maxWidth: 360}}>
+                    <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary={
+                                <React.Fragment>
+                                    <Typography
+                                        sx={{display: 'flex', justifyContent: 'space-between'}}
+                                    >
+                                                                <span
+                                                                    style={{wordWrap: 'break-word'}}>{item.comment}</span>
+                                        <span><Typography color="red" variant="caption"
+                                                          display="block"
+                                                          gutterBottom>
+            {new Date(item.date) <= new Date(Date.now() - 100) ? "New!" : ""}
+      </Typography></span>
+                                    </Typography>
+                                </React.Fragment>
+                            }
+                            secondary={
+                                <React.Fragment>
+                                    <Typography
+                                        sx={{display: 'inline'}}
+                                        component="span"
+                                        variant="body2"
+                                        color="text.primary"
+                                    >
+                                        {item.sendEmail}
+                                    </Typography>
+                                    {" — " + item.date}
+                                </React.Fragment>
+                            }
+                        />
+                    </ListItem>
+                </List>
+            </ListItemButton>
+        </div>
+    ));
 
     useEffect(() => {
+        if(socketData !== undefined) {
+            console.log("socketData가뭔데씨발", socketData)
+            const tempData = chatt.concat(socketData);
+            console.log(tempData);
+            setChatt(tempData);
+            console.log("useEffect실행");
+        }
+    }, [socketData]);
+
+    const onText = event => {
+        console.log(event.target.value);
+        setMsg(event.target.value);
+    }
+
+    const webSocketLogin = useCallback(() => {
+        ws.current = new WebSocket("ws://localhost:8080/socket/chatt");
+        ws.current.onmessage = (message) => {
+            const dataSet = JSON.parse(message.data);
+            console.log("@", email);
+            console.log("!", dataSet.revEmail)
+            if(dataSet.revEmail == email) {
+                console.log("내이메일감지")
+                setSocketData(dataSet);
+            }
+        }
+    });
+
+    const send = useCallback(() => {
+            webSocketLogin();
+        if(msg !== ''){
+            const data = {
+                sendEmail: "kang@gmail.com",
+                revEmail: "7ceojun@naver.com",
+                comment: "알림발송 Test",
+                type: "test",
+                date: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+                calNo: 3,
+                nno: 20
+            };  //전송 데이터(JSON)
+            const temp = JSON.stringify(data);
+            console.log("레디스테이트", ws.current.readyState)
+            if(ws.current.readyState === 0) {   //readyState는 웹 소켓 연결 상태를 나타냄
+                ws.current.onopen = () => { //webSocket이 맺어지고 난 후, 실행
+                    console.log("안쪽의 레디스테이트 + 샌드실행됨",ws.current.readyState);
+                    ws.current.send(temp);
+                }
+            }else {
+                console.log("두번째 샌드 실행됨",temp)
+                ws.current.send(temp);
+            }
+        }else {
+            alert("메세지를 입력하세요.");
+            document.getElementById("msg").focus();
+            return;
+        }
+        setMsg("");
+    });
+    //////////////////////////////////////
+    useEffect(() => {
         call("/notification", "GET", null).then((response) => {
-            setNotification(response.data);
-            setCount(response.data.filter(item => item.rdate == null).length);
+            if(response) {
+                setNotification(response.data);
+                console.log(response.data[0].revEmail);
+                setEmail(response.data[0].revEmail);
+                setCount(response.data.filter(item => item.rdate == null).length);
+            }
         });
     }, []);
 
@@ -51,6 +166,31 @@ const Notification = () => {
 
     return (
         <div>
+            <>
+                <div id="chat-wrap">
+                    <div id='chatt'>
+                        {/*<h1 id="title">WebSocket Chatting</h1>*/}
+                        {/*<br/>*/}
+                        <div id='talk'>
+                            <div className='talk-shadow'></div>
+                            {/*{msgBox}*/}
+                        </div>
+                        {/*<input */}
+                        {/*    disabled={chkLog}*/}
+                        {/*       placeholder='이름을 입력하세요.'*/}
+                        {/*       type='text'*/}
+                        {/*       id='name'*/}
+                        {/*       value={name}*/}
+                        {/*       onChange={(event => setName(event.target.value))}*/}
+                        {/*/>*/}
+                        <div id='sendZone'>
+                        <textarea id='msg' value={msg} onChange={onText}
+                                  onKeyDown={(ev) => {if(ev.keyCode === 13){send();}}}></textarea>
+                            <input type='button' value='전송' id='btnSend' onClick={send}/>
+                        </div>
+                    </div>
+                </div>
+            </>
             <Button onClick={handleIconClick}>
                 <Badge badgeContent={count} color="secondary">
                     <FontAwesomeIcon icon={faBell} size="2xl" style={{color: "black",}}/>
@@ -69,6 +209,7 @@ const Notification = () => {
                     }}>
                         <Divider/>
                         <List component="nav" aria-label="main mailbox folders">
+                            {msgBox}
                             {notification.map((item) => (
                                 <div key={item.ntNo}>
                                     <ListItemButton
