@@ -9,12 +9,16 @@ import { ko } from "date-fns/locale";
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import {call} from "../service/ApiService";
 import moment from 'moment';
+import GoogleMaps from "./GooglePlace";
 
 const ScheduleCreate = () => {
-    const [switchToggle, setSwitchToggle] = useState(false);
+    const fullDayRef = useRef(false);
+    const [repeatToggle, setRepeatToggle] = useState(false);
     const [calendars, setCalendars] = useState([]);
     const dateRef = useRef(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
-    const [schedule, setSchedule] = useState({title : '', comment : '', start : dateRef.current, end : dateRef.current, calNo : '', place : '', rrule : '', status : ''})
+    const untilRef = useRef(moment(new Date()).format("YYYY-MM-DD"));
+    const repeatRef = useRef('');
+    const [schedule, setSchedule] = useState({title : '', comment : '', start : dateRef.current, end : dateRef.current, calNo : '', place : '', rrule : {}, status : ''})
 
     useEffect(() => {
         call("/calendar", "GET", null).then((response) => {
@@ -28,15 +32,24 @@ const ScheduleCreate = () => {
     }
 
     const onSwitchChange = () => {
-        setSwitchToggle(!switchToggle);
-        setSchedule({...schedule, status: switchToggle})
+        fullDayRef.current = !fullDayRef.current
+        dateRef.current = moment(new Date()).format("YYYY-MM-DD")
+        setSchedule({...schedule, status: fullDayRef.current, start : dateRef.current, end : dateRef.current})
     }
 
-    const onDateChange = (e) => {
-        // setDate(moment(dayjs(e).$d).format("YYYY-MM-DD"))
+    const onStartDateChange = (e) => {
         dateRef.current = moment(dayjs(e).$d).format("YYYY-MM-DD")
-        // setDate(dateRef.current)
-        setSchedule({...schedule, start: dateRef.current, end : dateRef.current})
+        setSchedule({...schedule, start: dateRef.current})
+    }
+
+    const onEndDateChange = (e) => {
+        dateRef.current = moment(dayjs(e).$d).format("YYYY-MM-DD")
+        setSchedule({...schedule, end : dateRef.current})
+    }
+
+    const onUntilChange = (e) => {
+        untilRef.current = moment(dayjs(e).$d).format("YYYY-MM-DD")
+        setSchedule({...schedule, rrule: {until : untilRef.current, freq: repeatRef.current}})
     }
 
     const onTimeChange = (e) => {
@@ -46,8 +59,14 @@ const ScheduleCreate = () => {
         setSchedule({...schedule, start: dateRef.current, end : dateRef.current})
     }
 
+    const onRepeatChange = () => {
+        setRepeatToggle(!repeatToggle);
+        console.log(schedule)
+    }
+
     const onFreqChange = (e) => {
-        setSchedule({...schedule, rrule : {freq : e.target.value}})
+        repeatRef.current = e.target.value
+        setSchedule({...schedule, rrule : {until : untilRef.current, freq: repeatRef.current}})
     }
 
     const onCalendarChange = (e) => {
@@ -55,7 +74,13 @@ const ScheduleCreate = () => {
     }
 
     const onPlaceChange = (e) => {
-        setSchedule({...schedule, place : e.target.value})
+        console.log("place")
+        if (e !== null) {
+            setTimeout(() => {
+                console.log(e.description)
+                setSchedule({...schedule, place : e.description})
+            }, 200)
+        }
     }
 
     const onCommentChange = (e) => {
@@ -89,14 +114,19 @@ const ScheduleCreate = () => {
                 <Grid container>
                     <FontAwesomeIcon icon={faClock} style={{color: "#3b3b3b",}} />
                     <span>종일</span>
-                    <Switch checked={switchToggle} onChange={onSwitchChange} />
+                    <Switch checked={fullDayRef.current} onChange={onSwitchChange} />
                 </Grid>
                 <Grid container>
                     <Grid item>
                         <LocalizationProvider locale={ko} dateAdapter={AdapterDayjs}>
                             {
-                                switchToggle ?
-                                    (<DatePicker defaultValue={dayjs(new Date())} format={"YYYY-MM-DD"} onChange={onDateChange} /> )
+                                fullDayRef.current ?
+                                    (
+                                        <>
+                                            <DatePicker defaultValue={dayjs(new Date())} format={"YYYY-MM-DD"} onChange={onStartDateChange} />
+                                            <DatePicker defaultValue={dayjs(new Date())} format={"YYYY-MM-DD"} onChange={onEndDateChange} />
+                                        </>
+                                    )
                                         :
                                     (<DesktopDateTimePicker defaultValue={dayjs(new Date())} format={"YYYY-MM-DD HH:mm:ss"} onChange={onTimeChange} />)
                             }
@@ -104,19 +134,32 @@ const ScheduleCreate = () => {
                     </Grid>
                 </Grid>
                 <Grid container style={{ marginTop : 20 }}>
-                    <TextField
-                        select
-                        style={{ width : 400}}
-                        label={"반복"}
-                        onChange={onFreqChange}
-                    >
-                        <MenuItem value={null} selected={true}>반복 안함</MenuItem>
-                        <MenuItem value={"daily"}>매일</MenuItem>
-                        <MenuItem value={"weekly"}>매주</MenuItem>
-                        <MenuItem value={"monthly"}>매월</MenuItem>
-                        <MenuItem value={"yearly"}>매년</MenuItem>
-                    </TextField>
+                    <span>반복</span>
+                    <Switch checked={repeatToggle} onChange={onRepeatChange} />
                 </Grid>
+                {
+                    repeatToggle ?
+                        (
+                            <Grid container>
+                                <TextField
+                                    select
+                                    style={{ width : 400}}
+                                    label={"반복"}
+                                    onChange={onFreqChange}
+                                >
+                                    <MenuItem value={"daily"}>매일</MenuItem>
+                                    <MenuItem value={"weekly"}>매주</MenuItem>
+                                    <MenuItem value={"monthly"}>매월</MenuItem>
+                                    <MenuItem value={"yearly"}>매년</MenuItem>
+                                </TextField>
+                                <LocalizationProvider locale={ko} dateAdapter={AdapterDayjs}>
+                                    <Grid container style={{ marginTop : 20 }}>
+                                        <DatePicker defaultValue={dayjs(new Date())} format={"YYYY-MM-DD"} onChange={onUntilChange}/>
+                                    </Grid>
+                                </LocalizationProvider>
+                            </Grid>
+                        ) : ''
+                }
                 <Grid container style={{ marginTop : 20 }}>
                     <TextField
                         select
@@ -133,11 +176,12 @@ const ScheduleCreate = () => {
                 </Grid>
             </Grid>
             <Grid container style={{ marginTop : 20 }}>
-                <TextField
-                    style={{ width : 400}}
-                    label={"위치 추가"}
-                    onChange={onPlaceChange}
-                />
+                {/*<TextField*/}
+                {/*    style={{ width : 400}}*/}
+                {/*    label={"위치 추가"}*/}
+                {/*    onChange={onPlaceChange}*/}
+                {/*/>*/}
+                <GoogleMaps onPlaceChange={onPlaceChange}/>
             </Grid>
             <Grid container style={{ marginTop : 20 }}>
                 <TextField

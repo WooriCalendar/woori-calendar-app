@@ -39,6 +39,7 @@ const CalendarCreate = () => {
             })
         setCalendar({...calendar, timeZone: timeZoneRef.current})
     }
+
     const onColorChange = (e) => {
         colorRef.current = e.hex
         document.querySelector(".color .notranslate").innerHTML = colorRef.current
