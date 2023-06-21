@@ -31,6 +31,7 @@ const SubEmailModal = (props) => {
 
     call("/member", "PUT", updatedItem).then((resp) => {
       console.log("rrrrrrrrrr::", resp);
+      close();
     });
   };
 
@@ -55,38 +56,7 @@ const SubEmailModal = (props) => {
                 gridTemplateColumns: "1fr 1fr",
                 gap: "10px",
               }}
-            >
-              {/* <div>
-                <div style={{ textAlign: "center" }}>기존 보조 이메일</div>
-                <div style={{ textAlign: "center", marginTop: "72px" }}>
-                  새 보조 이메일
-                </div>
-              </div> */}
-              {/* <div> */}
-              {/* <div style={{ marginBottom: "5px" }}>
-                  <TextField
-                    id="standard-basic"
-                    label="기존 보조 이메일 정보"
-                    variant="outlined"
-                    value={email.subemail || ""}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    style={{ marginBottom: "15px" }}
-                  />
-                </div>
-
-                <div style={{ marginBottom: "5px" }}>
-                  <TextField
-                    id="subemail"
-                    label="새 보조 이메일 입력"
-                    variant="outlined"
-                    defaultValue="" //{email.subemail}
-                    onChange={handleNameChange}
-                  />
-                </div>
-              </div>*/}
-            </div>
+            ></div>
             <div style={{ marginBottom: "5px" }}>
               <TextField
                 // fullWidth

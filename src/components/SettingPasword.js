@@ -1,117 +1,83 @@
 import { Container, TextField, Button, Grid } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MyPage from "./MyPage";
-import { Link } from "react-router-dom";
-import { render } from "react-dom";
-import Settings from "./Settings";
-import ReactDOM from "react-dom";
+import { call, checkPassword } from "../service/ApiService.js";
 
-const SettingPasword = () => {
-  // handleClicked
+const SettingPassword = ({ setShowMyPage }) => {
   const [password, setPassword] = useState("");
+  const [member, setMember] = useState("");
+  const [isCompleted, setIsCompleted] = useState(false);
 
-  const [activeComponent, setActiveComponent] = useState(null);
-  // const handleClick = (component) => {
-  //   setActiveComponent(component);
-  //   // handleClicked(component);
-  // };
-
-  const handleClick = () => {
-    console.log(<Settings />);
-    return <Settings value={true} />;
-  };
+  useEffect(() => {
+    call("/member", "GET", null).then((response) => {
+      setMember(response.email);
+      console.log("123123123", response.email);
+    });
+  }, []);
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
 
-  const editEventHandler = () => {
-    // 패스워드 검증 로직 추가
-    if (password === "올바른비밀번호") {
-      console.log("비밀번호 검증 통과");
-    } else {
-      console.log("비밀번호가 일치하지 않습니다.");
-    }
+  console.log("9999999999999999999999999999999999", password);
+  console.log("9999999999999999999999999999999999", member);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    checkPassword({ email: member, password: password })
+      .then((resp) => {
+        if (resp) {
+          setIsCompleted(true);
+          alert("비밀번호가 일치합니다");
+        }
+      })
+      .catch(() => {
+        document.getElementById("passwordOut").innerText =
+          "Passwords do not match.";
+      });
   };
+
   return (
     <Container maxWidth="xs" style={{ marginTop: "1px", marginBottom: "10%" }}>
-      <Grid
-        container
-        item
-        xs={12}
-        style={{ marginTop: "3%", marginBottom: "3%" }}
-        spacing={2}
-      ></Grid>
-      <Grid container item xs={12}>
-        {/* <Grid item xs={6} textAlign={"left"} style={{ paddingTop: "10px" }}>
-        </Grid> */}
-        <TextField
-          variant="outlined"
-          required
-          fullWidth
-          id="password"
-          name="password"
-          type="password"
-          label="password"
-          autoComplete="password"
-          style={{ marginBottom: "2%" }}
-          // onChange={handlePasswordChange}
-        />
-        <Grid item xs={6}></Grid>
-      </Grid>
-      <Grid container item xs={12}>
-        <Grid
-          item
-          xs={6}
-          textAlign={"left"}
-          style={{ paddingTop: "10px" }}
-        ></Grid>
-      </Grid>
-      <Grid container item xs={12}>
-        <Grid
-          item
-          xs={6}
-          textAlign={"left"}
-          style={{ paddingTop: "10px" }}
-        ></Grid>
-        <Grid item xs={6} textAlign={"right"}></Grid>
-      </Grid>
-      <Grid container item xs={12}>
-        <Grid
-          item
-          xs={6}
-          textAlign={"left"}
-          style={{ paddingTop: "10px" }}
-        ></Grid>
-        <Grid item xs={6} textAlign={"right"}></Grid>
-      </Grid>
-      <Grid container item xs={12}>
-        <Grid
-          item
-          xs={6}
-          textAlign={"left"}
-          style={{ paddingTop: "10px" }}
-        ></Grid>
-      </Grid>
-      <Grid item xs={6} textAlign={"right"}>
-        <Grid style={{ marginBottom: "40px", marginTop: "10px" }}></Grid>
-        <Grid>
-          <Button
-            type="submit"
-            variant="contained"
-            className="invite"
-            style={{ marginRight: "10px" }}
-            // onClick={editEventHandler}
-            onClick={() => handleClick()}
+      {!isCompleted && (
+        <form noValidate onSubmit={handleSubmit}>
+          <Grid
+            container
+            item
+            xs={12}
+            style={{ marginTop: "3%", marginBottom: "3%" }}
+            spacing={2}
           >
-            <Link to={"/MyPage"}>완료</Link>
-            완료
-          </Button>
-          {/* <MyPage /> */}
-        </Grid>
-      </Grid>
+            <Grid container item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="password"
+                name="password"
+                type="password"
+                label="password"
+                autoComplete="password"
+                style={{ marginBottom: "2%" }}
+                value={password}
+                onChange={handlePasswordChange}
+              />
+            </Grid>
+            <Grid id="passwordOut" style={{ color: "red" }} item xs={6}></Grid>
+
+            <Grid item xs={6} textAlign={"right"}>
+              <Grid>
+                <Button type="submit" variant="contained" className="invite">
+                  완료
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </form>
+      )}
+      {isCompleted && <MyPage />}
     </Container>
   );
 };
 
-export default SettingPasword;
+export default SettingPassword;

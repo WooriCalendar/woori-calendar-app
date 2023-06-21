@@ -6,11 +6,7 @@ import moment from "moment";
 import BirthModal from "./BirthModal.js";
 import SubEmailModal from "./SubEmailModal.js";
 import PasswordModal from "./PasswordModal.js";
-import Box from "@mui/material/Box";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
+
 const MyPage = () => {
   const [member, setMember] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -49,7 +45,7 @@ const MyPage = () => {
       setMember(response);
       console.log("123123123", response);
     });
-  });
+  }, []);
 
   // useState(() => {
   //   call("/member", "GET", null).then((response) => {
@@ -192,22 +188,6 @@ const MyPage = () => {
             <option value="ja">日本語</option>
             <option value="en">English</option>
           </select>
-          {/* <Grid container style={{ marginTop: 20 }}>
-            <TextField
-              select
-              style={{ width: 400 }}
-              label={member.language}
-              onChange={(e) => handleLanguageChange(e.target.value)}
-              // onChange={handleLanguageChange}
-            >
-              {/* {member.language.map((language) => (
-                <MenuItem value={language}>{language}</MenuItem>
-              ))} */}
-          {/* <MenuItem value="ko">한국어</MenuItem>
-              <MenuItem value="ja">日本語</MenuItem>
-              <MenuItem value="en">English</MenuItem>
-            </TextField>
-          </Grid> * */}
         </Grid>
       </Grid>
 

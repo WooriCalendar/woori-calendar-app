@@ -25,14 +25,14 @@ const BackButton = () => {
 const SettingNavigation = ({ selectedCategory }) => {
   const getCategoryTitle = (selectedCategory) => {
     if (selectedCategory === "SettingPasword") {
-      return "내 정보";
+      return "MyPage";
     } else if (selectedCategory === "Category") {
-      return "인생이여";
-    } else if (selectedCategory === "CalModify") {
-      return "태수의 캘린더";
+      return "Modifying the Calendar";
+    } else if (selectedCategory === "Settings") {
+      return "Settings";
     }
     // 기본값 또는 빈 상태 처리
-    return "설정";
+    return "Settings";
   };
   const categoryTitle = getCategoryTitle(selectedCategory);
   return (

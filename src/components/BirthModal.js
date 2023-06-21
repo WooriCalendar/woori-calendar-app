@@ -29,6 +29,7 @@ const BirthModal = (props) => {
 
     call("/member", "PUT", updatedItem).then((resp) => {
       console.log("rrrrrrrrrr::", resp);
+      close();
     });
   };
 

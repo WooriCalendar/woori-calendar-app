@@ -1,91 +1,12 @@
-// import { Button, Grid, TextField } from "@mui/material";
-// import React, { useState, useEffect } from "react";
-// import { call } from "../service/ApiService.js";
-
-// const NicnameModal = (props) => {
-//   const { open, close } = props;
-//   const [email, setEmail] = useState("");
-//   const [member, setMember] = useState("");
-//   const [comment, setComment] = useState("");
-//   const [all, setAll] = useState("");
-//   // const [email, setEmail] = useState("");
-
-//   // const email = localStorage.getItem("email")
-
-//   // const upDateEmail = {
-//   //   email,
-//   // };
-//   // console.log("fist::::", email);
-
-//   useState(() => {
-//     call("/member", "GET", null).then((response) => {
-//       // setAll(...response);
-//       setMember(response.data);
-//       console.log("last::::", response);
-//     });
-//   }, []);
-
-//   const editEventHandler = () => {
-//     const updatedItem = {
-//       ...all,
-//     };
-//     call("/member", "PUT", updatedItem).then((response) => {});
-//   };
-
-//   const handleNameChange = (e) => {
-//     setEmail(e.target.value);
-//   };
-
-//   return (
-//     <div>
-//       <div>
-//         <h2>머리</h2>
-//       </div>
-//       <div className={open ? "openModal modal" : "modal"}>
-//         {open ? (
-//           <div>
-//             {member.map((item) => (
-//               <TextField
-//                 style={{ width: "400px" }}
-//                 id="outlined-required-name"
-//                 label="이름"
-//                 defaultValue={item.name}
-//                 onChange={handleNameChange}
-//                 variant="outlined"
-//               ></TextField>
-//             ))}
-//             <footer>
-//               <Button variant="contained" onClick={editEventHandler}>
-//                 완료
-//               </Button>
-//               <Button variant="contained" onClick={close}>
-//                 취소
-//               </Button>
-//             </footer>
-//           </div>
-//         ) : null}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default NicnameModal;
-
 import React, { useState, useEffect } from "react";
 import { Button, TextField } from "@mui/material";
 import { call } from "../service/ApiService";
-import { Mail } from "@mui/icons-material";
 
 const NicnameModal = (props) => {
   const { open, close } = props;
   const [nickname, setNickName] = useState("");
 
   const [email, setEmail] = useState([]);
-
-  // const [grade, setGrade] = useState("");
-  // const handleChange = (event) => {
-  //   setGrade(event.target.value);
-  // };
 
   useEffect(() => {
     call("/member", "GET", null).then((resp) => {
@@ -104,6 +25,7 @@ const NicnameModal = (props) => {
 
     call("/member", "PUT", updatedItem).then((resp) => {
       console.log("rrrrrrrrrr::", resp);
+      close();
     });
   };
 
@@ -138,7 +60,7 @@ const NicnameModal = (props) => {
               style={{ marginRight: "10px" }}
               onClick={editEventHandler}
             >
-              완료
+              Completion
             </Button>
             <Button variant="contained" onClick={close}>
               취소
