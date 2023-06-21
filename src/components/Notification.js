@@ -72,16 +72,12 @@ const Notification = () => {
 
     useEffect(() => {
         if(socketData !== undefined) {
-            console.log("socketData가뭔데씨발", socketData)
             const tempData = chatt.concat(socketData);
-            console.log(tempData);
             setChatt(tempData);
-            console.log("useEffect실행");
         }
     }, [socketData]);
 
     const onText = event => {
-        console.log(event.target.value);
         setMsg(event.target.value);
     }
 
@@ -89,10 +85,7 @@ const Notification = () => {
         ws.current = new WebSocket("ws://localhost:8080/socket/chatt");
         ws.current.onmessage = (message) => {
             const dataSet = JSON.parse(message.data);
-            console.log("@", email);
-            console.log("!", dataSet.revEmail)
             if(dataSet.revEmail == email) {
-                console.log("내이메일감지")
                 setSocketData(dataSet);
             }
         }
@@ -111,14 +104,11 @@ const Notification = () => {
                 nno: 20
             };  //전송 데이터(JSON)
             const temp = JSON.stringify(data);
-            console.log("레디스테이트", ws.current.readyState)
             if(ws.current.readyState === 0) {   //readyState는 웹 소켓 연결 상태를 나타냄
                 ws.current.onopen = () => { //webSocket이 맺어지고 난 후, 실행
-                    console.log("안쪽의 레디스테이트 + 샌드실행됨",ws.current.readyState);
                     ws.current.send(temp);
                 }
             }else {
-                console.log("두번째 샌드 실행됨",temp)
                 ws.current.send(temp);
             }
         }else {
@@ -133,7 +123,6 @@ const Notification = () => {
         call("/notification", "GET", null).then((response) => {
             if(response) {
                 setNotification(response.data);
-                console.log(response.data[0].revEmail);
                 setEmail(response.data[0].revEmail);
                 setCount(response.data.filter(item => item.rdate == null).length);
             }
@@ -147,7 +136,6 @@ const Notification = () => {
         if (!isOpen) {
             const fetchData = async () => {
                 const response = await call("/notification", "put", ...notification);
-                console.log("변경된 데이터 조회 :: ", ...response.data);
                 // 변경된 데이터를 처리하는 로직 추가
                 setNotification(response.data);
             };
@@ -166,31 +154,6 @@ const Notification = () => {
 
     return (
         <div>
-            <>
-                <div id="chat-wrap">
-                    <div id='chatt'>
-                        {/*<h1 id="title">WebSocket Chatting</h1>*/}
-                        {/*<br/>*/}
-                        <div id='talk'>
-                            <div className='talk-shadow'></div>
-                            {/*{msgBox}*/}
-                        </div>
-                        {/*<input */}
-                        {/*    disabled={chkLog}*/}
-                        {/*       placeholder='이름을 입력하세요.'*/}
-                        {/*       type='text'*/}
-                        {/*       id='name'*/}
-                        {/*       value={name}*/}
-                        {/*       onChange={(event => setName(event.target.value))}*/}
-                        {/*/>*/}
-                        <div id='sendZone'>
-                        <textarea id='msg' value={msg} onChange={onText}
-                                  onKeyDown={(ev) => {if(ev.keyCode === 13){send();}}}></textarea>
-                            <input type='button' value='전송' id='btnSend' onClick={send}/>
-                        </div>
-                    </div>
-                </div>
-            </>
             <Button onClick={handleIconClick}>
                 <Badge badgeContent={count} color="secondary">
                     <FontAwesomeIcon icon={faBell} size="2xl" style={{color: "black",}}/>
