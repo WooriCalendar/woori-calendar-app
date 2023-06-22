@@ -212,7 +212,7 @@ const CalModify = (props) => {
           <Button variant="text" color="error" onClick={bopenModal}>
             캘린더 삭제
           </Button>
-          <DeleteModal open={bmodalOpen} close={bcloseModal} />
+          <DeleteModal open={bmodalOpen} close={bcloseModal} calNo={calNo} />
         </div>
         <div style={{ textAlign: "right", margin: "20px" }}>
           <Button variant="contained" onClick={editEventHandler}>
