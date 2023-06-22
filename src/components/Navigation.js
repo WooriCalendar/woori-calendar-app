@@ -8,7 +8,7 @@ import SelectLabel from "./SelectLabel";
 import Notification from "./Notification";
 import { Link } from "react-router-dom";
 
-const Navigation = ({ SideBar }) => {
+const Navigation = ({ SideBar, initialView }) => {
   return (
     <AppBar position="static" color="default">
       <Toolbar>
@@ -42,7 +42,7 @@ const Navigation = ({ SideBar }) => {
             </Link>
           </Grid>
           <Grid item>
-            <SelectLabel />
+            <SelectLabel initialView={initialView} />
           </Grid>
           <Grid item style={{ marginLeft: "0", marginTop: "10px" }}>
             <Button color="inherit" onClick={signout}>

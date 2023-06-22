@@ -1,13 +1,13 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Checkbox, FormControlLabel, Grid, Typography} from "@mui/material";
+import {Checkbox, FormControlLabel, Grid} from "@mui/material";
 import {call} from "../service/ApiService";
-import {Link} from "react-router-dom";
-import Calmodify from "./CalModify";
+import FullCalendars from "./FullCalendars";
 
-const Category = () => {
+const Category = (props) => {
     const [calendars, setCalendars] = useState([]);
-    const [calendar, setCalendar] = useState([]);
     const calendarRef = useRef({});
+
+    const categoryChange = props.onCategoryChange;
 
     /**
      * @Author K-설하
@@ -19,6 +19,7 @@ const Category = () => {
     //     setCalendar(response.data);
     //   });
     // }, []);
+
     useEffect(() => {
         call("/calendar/share", "GET", null).then((response) => {
             console.log("캘린더 데이터");
@@ -39,6 +40,8 @@ const Category = () => {
             .then((response) => {
                 console.log(response.data)
             })
+
+        categoryChange()
     }
 
     return (
