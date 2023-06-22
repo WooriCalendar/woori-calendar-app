@@ -142,7 +142,6 @@ const Forgotpassword = () => {
     };
 
     const handleCodeChange = (code) => {
-        setCode(code);
         console.log(code);
     };
 
@@ -199,7 +198,8 @@ const Forgotpassword = () => {
 
                             {isCodeVisible ? (
                                 <div>
-                                    <ForgotTextField value={{value: "code", sendCodeDisabled:sendCodeDisabled}} onChange={handleCodeChange}/>
+                                    {/*onChange={handleCodeChange}*/}
+                                    <ForgotTextField value={{value: "code", sendCodeDisabled:sendCodeDisabled}} />
                                     <Button id="confirm" onClick={confirm} disabled={sendCodeDisabled}>Confirm verification code</Button>
                                 </div>) : ''
                             }
