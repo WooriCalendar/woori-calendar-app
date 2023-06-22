@@ -137,9 +137,11 @@ const Signup = () => {
             if (!resp.email) {
                 document.getElementById('emailCheck').innerText = "This email is available";
                 // setBtnSendEmailDisabled(true);
+
                 setTimeout(() => {
                     signupemail({email}).then((resp) => {
                         setCode(resp);
+                        alert(resp);
                         setIsCodeVisible(true);
                         setLoding(true);
                         setDisplay('block');
@@ -158,7 +160,7 @@ const Signup = () => {
         }else{
             setLoding(true);
             setBtnSendEmailDisabled(false);
-            document.getElementById('emailCheck').innerText = "다릅니다";
+            document.getElementById('emailCheck').innerText = "Not in the format of the email.";
         }
 
 
@@ -183,8 +185,8 @@ const Signup = () => {
 
     const confirm = () => {
         let confirmCode = document.getElementById('code').value;
-        // alert("code::"+ code);
-        // alert("confirmCode::"+ confirmCode);
+        alert("code::"+ code);
+        alert("confirmCode::"+ confirmCode);
         if (code === confirmCode) {
             console.log("일치함");
             setButtonDisabled(false);
@@ -217,8 +219,8 @@ const Signup = () => {
     };
 
     const handleCodeChange = (code) => {
-        setCode(code);
-        console.log(code);
+        // setCode(code);
+        // console.log(code);
     };
     return (
         <Container component="main" maxWidth="xs" style={{marginTop: "8%"}}>
@@ -278,7 +280,8 @@ const Signup = () => {
                                 )}
                                 {isCodeVisible ? (
                                     <div>
-                                        <ForgotTextField value={{value: "code", sendCodeDisabled:sendCodeDisabled}} onChange={handleCodeChange}/>
+                                        {/*onChange={handleCodeChange}*/}
+                                        <ForgotTextField value={{value: "code", sendCodeDisabled:sendCodeDisabled}} />
                                         <Button id="confirm" onClick={confirm}>Confirm verification code</Button>
                                     </div>) : ''
                                 }
