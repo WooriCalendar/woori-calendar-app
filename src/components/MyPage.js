@@ -191,7 +191,7 @@ const MyPage = () => {
         </Grid>
       </Grid>
 
-      <Grid style={{ marginBottom: "40px", marginTop: "10px" }}>
+      <Grid style={{ marginBottom: "40px", marginTop: "40px" }}>
         <Button variant="outlined" onClick={dopenModal}>
           비밀번호 변경
         </Button>

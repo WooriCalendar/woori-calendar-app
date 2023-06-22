@@ -11,7 +11,7 @@ const SettingPassword = ({ setShowMyPage }) => {
   useEffect(() => {
     call("/member", "GET", null).then((response) => {
       setMember(response.email);
-      console.log("123123123", response.email);
+      // console.log("123123123", response.email);
     });
   }, []);
 
@@ -19,22 +19,20 @@ const SettingPassword = ({ setShowMyPage }) => {
     setPassword(e.target.value);
   };
 
-  console.log("9999999999999999999999999999999999", password);
-  console.log("9999999999999999999999999999999999", member);
+  // console.log("9999999999999999999999999999999999", password);
+  // console.log("9999999999999999999999999999999999", member);
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    checkPassword({ email: member, password: password })
-      .then((resp) => {
-        if (resp) {
-          setIsCompleted(true);
-          alert("비밀번호가 일치합니다");
-        }
-      })
-      .catch(() => {
+    checkPassword({ email: member, password: password }).then((resp) => {
+      if (resp) {
+        setIsCompleted(true);
+        // alert("비밀번호가 일치합니다");
+      } else {
         document.getElementById("passwordOut").innerText =
           "Passwords do not match.";
-      });
+      }
+    });
   };
 
   return (
