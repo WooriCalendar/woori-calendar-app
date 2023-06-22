@@ -103,8 +103,8 @@ export function inviteEmail(emailPostDto, calendarDTO) {
   console.log(emailPostDto, calendarDTO);
   return call("/sendmail/invite", "POST", emailPostDto, calendarDTO).then(
     (resp) => {
-      console.log("ApiService::" + resp.code);
-      return resp.code;
+      // console.log("ApiService::" + resp.code);
+      // return resp.code;
     }
   );
 }

@@ -16,11 +16,11 @@ import { call, inviteEmail, signupemail } from "../service/ApiService";
 const ShareModal = (props) => {
   const { open, close, calNo, name } = props;
 
-  const [grade, setGrade] = useState("");
+  const [grade, setGrade] = useState(0);
   const [email, setEmail] = useState("");
   const [code, setCode] = useState();
   const [search, setSearch] = useState(false);
-  const [timerId, setTimerId] = useState(null);
+
   console.log("상위 컴포넌트에서 받아온 캘린더 번호", calNo);
   console.log("상위 컴포넌트에서 받아온 캘린더 이름", name);
   const handleChange = (event) => {
@@ -29,12 +29,12 @@ const ShareModal = (props) => {
 
   // 캘린더 초대 이벤트
   const invite = () => {
-    // const email = document.getElementById("email").value;
     console.log("메일 : ", email);
     console.log("캘린더 번호 : ", calNo);
     console.log("캘린더 이름 : ", name);
+    console.log("권한 : ", grade);
     setTimeout(() => {
-      inviteEmail({ email, calNo, name }).then((resp) => {
+      inviteEmail({ email, calNo, name, grade }).then((resp) => {
         console.log("발송");
         setCode(resp);
         console.log(code);
@@ -51,9 +51,7 @@ const ShareModal = (props) => {
       setSearch(true);
       console.log(".이 포함되어있는거 감지");
       sendSearchRequest();
-
     } else if (email.length < 8 && email.length > 1) {
-
       document.getElementById("emailCheck").innerText = "";
     }
     {
