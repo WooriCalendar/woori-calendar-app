@@ -4,12 +4,13 @@ import Category from "./Category";
 import {Button, TextField} from "@mui/material";
 import {Link} from "react-router-dom";
 
-const Sidebar = ({visible, aspectRatio, height, contentHeight}) => {
+const Sidebar = ({visible, aspectRatio, height, contentHeight, onCategoryChange}, props) => {
     const headerToolbar = {
         left: '',
         center: '',
         right: '',
     };
+
     return (
         <div>
             {visible && (
@@ -37,7 +38,7 @@ const Sidebar = ({visible, aspectRatio, height, contentHeight}) => {
                             캘린더추가버튼
                         </Button>
                     </Link>
-                    <Category/>
+                    <Category onCategoryChange={onCategoryChange}/>
                 </div>
                 )}
         </div>
