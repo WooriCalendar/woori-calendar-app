@@ -38,6 +38,10 @@ const ShareModal = (props) => {
         console.log("발송");
         setCode(resp);
         console.log(code);
+        // 알림보내기
+        // 보낼 내용 : ~님이 ~님을 [캘린더이름]캘린더에 초대하셨습니다.
+        // 보낸 사람 : 캘린더초대자의email
+        // 받을 사람 : 수신자의email
       });
     }, 100);
   };

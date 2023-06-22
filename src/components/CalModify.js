@@ -7,11 +7,13 @@ import { useParams } from "react-router-dom";
 import DeleteModal from "./DeleteModal";
 import { BlockPicker } from "react-color";
 import axios from "axios";
+import UnsubscribeModal from "./UnsubscribeModal";
 
 const CalModify = (props) => {
   const [calNo, setCalNo] = useState(props.calNo);
   const [modalOpen, setModalOpen] = useState(false);
   const [bmodalOpen, setBmodalOpen] = useState(false);
+  const [cmodalOpen, setCmodalOpen] = useState(false);
   const colorRef = useRef("");
 
   const openModal = () => {
@@ -26,6 +28,12 @@ const CalModify = (props) => {
   };
   const bcloseModal = () => {
     setBmodalOpen(false);
+  };
+  const copenModal = () => {
+    setCmodalOpen(true);
+  };
+  const ccloseModal = () => {
+    setCmodalOpen(false);
   };
 
   const [calendar, setCalendar] = useState([]);
@@ -208,7 +216,10 @@ const CalModify = (props) => {
           />
         ))}
         <div style={{ textAlign: "left", margin: "20px" }}>
-          <Button variant="text">구독 취소</Button>
+          <Button variant="text" onClick={copenModal}>
+            구독 취소
+          </Button>
+          <UnsubscribeModal open={cmodalOpen} close={ccloseModal} />
           <Button variant="text" color="error" onClick={bopenModal}>
             캘린더 삭제
           </Button>
