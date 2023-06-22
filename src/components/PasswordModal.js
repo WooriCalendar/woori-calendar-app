@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, TextField } from "@mui/material";
 import { call, checkPassword } from "../service/ApiService";
 import { Grid } from "react-loader-spinner";
-import SignupTextField from "./SignupTextField";
+import PasswordTextField from "./PasswordTextField";
 
 const PasswordModal = (props) => {
   const { open, close } = props;
@@ -28,30 +28,38 @@ const PasswordModal = (props) => {
     const currentPasswordValue = document.getElementById("currentpw").value;
     const newPasswordValue = document.getElementById("password").value;
     const confirmPasswordValue = document.getElementById("passwordcheck").value;
-
+    const passwordRegEx = /^[A-Za-z0-9]{8,20}$/;
     // 현존 비밀번호 체크
     checkPassword({ email: member, password: currentPasswordValue }).then(
       (resp) => {
         if (resp) {
-          if (newPasswordValue === confirmPasswordValue) {
-            setPassword(newPasswordValue);
+          if (
+            passwordRegEx.test(document.getElementById("password").value) ||
+            passwordRegEx.test(document.getElementById("passwordcheck").value)
+          ) {
+            if (newPasswordValue === confirmPasswordValue) {
+              setPassword(newPasswordValue);
 
-            const update = {
-              email: member,
-              password: newPasswordValue,
-            };
+              const update = {
+                email: member,
+                password: newPasswordValue,
+              };
 
-            call("/member/updatePassword", "PUT", update).then(() => {
-              alert("성공");
-              close();
-            });
+              call("/member/updatePassword", "PUT", update).then(() => {
+                alert("성공");
+                close();
+              });
+            } else {
+              document.getElementById("passwordOut").innerText =
+                "Passwords do not match.";
+            }
           } else {
-            document.getElementById("passwordOut").innerText =
-              "Passwords do not match.";
+            document.getElementById("checkOut").innerText =
+              "Current Passwords do not match.";
           }
         } else {
-          document.getElementById("checkOut").innerText =
-            "Current Passwords do not match.";
+          document.getElementById("passworddOut").innerText =
+            "Please enter a password between 8 and 20 characters with a mixture of uppercase and lowercase letters and numbers.";
         }
       }
     );
@@ -74,7 +82,7 @@ const PasswordModal = (props) => {
                     id="currentpw"
                     name="currentpw"
                     label="CurrentPassword"
-                    type="currentpw"
+                    type="password"
                     style={{ marginBottom: "2%" }}
                     // value={currentpw}
                     onChange={pwChange}
@@ -82,13 +90,14 @@ const PasswordModal = (props) => {
                   <div id="checkOut" style={{ color: "red" }}></div>
                 </div>
                 <div>
-                  <SignupTextField value="password" />
-                  <SignupTextField value="passwordcheck" />
+                  <PasswordTextField value="password" />
+                  <PasswordTextField value="passwordcheck" />
                   <div id="passwordOut" style={{ color: "red" }}></div>
+                  <div id="passworddOut" style={{ color: "red" }}></div>
                 </div>
               </div>
             </form>
-            <div>
+            <div style={{ textAlign: "right" }}>
               <Button
                 variant="contained"
                 className="invite"
@@ -98,13 +107,11 @@ const PasswordModal = (props) => {
               >
                 완료
               </Button>
+              <Button variant="contained" onClick={close}>
+                취소
+              </Button>
             </div>{" "}
           </main>
-          <footer>
-            <Button variant="contained" onClick={close}>
-              취소
-            </Button>
-          </footer>
         </section>
       ) : null}
     </div>

@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ShareModal from "./ShareModal";
-import {
-  Button,
-  TextField,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Grid,
-} from "@mui/material";
+import { Button, TextField, MenuItem, Grid } from "@mui/material";
 // import Navigation from "./Navigation";
 import { call } from "../service/ApiService";
 import { useParams } from "react-router-dom";
+import DeleteModal from "./DeleteModal";
+import { BlockPicker } from "react-color";
+import axios from "axios";
 
-const CalModify = () => {
+const CalModify = (props) => {
+  const [calNo, setCalNo] = useState(props.calNo);
   const [modalOpen, setModalOpen] = useState(false);
+  const [bmodalOpen, setBmodalOpen] = useState(false);
+  const colorRef = useRef("");
 
   const openModal = () => {
     setModalOpen(true);
@@ -23,12 +21,19 @@ const CalModify = () => {
     setModalOpen(false);
   };
 
+  const bopenModal = () => {
+    setBmodalOpen(true);
+  };
+  const bcloseModal = () => {
+    setBmodalOpen(false);
+  };
+
   const [calendar, setCalendar] = useState([]);
-  const { calNo } = useParams();
+  // const { calNo } = useParams();
 
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
-
+  // console.log("0000000000909090", calNo);
   // const [items, setItems] = useState([]);
   // const updateItem = (items) => {
   //   call("/calendar/" + calNo, "PUT", items).then((resp) =>
@@ -43,108 +48,94 @@ const CalModify = () => {
     setComment(e.target.value);
   };
 
+  const onColorChange = (e) => {
+    colorRef.current = e.hex;
+    document.querySelector(".color .notranslate").innerHTML = colorRef.current;
+  };
+  // console.log("asdasdasasd", colorRef.current);
   const editEventHandler = () => {
     const updatedItem = {
       calNo: document.getElementById("outlined-required-calno").value,
       // calNo: calendar.calNo;
       name: document.getElementById("outlined-required-name").value,
       comment: document.getElementById("outlined-required-com").value,
-      timeZone: selectedTimezone,
-      // timeZone: document.getElementById("outlined-select-currency").value,
+      timeZone: timeZone,
+      color: colorRef.current,
     };
-
-    console.log("아이템", updatedItem);
-    console.log(document.getElementById("outlined-select-currency").value);
-    console.log(name);
-    console.log(comment);
+    console.log("12312312312321321321321312", timeZone);
+    // console.log("아이템", updatedItem);
+    // console.log(document.getElementById("outlined-select-currency").value);
+    // console.log(name);
+    // console.log(comment);
     call("/calendar", "PUT", updatedItem).then((resp) => {
-      console.log(resp);
-      // setItems(resp);
+      // console.log(resp);
     });
+    window.location.pathname = "/";
   };
-  // const editEventHandler = (e) => {
-  //   updateItem((items.name = e.target.value));
-  //   updateItem((items.comment = e.target.value));
-  // };
 
   // calNo로 기존에 입력된 캘린더 가져오기
   useEffect(() => {
     call("/calendar/" + calNo, "GET", null).then((response) => {
-      console.log("캘린더 데이터");
-      console.log("333333333", response);
+      // console.log("캘린더 데이터");
+      // console.log("3333336666666333", response);
       setCalendar(response.data);
-      // setCalendar(response.data);
     });
   }, []);
 
-  const [selectedTimezone, setSelectedTimezone] = useState("");
-  const TimezoneSelector = ({ onChange }) => {
-    const timezones = [
-      {
-        value: "America/New_York",
-        label: "(GMT-04:00) 미국 동부  시간 - 뉴욕",
-      },
-      {
-        value: "America/Chicago",
-        label: "(GMT-05:00) 미국 중부 시간 - 시카고",
-      },
-      { value: "America/Denver", label: "(GMT-06:00) 미국 산지 시간 - 덴버" },
-      {
-        value: "America/Los_Angeles",
-        label: "(GMT-07:00) 미국 태평양시간 - 로스앤젤레스",
-      },
-      {
-        value: "America/Anchorage",
-        label: "(GMT-08:00) 알레스카 시간 - 앵커리지",
-      },
-      {
-        value: "Pacific/Honolulu",
-        label: "(GMT-10:00) 하와이 표준시 - 호놀룰루",
-      },
-      { value: "Asia/Seoul", label: "(GMT+09:00)한국 표준시 - 서울" },
-      { value: "Asia/Tokyo", label: "(GMT+09:00)일본 표준시 - 도쿄" }, //추후 라벨에 gmt+몇인지 적을지말지
-    ];
+  const [timeZones, setTimeZones] = useState([]);
+  const [timeZone, setTimeZone] = useState("");
+  useEffect(() => {
+    axios.get("https://worldtimeapi.org/api/timezone/").then((res) => {
+      // console.log(res.data)
+      setTimeZones(res.data);
+    });
+  }, []);
 
-    const handleTimezoneChange = (event) => {
-      const selectedTimezone = event.target.value; // 선택한 시간대 값을 가져옴
-      onChange(selectedTimezone);
-    };
-
-    return (
-      <div style={{ textAlign: "center", margin: "20px" }}>
-        <FormControl style={{ width: "400px", textAlign: "left" }}>
-          <InputLabel id="demo-simple-select-label">시간대</InputLabel>
-          <Select
-            id="outlined-select-currency"
-            label="시간대"
-            defaultValue={selectedTimezone}
-            onChange={handleTimezoneChange}
-          >
-            {timezones.map((timezone) => (
-              <MenuItem key={timezone.value} value={timezone.value}>
-                {timezone.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
-    );
-  };
-
-  const handleTimezoneChange = (timezone) => {
-    setSelectedTimezone(timezone); // 선택한 시간대 값을 상태로 설정
-    console.log("cal::::::::", timezone);
+  const onTimeZoneChange = async (e) => {
+    await axios
+      .get("https://worldtimeapi.org/api/timezone/" + e.target.value)
+      .then((response) => {
+        // timeZoneRef.current =
+        //   e.target.value + " (utc " + response.data.utc_offset + ")";
+        const timeZone =
+          e.target.value + " (utc " + response.data.utc_offset + ")";
+        setTimeZone(timeZone);
+      });
   };
 
   return (
     <div>
-      {/* <Navigation /> */}
-
       <div className="main" style={{ width: "440px", margin: "0 auto" }}>
-        {/* <div style={{ textAlign: "center" }}>
-        <div style={{ textAlign: "center" }}>
-          <h2>캘린더 수정</h2>
-        </div> */}
+        <Grid
+          container
+          style={{ marginTop: 20, marginLeft: "20px", marginBottom: "20px" }}
+        >
+          <TextField
+            select
+            style={{ width: 400 }}
+            label={"color"}
+            className={"color"}
+            value={"color" || ""}
+          >
+            <BlockPicker
+              width={400}
+              colors={[
+                "#FF6900",
+                "#FCB900",
+                "#7BDCB5",
+                "#00D084",
+                "#8ED1FC",
+                "#0693E3",
+                "#ABB8C3",
+                "#EB144C",
+                "#F78DA7",
+                "#9900EF",
+              ]}
+              onChange={onColorChange}
+              color={colorRef.current}
+            />
+          </TextField>
+        </Grid>
         {calendar.map((item) => (
           <div key={item.calNo} style={{ textAlign: "center", margin: "10px" }}>
             <TextField
@@ -155,28 +146,7 @@ const CalModify = () => {
               value={item.calNo}
               onChange={handleNameChange}
               variant="outlined"
-              // disabled
-              // type="hidden"
             ></TextField>
-            {/* <div
-              id="outlined-required-calno"
-              style={{ display: "none" }}
-              onChange={handleNameChange}
-            >
-              {item.calNo}
-            </div> */}
-            {/* <Grid style={{ marginBottom: "10px" }}>
-              <TextField
-                style={{ width: "400px" }}
-                id="outlined-required-calno"
-                label="이름"
-                defaultValue={item.calNo}
-                // value={name}
-                onChange={handleNameChange}
-                variant="outlined"
-              ></TextField>
-            </Grid> */}
-            {/* style={{ marginBottom: "10px" }} */}
             <Grid>
               <TextField
                 style={{ width: "400px", marginBottom: "25px" }}
@@ -201,34 +171,19 @@ const CalModify = () => {
             />
           </div>
         ))}
-
-        {/* <div style={{ textAlign: "center", margin: "20px" }}>
-          <TextField
-            style={{ width: "400px" }}
-            id="outlined-textarea"
-            label="설명"
-            multiline
-            rows={4}
-          />
-        </div> */}
         <div>
-          {/* <CurrentTime /> */}
-          <TimezoneSelector onChange={handleTimezoneChange} />
-
-          {/* <FormControl style={{ width: "400px", textAlign: "left" }}>
-            <InputLabel id="demo-simple-select-label">시간대</InputLabel>
-            <Select
-              id="outlined-select-currency"
-              label="시간대"
-              defaultValue="0"
+          <Grid container style={{ marginLeft: "20px", marginTop: 20 }}>
+            <TextField
+              select
+              style={{ width: 400 }}
+              label={"timeZone"}
+              onChange={onTimeZoneChange}
             >
-              <MenuItem value={0}>(GMT+09:00) 한국 표준시 - 서울</MenuItem>
-              <MenuItem value={1}>
-                (GMT-07:00) 미 태평양 시간 - 로스앤젤레스
-              </MenuItem>
-              <MenuItem value={2}>(GMT+05:00) 몰디브 시간</MenuItem>
-            </Select>
-          </FormControl> */}
+              {timeZones.map((timeZone) => (
+                <MenuItem value={timeZone}>{timeZone}</MenuItem>
+              ))}
+            </TextField>
+          </Grid>
         </div>
 
         <div style={{ textAlign: "center", margin: "20px" }}>
@@ -254,9 +209,10 @@ const CalModify = () => {
         ))}
         <div style={{ textAlign: "left", margin: "20px" }}>
           <Button variant="text">구독 취소</Button>
-          <Button variant="text" color="error">
+          <Button variant="text" color="error" onClick={bopenModal}>
             캘린더 삭제
           </Button>
+          <DeleteModal open={bmodalOpen} close={bcloseModal} />
         </div>
         <div style={{ textAlign: "right", margin: "20px" }}>
           <Button variant="contained" onClick={editEventHandler}>

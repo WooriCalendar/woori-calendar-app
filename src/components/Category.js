@@ -1,62 +1,66 @@
-import React, {useEffect, useRef, useState} from "react";
-import {Checkbox, FormControlLabel, Grid, Typography} from "@mui/material";
-import {call} from "../service/ApiService";
-import {Link} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Checkbox, FormControlLabel, Typography } from "@mui/material";
+import { call } from "../service/ApiService";
+import { Link } from "react-router-dom";
 import Calmodify from "./CalModify";
+import Settings from "./Settings";
 
 const Category = () => {
-    const [calendars, setCalendars] = useState([]);
-    const [calendar, setCalendar] = useState([]);
-    const calendarRef = useRef({});
+  const [calendar, setCalendar] = useState([]);
+  /**
+   * @Author K-설하
+   * 회원 이메일을 통하여 캘린더 가져오기
+   * */
+  // useEffect(() => {
+  //   call("/calendar", "GET", null).then((response) => {
+  //     console.log("캘린더 데이터");
+  //     setCalendar(response.data);
+  //   });
+  // }, []);
+  useEffect(() => {
+    call("/calendar", "GET", null).then((response) => {
+      console.log("캘린더 데이터");
+      setCalendar(response.data);
+    });
+  }, []);
+  // const Settings = () => {
+  //   const calNo = calendar.calNo; // 전달할 인자 값
 
-    /**
-     * @Author K-설하
-     * 회원 이메일을 통하여 캘린더 가져오기
-     * */
-    // useEffect(() => {
-    //   call("/calendar", "GET", null).then((response) => {
-    //     console.log("캘린더 데이터");
-    //     setCalendar(response.data);
-    //   });
-    // }, []);
-    useEffect(() => {
-        call("/calendar/share", "GET", null).then((response) => {
-            console.log("캘린더 데이터");
-            setCalendars(response.data);
-        });
-    }, []);
+  //   return <Link to={`/settings/${calNo}`}></Link>;
+  // };
+  // const handleClick = () => {
+  // <Link to={<Settings />}></Link>;
+  // setActiveComponent(component);
+  // handleSidebarClick(component, calNo);
+  // };
 
-    const onCategoryChange = async (e) => {
-        await call("/share/" + e.target.value, "GET", null)
-            .then((response) => {
-                calendarRef.current = response.data[0]
-                console.log(response.data[0])
-            })
-
-        calendarRef.current.checked = !calendarRef.current.checked
-
-        await call("/share", "PUT", calendarRef.current)
-            .then((response) => {
-                console.log(response.data)
-            })
-    }
-
-    return (
-        <>
-            {
-                calendars.map((item) => (
-                    <Grid container>
-                        <div key={item.calNo}>
-                            <FormControlLabel
-                                control={<Checkbox name={item.calName} value={item.shareNo} defaultChecked={item.checked} onChange={onCategoryChange}/>}
-                                label={item.calName}
-                            />
-                        </div>
-                    </Grid>
-                ))
-            }
-        </>
-    );
+  return (
+    // <div>
+    //   {calendar.map((item) => (
+    //     <div key={item.calNo}>
+    //       <Link to={`/calendar/${item.calNo}`}>
+    //         <FormControlLabel
+    //           control={<Checkbox name={item.name} checked={true} />}
+    //           label={item.name}
+    //         />
+    //       </Link>
+    //     </div>
+    //   ))}
+    // </div>
+    <div>
+      {calendar.map((item) => (
+        <Link to={"/settings"} itemCalNo={item.calNo}>
+          <div key={item.calNo}>
+            <FormControlLabel
+              control={<Checkbox name={item.name} checked={true} />}
+              value={item.calNo}
+              label={item.name}
+            />
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
 };
 
 export default Category;
