@@ -121,7 +121,7 @@ const Notification = () => {
     //////////////////////////////////////
     useEffect(() => {
         call("/notification", "GET", null).then((response) => {
-            if(response) {
+            if(response.data.length !== 0) {
                 setNotification(response.data);
                 setEmail(response.data[0].revEmail);
                 setCount(response.data.filter(item => item.rdate == null).length);
@@ -132,14 +132,17 @@ const Notification = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleIconClick = () => {
-        setIsOpen(!isOpen);
-        if (!isOpen) {
-            const fetchData = async () => {
-                const response = await call("/notification", "put", ...notification);
-                // 변경된 데이터를 처리하는 로직 추가
-                setNotification(response.data);
-            };
-            fetchData();
+        if(notification.length !== 0) {
+            setIsOpen(!isOpen);
+            if (!isOpen) {
+                const fetchData = async () => {
+                    const response = await call("/notification", "put", ...notification);
+                    setNotification(response.data);
+                };
+                fetchData();
+            }
+        }else{
+            alert("알림이없습니다!")
         }
     };
 
@@ -155,7 +158,7 @@ const Notification = () => {
     return (
         <div>
             <Button onClick={handleIconClick}>
-                <Badge badgeContent={count} color="secondary">
+                <Badge badgeContent={notification.length !== 0 ? count : null} color="secondary">
                     <FontAwesomeIcon icon={faBell} size="2xl" style={{color: "black",}}/>
                 </Badge>
             </Button>
