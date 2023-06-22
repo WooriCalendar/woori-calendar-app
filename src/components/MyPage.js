@@ -1,12 +1,19 @@
-import { Container, Grid, TextField } from "@mui/material";
-import React, { useState } from "react";
+import { Button, Container, Grid, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { call } from "../service/ApiService.js";
 import NicnameModal from "./NicnameModal";
 import moment from "moment";
+import BirthModal from "./BirthModal.js";
+import SubEmailModal from "./SubEmailModal.js";
+import PasswordModal from "./PasswordModal.js";
 
 const MyPage = () => {
   const [member, setMember] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [bmodalOpen, setBmodalOpen] = useState(false);
+  const [cmodalOpen, setCmodalOpen] = useState(false);
+  const [dmodalOpen, setDmodalOpen] = useState(false);
+  const [language, setLanguage] = useState("");
 
   const openModal = () => {
     setModalOpen(true);
@@ -14,35 +21,59 @@ const MyPage = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
-  useState(() => {
+  const bopenModal = () => {
+    setBmodalOpen(true);
+  };
+  const bcloseModal = () => {
+    setBmodalOpen(false);
+  };
+  const copenModal = () => {
+    setCmodalOpen(true);
+  };
+  const ccloseModal = () => {
+    setCmodalOpen(false);
+  };
+  const dopenModal = () => {
+    setDmodalOpen(true);
+  };
+  const dcloseModal = () => {
+    setDmodalOpen(false);
+  };
+
+  useEffect(() => {
     call("/member", "GET", null).then((response) => {
       setMember(response);
       console.log("123123123", response);
     });
-  });
+  }, []);
+
+  // useState(() => {
+  //   call("/member", "GET", null).then((response) => {
+  //     setMember(response);
+  //     console.log("123123123", response);
+  //   });
+  // });
+  const handleLanguageChange = (selectedLanguage) => {
+    const updatedData = {
+      ...member,
+      language: selectedLanguage,
+    };
+
+    call("/member", "PUT", updatedData).then((response) => {
+      console.log("response:::", response);
+      console.log("언어 업데이트 성공");
+    });
+  };
 
   return (
-    <Container maxWidth="xs" style={{ marginTop: "8%", marginBottom: "10%" }}>
+    <Container maxWidth="xs" style={{ marginTop: "1px", marginBottom: "10%" }}>
       <Grid
         container
         item
         xs={12}
         style={{ marginTop: "3%", marginBottom: "3%" }}
         spacing={2}
-      >
-        <Grid item xs={4} textAlign={"left"}></Grid>
-        <Grid item xs={4} textAlign={"center"}>
-          설정
-        </Grid>
-        <Grid item xs={4} textAlign={"right"}></Grid>
-      </Grid>
-      <hr
-        style={{
-          border: "1px solid black",
-          marginTop: "3%",
-          marginBottom: "3%",
-        }}
-      />
+      ></Grid>
       <Grid container item xs={12}>
         <Grid item xs={6} textAlign={"left"} style={{ paddingTop: "10px" }}>
           이메일
@@ -94,7 +125,9 @@ const MyPage = () => {
             }}
             variant="standard"
             style={{ marginBottom: "20px" }}
+            onClick={bopenModal}
           />
+          <BirthModal open={bmodalOpen} close={bcloseModal} />
         </Grid>
       </Grid>
       <Grid container item xs={12}>
@@ -111,14 +144,64 @@ const MyPage = () => {
             }}
             variant="standard"
             style={{ marginBottom: "20px" }}
+            onClick={copenModal}
           />
+          <SubEmailModal open={cmodalOpen} close={ccloseModal} />
+        </Grid>
+      </Grid>
+      <Grid container item xs={12}>
+        <Grid item xs={6} textAlign={"left"} style={{ paddingTop: "10px" }}>
+          언어
+        </Grid>
+        <Grid item xs={6} textAlign={"right"}>
+          {/* <TextField
+            id="standard-read-only-input"
+            // label="보조 이메일"
+            value={member.language || ""}
+            variant="standard"
+            style={{ marginBottom: "20px" }}
+            onClick={copenModal}
+          /> */}
+          {/* <Box sx={{ minWidth: 60 }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={member.language}
+                // label={selectedLanguage}
+                onChange={(e) => handleLanguageChange(e.target.value)}
+              >
+                <MenuItem value="ko">한국어</MenuItem>
+                <MenuItem value="ja">日本語</MenuItem>
+                <MenuItem value="en">English</MenuItem>
+              </Select>
+            </FormControl>
+          </Box> */}
+          <select
+            // value={member.language}
+            label={member.language}
+            onChange={(e) => handleLanguageChange(e.target.value)}
+            style={{ width: "200px", height: "40px" }}
+          >
+            <option value="ko">한국어</option>
+            <option value="ja">日本語</option>
+            <option value="en">English</option>
+          </select>
         </Grid>
       </Grid>
 
       <Grid style={{ marginBottom: "40px", marginTop: "10px" }}>
-        비밀번호 변경
+        <Button variant="outlined" onClick={dopenModal}>
+          비밀번호 변경
+        </Button>
       </Grid>
-      <Grid style={{ color: "red" }}>회원탈퇴</Grid>
+      <PasswordModal open={dmodalOpen} close={dcloseModal} />
+      <Grid>
+        <Button variant="outlined" color="error">
+          회원탈퇴
+        </Button>
+      </Grid>
     </Container>
   );
 };

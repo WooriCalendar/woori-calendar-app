@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Button, TextField } from "@mui/material";
 import { call } from "../service/ApiService";
+import moment from "moment";
 
-const NicnameModal = (props) => {
+const BirthModal = (props) => {
   const { open, close } = props;
-  const [nickname, setNickName] = useState("");
+  const [birthday, setBirthday] = useState("");
 
   const [email, setEmail] = useState([]);
+
+  // const [grade, setGrade] = useState("");
+  // const handleChange = (event) => {
+  //   setGrade(event.target.value);
+  // };
 
   useEffect(() => {
     call("/member", "GET", null).then((resp) => {
       setEmail(resp);
-      console.log("ssssssssssssss", resp);
-      console.log("eeeeeeeeeeeeeeeeeeeee", resp.nickname);
     });
   }, []);
 
   const editEventHandler = () => {
     const updatedItem = {
       ...email,
-      nickname: document.getElementById("standard-basic").value,
+      birthday: document.getElementById("birthday").value,
     };
     console.log("riprip", updatedItem);
 
@@ -30,7 +34,7 @@ const NicnameModal = (props) => {
   };
 
   const handleNameChange = (e) => {
-    setNickName(e.target.value);
+    setBirthday(e.target.value);
     console.log("0000000000000000", handleNameChange);
   };
 
@@ -44,10 +48,10 @@ const NicnameModal = (props) => {
             <div style={{ marginBottom: "5px" }}>
               <TextField
                 // fullWidth
-                id="standard-basic"
-                label="닉네임"
+                id="birthday"
+                label="생년월일"
                 variant="outlined"
-                defaultValue={email.nickname}
+                defaultValue={moment(email.birthday).format("YYYY-MM-DD") || ""} //   {email.birthday}
                 onChange={handleNameChange}
               />
             </div>
@@ -60,7 +64,7 @@ const NicnameModal = (props) => {
               style={{ marginRight: "10px" }}
               onClick={editEventHandler}
             >
-              Completion
+              완료
             </Button>
             <Button variant="contained" onClick={close}>
               취소
@@ -72,4 +76,4 @@ const NicnameModal = (props) => {
   );
 };
 
-export default NicnameModal;
+export default BirthModal;

@@ -9,7 +9,7 @@ const LanguageSelector = () => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    call("/member/kk@naver.com", "GET", null)
+    call("/member", "GET", null)
       .then((response) => {
         setUserData(response);
         setLanguage(response.language);
@@ -28,30 +28,26 @@ const LanguageSelector = () => {
     console.log("byun:::", userData);
     console.log("upda:::", updatedData);
 
-    call("/member/kk@naver.com", "PUT", updatedData).then((response) => {
+    call("/member", "PUT", updatedData).then((response) => {
       console.log("response:::", response);
       console.log("언어 업데이트 성공");
     });
   };
 
-  let Component = PrivacyPolicyKo;
-  if (language === "ja") {
-    Component = PrivacyPolicyJa;
-  } else if (language === "en") {
-    Component = PrivacyPolicyEn;
-  }
-
   return (
-    <div>
-      <Component />
-      <select
-        value={language}
-        onChange={(e) => handleLanguageChange(e.target.value)}
-      >
-        <option value="ko">한국어</option>
-        <option value="ja">日本語</option>
-        <option value="en">English</option>
-      </select>
+    <div style={{ alignContent: "center" }}>
+      <div style={{ textAlign: "center", fontSize: "30px" }}>
+        언어
+        <select
+          value={language}
+          onChange={(e) => handleLanguageChange(e.target.value)}
+          style={{ marginLeft: "20px", fontSize: "30px" }}
+        >
+          <option value="ko">한국어</option>
+          <option value="ja">日本語</option>
+          <option value="en">English</option>
+        </select>
+      </div>
     </div>
   );
 };

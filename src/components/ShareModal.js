@@ -20,6 +20,7 @@ const ShareModal = (props) => {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState();
   const [search, setSearch] = useState(false);
+
   console.log("상위 컴포넌트에서 받아온 캘린더 번호", calNo);
   console.log("상위 컴포넌트에서 받아온 캘린더 이름", name);
   const handleChange = (event) => {
