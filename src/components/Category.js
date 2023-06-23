@@ -52,7 +52,7 @@ const Category = (props) => {
                     <Grid container>
                         <div key={item.calNo}>
                             <FormControlLabel
-                                control={<Checkbox name={item.calName} value={item.shareNo} defaultChecked={item.checked} onChange={onCategoryChange}/>}
+                                control={<Checkbox name={item.calName} value={item.shareNo} defaultChecked={item.checked} onChange={onCategoryChange} style={{color : item.color}}/>}
                                 label={item.calName}
                             />
                         </div>

@@ -12,6 +12,7 @@ import "../App.css"
 import EventModal from "./EventModal";
 import moment from 'moment';
 import axios from "axios";
+import async from "async";
 
 const FullCalendars = (
     {headerToolbar, height, aspectRatio, contentHeight, category, initialView}, props
@@ -26,13 +27,14 @@ const FullCalendars = (
     const dayOfWeekRef = useRef('');
     const calendarRef = React.useRef('dayGridMonth');
 
-    useEffect(() => {
+    useEffect( () => {
         call("/schedule", "GET", null)
             .then((response) => {
                 setItems(response.data)
             });
         }, [category]
     )
+    console.log(items)
 
     useEffect( () => {
         const { current: calendarDom } = calendarRef;
@@ -142,9 +144,10 @@ const FullCalendars = (
                 events={events.filter((event) => (
                     (
                         event.rrule === null ?
-                            (moment(event.start).format("yyyy-MM-DD") === moment(event.end).format("yyyy-MM-DD") ? event.start.includes(date) && event.end.includes(date) : event.start <= date && event.end > date)
+                            (moment(event.start).format("yyyy-MM-DD") === moment(event.end).format("yyyy-MM-DD") ? event.start.includes(date) && event.end.includes(date) : event.start <= date && event.end >= date)
                             :
-                            event.start <= date && (event.rrule.freq === 'weekly' ? event.rrule.until >= date && moment(dayOfWeekRef.current).format("dddd").includes(event.dayOfWeek) : event.rrule.until >= date)
+                            event.rrule.freq === 'weekly' ? event.start <= date && event.rrule.until >= date && moment(dayOfWeekRef.current).format("dddd").includes(event.dayOfWeek) : (event.start <= date || event.start.includes(date)) && event.rrule.until >= date
+
                     )
                 ))}
             />
