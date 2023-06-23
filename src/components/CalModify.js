@@ -11,6 +11,7 @@ import UnsubscribeModal from "./UnsubscribeModal";
 
 const CalModify = (props) => {
   const [calNo, setCalNo] = useState(props.calNo);
+  const [shareNo, setShareNo] = useState(props.shareNo);
   const [modalOpen, setModalOpen] = useState(false);
   const [bmodalOpen, setBmodalOpen] = useState(false);
   const [cmodalOpen, setCmodalOpen] = useState(false);
@@ -89,6 +90,15 @@ const CalModify = (props) => {
       setCalendar(response.data);
     });
   }, []);
+
+  //shareNo 가져오기
+  // useEffect(() => {
+  //   call("/share/" + shareNo, "GET").then((resp) => {
+  //     // setCalendar(resp.data);
+  //     setShareNo(resp.data);
+  //     console.log("shareNo는????", shareNo);
+  //   });
+  // }, []);
 
   const [timeZones, setTimeZones] = useState([]);
   const [timeZone, setTimeZone] = useState("");
@@ -219,7 +229,11 @@ const CalModify = (props) => {
           <Button variant="text" onClick={copenModal}>
             구독 취소
           </Button>
-          <UnsubscribeModal open={cmodalOpen} close={ccloseModal} />
+          <UnsubscribeModal
+            open={cmodalOpen}
+            close={ccloseModal}
+            calNo={calNo}
+          />
           <Button variant="text" color="error" onClick={bopenModal}>
             캘린더 삭제
           </Button>

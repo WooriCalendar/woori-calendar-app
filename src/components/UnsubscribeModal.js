@@ -1,8 +1,36 @@
 import { Button } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { call } from "../service/ApiService";
+import { fi } from "date-fns/locale";
 
 const UnsubscribeModal = (props) => {
   const { open, close } = props;
+  // const { shareNo, setShareNo } = useState(props.shareNo);
+  const [calNo, setCalNo] = useState(props.calNo);
+  const [shareNo, setShareNo] = useState([]);
+  const [email, setEmail] = useState("");
+  const [mail, setmail] = useState("");
+
+  useEffect(() => {
+    call("/calendar/" + calNo, "GET").then((response) => {
+      setmail(response.data);
+      console.log("캘린더 번호???", calNo);
+      console.log("이건 뭔가요???", response.data);
+    });
+    call("/calendar/share", "GET").then((response) => {
+      const filteredData = response.data.filter((item) => item.calNo === calNo);
+      filteredData.filter((item) => setShareNo(item.shareNo));
+      setEmail(filteredData);
+      console.log("이건 뭐죠????", response.data);
+      console.log("filteredData", filteredData);
+    });
+    // call("/share", "GET").then((response) => {});
+  }, []);
+
+  const unsubscribe = () => {
+    alert("No::::" + shareNo);
+    call("/share", "DELETE", shareNo).then((response) => {});
+  };
 
   return (
     <div className={open ? "openModal modal" : "modal"}>
@@ -24,6 +52,7 @@ const UnsubscribeModal = (props) => {
               variant="contained"
               className="invite"
               style={{ marginRight: "10px" }}
+              onClick={unsubscribe}
             >
               확인
             </Button>
