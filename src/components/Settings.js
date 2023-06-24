@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SettingNavigation from "./SettingNavigation";
 import SettingSidebar from "./SettingSidebar";
 import { Button, Grid } from "@mui/material";
@@ -8,28 +8,58 @@ import MyPage from "./MyPage";
 import Category from "./Category";
 import SettingPasword from "./SettingPasword";
 import LanguageSelector from "./LanguageSelector";
+import { call } from "../service/ApiService";
 
-const Settings = (props) => {
-  console.log("밸류::::" + props.value);
+const Settings = (itemCalNo) => {
+  const [calendar, setCalendar] = useState([]);
+  const [calNo, setCalNo] = useState([]);
+
+  const [test, setTest] = useState([]);
+  // console.log("밸류::::" + props.value);
   const [activeComponent, setActiveComponent] = useState("Settings");
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [showMyPage, setShowMyPage] = useState(false);
-  const handleSidebarClick = (component) => {
+  const handleSidebarClick = (component, calNo) => {
     setActiveComponent(component);
     setSelectedComponent(component);
+    setCalNo(calNo);
     console.log("asdasdasdasd00+", component);
   };
 
+  useEffect(() => {
+    call("/calendar", "GET", null).then((response) => {
+      console.log("캘린더 데이터");
+      // console.log("11133333333311", response);
+      console.log("11133333333311", response.data);
+      setCalendar(response.data);
+      // setCalendar(response.data);
+    });
+  }, []);
+  console.log(calendar.calNo);
+  // useEffect(() => {
+  //   call("/calendar/" + calendar.calNo, "GET", null).then((response) => {
+  //     console.log("캘린더 데이터");
+  //     console.log("11133333333311", response);
+  //     setTest(response.data);
+  //     // setCalendar(response.data);
+  //   });
+  // }, []);
+  // if (itemCalNo !== null) {
+  //   setCalNo(itemCalNo);
+  //   setActiveComponent("Category");
+  // }
   const renderComponent = () => {
     if (activeComponent === "Settings") {
       return <LanguageSelector />;
     } else if (activeComponent === "SettingPasword") {
       return <SettingPasword setShowMyPage={setShowMyPage} />;
     } else if (
-      activeComponent === "Category" ||
-      activeComponent === "CalModify"
+      activeComponent === "Category"
+      // ||
+      // activeComponent === "CalModify"
     ) {
-      return <CalModify />;
+      // return <CalModify calNo={calendar.calNo} />;
+      return <CalModify calNo={calNo} />;
     }
 
     return null;

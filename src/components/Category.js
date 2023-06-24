@@ -1,13 +1,14 @@
-import React, {useEffect, useRef, useState} from "react";
-import {Checkbox, FormControlLabel, Grid, Typography} from "@mui/material";
-import {call} from "../service/ApiService";
-import {Link} from "react-router-dom";
-import Calmodify from "./CalModify";
 
-const Category = () => {
+import React, {useEffect, useRef, useState} from "react";
+import {Checkbox, FormControlLabel, Grid} from "@mui/material";
+import {call} from "../service/ApiService";
+import FullCalendars from "./FullCalendars";
+
+const Category = (props) => {
     const [calendars, setCalendars] = useState([]);
-    const [calendar, setCalendar] = useState([]);
     const calendarRef = useRef({});
+
+    const categoryChange = props.onCategoryChange;
 
     /**
      * @Author K-설하
@@ -19,6 +20,7 @@ const Category = () => {
     //     setCalendar(response.data);
     //   });
     // }, []);
+
     useEffect(() => {
         call("/calendar/share", "GET", null).then((response) => {
             console.log("캘린더 데이터");
@@ -39,6 +41,8 @@ const Category = () => {
             .then((response) => {
                 console.log(response.data)
             })
+
+        categoryChange()
     }
 
     return (
@@ -48,7 +52,7 @@ const Category = () => {
                     <Grid container>
                         <div key={item.calNo}>
                             <FormControlLabel
-                                control={<Checkbox name={item.calName} value={item.shareNo} defaultChecked={item.checked} onChange={onCategoryChange}/>}
+                                control={<Checkbox name={item.calName} value={item.shareNo} defaultChecked={item.checked} onChange={onCategoryChange} style={{color : item.color}}/>}
                                 label={item.calName}
                             />
                         </div>

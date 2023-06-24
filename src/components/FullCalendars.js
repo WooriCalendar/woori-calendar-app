@@ -12,12 +12,12 @@ import "../App.css"
 import EventModal from "./EventModal";
 import moment from 'moment';
 import axios from "axios";
+import async from "async";
 
 const FullCalendars = (
-    {headerToolbar, height, aspectRatio, contentHeight}
+    {headerToolbar, height, aspectRatio, contentHeight, category, initialView}, props
 ) => {
     const [items, setItems] = useState([]);
-    const [schedule, setSchedule] = useState([]);
     const scheduleRef = useRef([]);
     const [calendar, setCalendar] = useState([]);
     const [scheduleModal, setScheduleModal] = useState(false)
@@ -25,16 +25,22 @@ const FullCalendars = (
     const [date, setDate] = useState('')
     const eventRef = useRef('');
     const dayOfWeekRef = useRef('');
+    const calendarRef = React.useRef('dayGridMonth');
 
-    useEffect(() => {
+    useEffect( () => {
         call("/schedule", "GET", null)
             .then((response) => {
-                console.log("일정가져와지나?")
-                console.log(response.data)
                 setItems(response.data)
             });
-        }, []
+        }, [category]
     )
+    console.log(items)
+
+    useEffect( () => {
+        const { current: calendarDom } = calendarRef;
+        const API = calendarDom ? calendarDom.getApi() : null;
+        if (initialView) API && API.changeView(initialView);
+    }, [initialView]);
 
     const openScheduleModal = () => {
         setScheduleModal(true)
@@ -51,7 +57,6 @@ const FullCalendars = (
             .then((response) => {
                 // console.log(response.data[0])
                 scheduleRef.current = response.data[0]
-                console.log(schedule)
             })
 
         getCalendar()
@@ -95,6 +100,8 @@ const FullCalendars = (
         openScheduleModal()
     }
 
+    // console.log("뷰 ", viewRef.current)
+
     /**
      * @Author 함준혁
      * 일정 추가
@@ -103,7 +110,7 @@ const FullCalendars = (
     // const startdate = '2023-05-31 00:00:00.000'
 
     const events = [
-        ...items,
+            ...items,
         // {
         //     title : "반복 테스트",
         //     start : '2023-06-15',
@@ -119,7 +126,7 @@ const FullCalendars = (
         <>
             <FullCalendar
                 plugins={[dayGridPlugin, momentPlugin, interactionPlugin, timeGridPlugin, rrulePlugin]}
-                initialView='dayGridMonth'
+                initialView={'dayGridMonth'}
                 headerToolbar={headerToolbar}
                 events={events}
                 height={height}
@@ -127,6 +134,7 @@ const FullCalendars = (
                 dateClick={handleDateClick}
                 contentHeight={contentHeight}
                 aspectRatio={aspectRatio}
+                ref={calendarRef}
             />
 
             <ScheduleModal
@@ -134,12 +142,12 @@ const FullCalendars = (
                 close={closeScheduleModal}
                 date={date}
                 events={events.filter((event) => (
-                    event.start <= date &&
                     (
-                        event.rrule == null ?
-                            event.end > date
+                        event.rrule === null ?
+                            (moment(event.start).format("yyyy-MM-DD") === moment(event.end).format("yyyy-MM-DD") ? event.start.includes(date) && event.end.includes(date) : event.start <= date && event.end >= date)
                             :
-                            (event.rrule.freq === 'weekly' ? event.rrule.until >= date && moment(dayOfWeekRef.current).format("dddd").includes(event.dayOfWeek) : event.rrule.until > date)
+                            event.rrule.freq === 'weekly' ? event.start <= date && event.rrule.until >= date && moment(dayOfWeekRef.current).format("dddd").includes(event.dayOfWeek) : (event.start <= date || event.start.includes(date)) && event.rrule.until >= date
+
                     )
                 ))}
             />
