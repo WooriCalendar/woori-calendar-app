@@ -50,7 +50,8 @@ const Signup = () => {
     const [sendCodeConfirmDisabled, setSendCodeConfirmDisabled] = useState(false);
     const [display, setDisplay] = useState('none');
 
-    const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
+    // const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
+    const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
     const passwordRegEx = /^[A-Za-z0-9]{8,20}$/
 
     const settings = {
