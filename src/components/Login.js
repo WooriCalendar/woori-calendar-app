@@ -142,21 +142,23 @@ const Login = () => {
 
                     </Grid>
                 </Grid>
-                <Grid container direction="column">
-                    <Grid item>
+                <Grid container direction="column" justify="space-between">
+                    <Grid item xs={12}>
                         <Link to="/Signup" variant="body2">
                             Don't have an account? sign up here
                         </Link>
                     </Grid>
-                    <Grid item>
-                        <Link to="/Forgotpassword" variant="body2">
-                            Forgot password?
-                        </Link>
-                    </Grid>
-                    <Grid item>
-                        <Link to="/ForgotEmail" variant="body2">
-                            Forgot email?
-                        </Link>
+                    <Grid item container justify="space-between">
+                        <Grid item xs={9}>
+                            <Link to="/Forgotpassword" variant="body2">
+                                Forgot password?
+                            </Link>
+                        </Grid>
+                        <Grid item xs={3} container justify="flex-end">
+                            <Link to="/ForgotEmail" variant="body2">
+                                Forgot email?
+                            </Link>
+                        </Grid>
                     </Grid>
                 </Grid>
             </form>
