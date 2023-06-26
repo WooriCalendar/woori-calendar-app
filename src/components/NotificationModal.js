@@ -50,7 +50,6 @@ const NotificationModal = (props) => {
                 </Typography>
                 <Button onClick={deleteNotification}>네!</Button>
                 <Button onClick={handleClose}>아니요!</Button>
-                    {props.itemNo}이거랑{ntNo}
             </Box>
         </Modal>
     )
