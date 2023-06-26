@@ -239,18 +239,6 @@ const CalModify = (props) => {
           </Grid>
         </div>
 
-//         <div style={{ textAlign: "center", margin: "20px" }}>
-//           <TextField
-//             style={{ width: "400px" }}
-//             id="outlined-basic"
-//             label={t("Share")}
-//             variant="outlined"
-//           />
-//         </div>
-//         <div style={{ textAlign: "left", margin: "20px" }}>
-//           <Button variant="outlined" onClick={openModal}>
-//             {t("Invite users")}
-
         <div style={{ textAlign: "left", margin: "20px" }}>
           <p>Share with specific people</p>
           {email.map((email, index) => (
@@ -272,7 +260,7 @@ const CalModify = (props) => {
         </div>
         <div style={{ textAlign: "left", margin: "20px" }}>
           <Button variant="outlined" onClick={openModal}>
-            Add People
+            {t("Invite users")}
           </Button>
         </div>
         {calendar.map((item) => (

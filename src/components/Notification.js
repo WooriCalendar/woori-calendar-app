@@ -12,6 +12,9 @@ import {call} from "../service/ApiService";
 import moment from "moment/moment";
 import '../css/./Notification.css';
 import {TransitionGroup, CSSTransition} from "react-transition-group";
+import {faXmark} from "@fortawesome/free-solid-svg-icons";
+
+
 
 const Notification = () => {
     const [notification, setNotification] = useState([]);
@@ -31,9 +34,9 @@ const Notification = () => {
             >
                 <List sx={{width: '100%', maxWidth: 360}}>
                     <ListItem alignItems="flex-start">
-                        <ListItemAvatar>
-                            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>
-                        </ListItemAvatar>
+                        {/*<ListItemAvatar>*/}
+                            {/*<Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>*/}
+                        {/*</ListItemAvatar>*/}
                         <ListItemText
                             primary={
                                 <React.Fragment>
@@ -184,12 +187,15 @@ const Notification = () => {
                                     >
                                         <List sx={{width: '100%', maxWidth: 360}}>
                                             <ListItem alignItems="flex-start">
-                                                <ListItemAvatar>
-                                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>
-                                                </ListItemAvatar>
+                                                {/*<ListItemAvatar>*/}
+                                                {/*    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>*/}
+                                                {/*</ListItemAvatar>*/}
                                                 <ListItemText
                                                     primary={
                                                         <React.Fragment>
+                                                            <span className="hover-icon">
+  <FontAwesomeIcon icon={faXmark} style={{ float: "right", marginLeft: "10px" }} />
+</span>
                                                             <Typography
                                                                 sx={{display: 'flex', justifyContent: 'space-between'}}
                                                             >
@@ -198,7 +204,7 @@ const Notification = () => {
                                                                 <span><Typography color="red" variant="caption"
                                                                                   display="block"
                                                                                   gutterBottom>
-            {new Date(item.rdate) > new Date(Date.now() - 100) ? "New!" : ""}
+            {new Date(item.rdate) < new Date(Date.now() - 100) ? "New!" : ""}
       </Typography></span>
                                                             </Typography>
                                                         </React.Fragment>
