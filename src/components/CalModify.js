@@ -2,19 +2,21 @@ import React, { useEffect, useState, useRef } from "react";
 import ShareModal from "./ShareModal";
 import { Button, TextField, MenuItem, Grid } from "@mui/material";
 // import Navigation from "./Navigation";
-import { call } from "../service/ApiService";
+import { call, fetchMemberData } from "../service/ApiService";
 import { useParams } from "react-router-dom";
 import DeleteModal from "./DeleteModal";
 import { BlockPicker } from "react-color";
 import axios from "axios";
 import UnsubscribeModal from "./UnsubscribeModal";
-
+import { useTranslation } from "react-i18next";
 const CalModify = (props) => {
   const [calNo, setCalNo] = useState(props.calNo);
   const [shareNo, setShareNo] = useState(props.shareNo);
   const [modalOpen, setModalOpen] = useState(false);
   const [bmodalOpen, setBmodalOpen] = useState(false);
   const [cmodalOpen, setCmodalOpen] = useState(false);
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState("");
   const colorRef = useRef("");
 
   const openModal = () => {
@@ -88,8 +90,10 @@ const CalModify = (props) => {
       // console.log("캘린더 데이터");
       // console.log("3333336666666333", response);
       setCalendar(response.data);
+      i18n.changeLanguage(response.language);
     });
-  }, []);
+    fetchMemberData();
+  }, [i18n]);
 
   //shareNo 가져오기
   // useEffect(() => {
@@ -131,7 +135,7 @@ const CalModify = (props) => {
           <TextField
             select
             style={{ width: 400 }}
-            label={"color"}
+            label={t("Color")}
             className={"color"}
             value={"color" || ""}
           >
@@ -159,7 +163,7 @@ const CalModify = (props) => {
             <TextField
               style={{ width: "400px", display: "none" }}
               id="outlined-required-calno"
-              label="이름"
+              label={t("Name")}
               defaultValue={calendar.calNo}
               value={item.calNo}
               onChange={handleNameChange}
@@ -169,7 +173,7 @@ const CalModify = (props) => {
               <TextField
                 style={{ width: "400px", marginBottom: "25px" }}
                 id="outlined-required-name"
-                label="이름"
+                label={t("Name")}
                 defaultValue={item.name}
                 // value={name}
                 onChange={handleNameChange}
@@ -180,7 +184,7 @@ const CalModify = (props) => {
             <TextField
               style={{ width: "400px" }}
               id="outlined-required-com"
-              label="설명"
+              label={t("Comment")}
               defaultValue={item.comment}
               onChange={handleCommentChange}
               variant="outlined"
@@ -194,7 +198,7 @@ const CalModify = (props) => {
             <TextField
               select
               style={{ width: 400 }}
-              label={"timeZone"}
+              label={t("timeZone")}
               onChange={onTimeZoneChange}
             >
               {timeZones.map((timeZone) => (
@@ -208,13 +212,13 @@ const CalModify = (props) => {
           <TextField
             style={{ width: "400px" }}
             id="outlined-basic"
-            label="공유"
+            label={t("Share")}
             variant="outlined"
           />
         </div>
         <div style={{ textAlign: "left", margin: "20px" }}>
           <Button variant="outlined" onClick={openModal}>
-            사용자 초대
+            {t("Invite users")}
           </Button>
         </div>
         {calendar.map((item) => (
@@ -227,7 +231,7 @@ const CalModify = (props) => {
         ))}
         <div style={{ textAlign: "left", margin: "20px" }}>
           <Button variant="text" onClick={copenModal}>
-            구독 취소
+            {t("Unsubscribe from")}
           </Button>
           <UnsubscribeModal
             open={cmodalOpen}
@@ -235,13 +239,13 @@ const CalModify = (props) => {
             calNo={calNo}
           />
           <Button variant="text" color="error" onClick={bopenModal}>
-            캘린더 삭제
+            {t("delete calendar")}
           </Button>
           <DeleteModal open={bmodalOpen} close={bcloseModal} calNo={calNo} />
         </div>
         <div style={{ textAlign: "right", margin: "20px" }}>
           <Button variant="contained" onClick={editEventHandler}>
-            완료
+            {t("Completion")}
           </Button>
         </div>
       </div>

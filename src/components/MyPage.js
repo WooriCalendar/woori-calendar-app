@@ -1,11 +1,13 @@
 import { Button, Container, Grid, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { call } from "../service/ApiService.js";
+import { call, fetchMemberData } from "../service/ApiService.js";
 import NicnameModal from "./NicnameModal";
 import moment from "moment";
 import BirthModal from "./BirthModal.js";
 import SubEmailModal from "./SubEmailModal.js";
 import PasswordModal from "./PasswordModal.js";
+import MemberDelete from "./MemberDelete.js";
+import { useTranslation } from "react-i18next";
 
 const MyPage = () => {
   const [member, setMember] = useState("");
@@ -13,7 +15,9 @@ const MyPage = () => {
   const [bmodalOpen, setBmodalOpen] = useState(false);
   const [cmodalOpen, setCmodalOpen] = useState(false);
   const [dmodalOpen, setDmodalOpen] = useState(false);
+  const [fmodalOpen, setFmodalOpen] = useState(false);
   const [language, setLanguage] = useState("");
+  const { t, i18n } = useTranslation();
 
   const openModal = () => {
     setModalOpen(true);
@@ -39,20 +43,22 @@ const MyPage = () => {
   const dcloseModal = () => {
     setDmodalOpen(false);
   };
+  const fopenModal = () => {
+    setFmodalOpen(true);
+  };
+  const fcloseModal = () => {
+    setFmodalOpen(false);
+  };
 
   useEffect(() => {
     call("/member", "GET", null).then((response) => {
       setMember(response);
       console.log("123123123", response);
+      i18n.changeLanguage(response.language);
     });
-  }, []);
+    fetchMemberData();
+  }, [i18n]);
 
-  // useState(() => {
-  //   call("/member", "GET", null).then((response) => {
-  //     setMember(response);
-  //     console.log("123123123", response);
-  //   });
-  // });
   const handleLanguageChange = (selectedLanguage) => {
     const updatedData = {
       ...member,
@@ -62,6 +68,8 @@ const MyPage = () => {
     call("/member", "PUT", updatedData).then((response) => {
       console.log("response:::", response);
       console.log("언어 업데이트 성공");
+      setMember(updatedData);
+      i18n.changeLanguage(selectedLanguage);
     });
   };
 
@@ -76,12 +84,12 @@ const MyPage = () => {
       ></Grid>
       <Grid container item xs={12}>
         <Grid item xs={6} textAlign={"left"} style={{ paddingTop: "10px" }}>
-          이메일
+          {t("email")}
         </Grid>
         <Grid item xs={6} textAlign={"right"}>
           <TextField
             id="standard-read-only-input3"
-            label="이메일"
+            label={t("email")}
             // defaultValue={member.email}
             value={member.email || ""}
             InputProps={{
@@ -94,12 +102,12 @@ const MyPage = () => {
       </Grid>
       <Grid container item xs={12}>
         <Grid item xs={6} textAlign={"left"} style={{ paddingTop: "10px" }}>
-          닉네임
+          {t("nickname")}
         </Grid>
         <Grid item xs={6} textAlign={"right"}>
           <TextField
             id="standard-read-only-input1"
-            label="닉네임"
+            label={t("nickname")}
             value={member.nickname || ""}
             InputProps={{
               readOnly: true,
@@ -113,12 +121,12 @@ const MyPage = () => {
       </Grid>
       <Grid container item xs={12}>
         <Grid item xs={6} textAlign={"left"} style={{ paddingTop: "10px" }}>
-          생년월일
+          {t("birthday")}
         </Grid>
         <Grid item xs={6} textAlign={"right"}>
           <TextField
             id="standard-read-only-input2"
-            // label="생년월일"
+            label={t("birthday")}
             value={moment(member.birthday).format("YYYY-MM-DD") || ""} //서브스트링으로 뒤에 시간 뜨는거 지우고
             InputProps={{
               readOnly: true,
@@ -132,12 +140,12 @@ const MyPage = () => {
       </Grid>
       <Grid container item xs={12}>
         <Grid item xs={6} textAlign={"left"} style={{ paddingTop: "10px" }}>
-          보조이메일
+          {t("subemail")}
         </Grid>
         <Grid item xs={6} textAlign={"right"}>
           <TextField
             id="standard-read-only-input"
-            // label="보조 이메일"
+            label={t("subemail")}
             value={member.subemail || ""}
             InputProps={{
               readOnly: true,
@@ -151,56 +159,34 @@ const MyPage = () => {
       </Grid>
       <Grid container item xs={12}>
         <Grid item xs={6} textAlign={"left"} style={{ paddingTop: "10px" }}>
-          언어
+          {t("language")}
         </Grid>
         <Grid item xs={6} textAlign={"right"}>
-          {/* <TextField
-            id="standard-read-only-input"
-            // label="보조 이메일"
-            value={member.language || ""}
-            variant="standard"
-            style={{ marginBottom: "20px" }}
-            onClick={copenModal}
-          /> */}
-          {/* <Box sx={{ minWidth: 60 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={member.language}
-                // label={selectedLanguage}
-                onChange={(e) => handleLanguageChange(e.target.value)}
-              >
-                <MenuItem value="ko">한국어</MenuItem>
-                <MenuItem value="ja">日本語</MenuItem>
-                <MenuItem value="en">English</MenuItem>
-              </Select>
-            </FormControl>
-          </Box> */}
           <select
             // value={member.language}
-            label={member.language}
+            label={t("language")}
+            // label={member.language}
             onChange={(e) => handleLanguageChange(e.target.value)}
             style={{ width: "200px", height: "40px" }}
           >
-            <option value="ko">한국어</option>
-            <option value="ja">日本語</option>
-            <option value="en">English</option>
+            <option value="ko">{t("korean")}</option>
+            <option value="ja">{t("japanese")}</option>
+            <option value="en">{t("english")}</option>
           </select>
         </Grid>
       </Grid>
 
       <Grid style={{ marginBottom: "40px", marginTop: "40px" }}>
         <Button variant="outlined" onClick={dopenModal}>
-          비밀번호 변경
+          {t("Change Password")}
         </Button>
       </Grid>
       <PasswordModal open={dmodalOpen} close={dcloseModal} />
       <Grid>
-        <Button variant="outlined" color="error">
-          회원탈퇴
+        <Button variant="outlined" color="error" onClick={fopenModal}>
+          {t("withdrawal")}
         </Button>
+        <MemberDelete open={fmodalOpen} close={fcloseModal} />
       </Grid>
     </Container>
   );

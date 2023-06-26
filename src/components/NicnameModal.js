@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Button, TextField } from "@mui/material";
-import { call } from "../service/ApiService";
-
+import { call, fetchMemberData } from "../service/ApiService";
+import { useTranslation } from "react-i18next";
 const NicnameModal = (props) => {
   const { open, close } = props;
   const [nickname, setNickName] = useState("");
 
   const [email, setEmail] = useState([]);
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState("");
 
   useEffect(() => {
     call("/member", "GET", null).then((resp) => {
       setEmail(resp);
       console.log("ssssssssssssss", resp);
       console.log("eeeeeeeeeeeeeeeeeeeee", resp.nickname);
+      i18n.changeLanguage(resp.language);
     });
-  }, []);
+    fetchMemberData();
+  }, [i18n]);
 
   const editEventHandler = () => {
     const updatedItem = {
@@ -45,7 +49,7 @@ const NicnameModal = (props) => {
               <TextField
                 // fullWidth
                 id="standard-basic"
-                label="닉네임"
+                label={t("nickname")}
                 variant="outlined"
                 defaultValue={email.nickname}
                 onChange={handleNameChange}
@@ -60,10 +64,10 @@ const NicnameModal = (props) => {
               style={{ marginRight: "10px" }}
               onClick={editEventHandler}
             >
-              Completion
+              {t("Complete")}
             </Button>
             <Button variant="contained" onClick={close}>
-              취소
+              {t("Cancel")}
             </Button>
           </footer>
         </section>

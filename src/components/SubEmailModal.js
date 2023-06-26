@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Button, TextField } from "@mui/material";
-import { call } from "../service/ApiService";
+import { call, fetchMemberData } from "../service/ApiService";
 import { Grid } from "react-loader-spinner";
-
+import { useTranslation } from "react-i18next";
 const SubEmailModal = (props) => {
   const { open, close } = props;
   const [submail, setSubmail] = useState("");
 
   const [email, setEmail] = useState([]);
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState("");
 
   // const [grade, setGrade] = useState("");
   // const handleChange = (event) => {
@@ -19,8 +21,10 @@ const SubEmailModal = (props) => {
       setEmail(resp);
       console.log("ssssssssssssss", resp);
       console.log("eeeeeeeeeeeeeeeeeeeee", resp.nickname);
+      i18n.changeLanguage(resp.language);
     });
-  }, []);
+    fetchMemberData();
+  }, [i18n]);
 
   const editEventHandler = () => {
     const updatedItem = {
@@ -61,7 +65,7 @@ const SubEmailModal = (props) => {
               <TextField
                 // fullWidth
                 id="standard-basic"
-                label="기존 보조 이메일"
+                label={t("Crrunt Subemail")}
                 variant="outlined"
                 // defaultValue={email.subemail}
                 value={email.subemail || ""}
@@ -73,7 +77,7 @@ const SubEmailModal = (props) => {
               <TextField
                 // fullWidth
                 id="subemail"
-                label="새 보조 이메일 "
+                label={t("New Subemail")}
                 variant="outlined"
                 defaultValue={""} //{email.subemail}
                 onChange={handleNameChange}
@@ -89,10 +93,10 @@ const SubEmailModal = (props) => {
               style={{ marginRight: "10px" }}
               onClick={editEventHandler}
             >
-              완료
+              {t("Complete")}
             </Button>
             <Button variant="contained" onClick={close}>
-              취소
+              {t("Cancel")}
             </Button>
           </footer>
         </section>

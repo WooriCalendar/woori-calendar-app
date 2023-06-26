@@ -117,3 +117,13 @@ export function checkPassword(memberDTO) {
     })
     .catch(() => {});
 }
+
+export const fetchMemberData = async () => {
+  try {
+    const response = await call("/member", "GET", null);
+    return response;
+  } catch (error) {
+    console.error("데이터 가져오기 오류:", error);
+    throw error;
+  }
+};

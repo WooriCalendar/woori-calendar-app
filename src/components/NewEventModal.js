@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { Button, Grid, MenuItem, Switch, TextField } from "@mui/material";
 import { ko } from "date-fns/locale";
 import moment from "moment";
-import { call } from "../service/ApiService";
+import { call, fetchMemberData } from "../service/ApiService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -15,6 +15,8 @@ import {
 import axios from "axios";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import GoogleMaps from "./GooglePlace";
+import { useTranslation } from "react-i18next";
+
 const NewEventModal = (props) => {
   const { open, close, calendar, scheduleDTO } = props;
   // console.log("asdasdasdasasdd99", scheduleNo);
@@ -37,6 +39,8 @@ const NewEventModal = (props) => {
     rrule: {},
     status: "",
   });
+  const [language, setLanguage] = useState("");
+  const { t, i18n } = useTranslation();
   useEffect(() => {
     setSchedule(scheduleDTO);
   }, [scheduleDTO]);
@@ -50,8 +54,10 @@ const NewEventModal = (props) => {
       // console.log("뉴이벤트모달", response.data[0]);
       setCalendars(response.data);
       // setSchedule(response);
+      i18n.changeLanguage(response.language);
     });
-  }, []);
+    fetchMemberData();
+  }, [i18n]);
 
   // useState(() => {
   //   call("/schedule/", "GET", null).then((response) => {
@@ -169,6 +175,7 @@ const NewEventModal = (props) => {
       console.log("response.dataresponse.dataresponse.data", response.data);
       // alert("먼데 된거야");
     });
+    window.location.pathname = "/";
   };
 
   // console.log("ㄹ라라라랄라라라", schedule);
@@ -201,13 +208,13 @@ const NewEventModal = (props) => {
             </button>
           </Grid>
           <Grid item xs={12}>
-            <h2>Modifying the Schedule</h2>
+            <h2>{t("Modifying the Schedule")}</h2>
           </Grid>
           <Grid>
             <TextField
               id="title-modal"
               container
-              label={"title"}
+              label={t("Title")}
               // defaultValue={schedule.title}
               value={schedule.title || ""}
               style={{ width: "350px", paddingBottom: "10px" }}
@@ -217,7 +224,7 @@ const NewEventModal = (props) => {
           <Grid>
             <Grid container style={{ width: "350px" }}>
               <FontAwesomeIcon icon={faClock} style={{ color: "#3b3b3b" }} />
-              <span>All day</span>
+              <span>{t("All-day")}</span>
               <Switch checked={fullDayRef.current} onChange={onSwitchChange} />
             </Grid>
             <Grid container>
@@ -248,7 +255,7 @@ const NewEventModal = (props) => {
             </Grid>
           </Grid>
           <Grid container style={{ marginTop: 10 }}>
-            <span>repeat</span>
+            <span>{t("Repeat")}</span>
             <Switch checked={repeatToggle} onChange={onRepeatChange} />
           </Grid>
           {repeatToggle ? (
@@ -256,13 +263,13 @@ const NewEventModal = (props) => {
               <TextField
                 select
                 style={{ width: 400 }}
-                label={"repeat"}
+                label={t("Repeat")}
                 onChange={onFreqChange}
               >
-                <MenuItem value={"daily"}>Daily</MenuItem>
-                <MenuItem value={"weekly"}>Weekly</MenuItem>
-                <MenuItem value={"monthly"}>Monthly</MenuItem>
-                <MenuItem value={"yearly"}>Every year</MenuItem>
+                <MenuItem value={"daily"}>{t("Daily")}</MenuItem>
+                <MenuItem value={"weekly"}>{t("Weekly")}</MenuItem>
+                <MenuItem value={"monthly"}>{t("Monthly")}</MenuItem>
+                <MenuItem value={"yearly"}>{t("Yearly")}</MenuItem>
               </TextField>
               <LocalizationProvider locale={ko} dateAdapter={AdapterDayjs}>
                 <Grid container style={{ marginTop: 20 }}>
@@ -281,7 +288,7 @@ const NewEventModal = (props) => {
             <TextField
               select
               style={{ width: 400 }}
-              label={"Calendar"}
+              label={t("Calendar")}
               onChange={onCalendarChange}
             >
               {calendars.map((calendars) => (
@@ -295,7 +302,7 @@ const NewEventModal = (props) => {
           <Grid container style={{ marginTop: 20 }}>
             <TextField
               style={{ width: 400 }}
-              label={"Comment"}
+              label={t("Comment")}
               value={schedule.comment}
               onChange={onCommentChange}
             />
@@ -303,7 +310,7 @@ const NewEventModal = (props) => {
 
           <Grid container style={{ textAlign: "right", margin: "20px" }}>
             <Button variant="contained" onClick={onUpdate}>
-              Completion
+              {t("Complete")}
             </Button>
           </Grid>
         </Grid>
