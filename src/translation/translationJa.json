@@ -84,6 +84,9 @@
   "would you like to delete this account?" : "このアカウントを削除しますか?",
 
   "Create": "作成"
+,
+
+  "SNS login cannot edit member information" : "SNSログインでは会員情報の編集ができません。"
 
 
 }
