@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { TextField, Button } from "@mui/material";
-import { call, checkPassword } from "../service/ApiService.js";
-
+import { call, checkPassword, fetchMemberData } from "../service/ApiService.js";
+import { useTranslation } from "react-i18next";
 const DeleteMember = (props) => {
   const { open, close } = props;
   const [member, setMember] = useState("");
   const [password, setPassword] = useState("");
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState("");
 
   useEffect(() => {
     call("/member", "GET", null).then((response) => {
       setMember(response.email);
       // console.log("모달의모달의모달", response.email);
+      i18n.changeLanguage(response.language);
     });
-  }, []);
+    fetchMemberData();
+  }, [i18n]);
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -29,8 +33,9 @@ const DeleteMember = (props) => {
           // console.log("삭제삭제삭제삭제", member);
         });
       } else {
-        document.getElementById("passwordOut").innerText =
-          "Passwords do not match.";
+        document.getElementById("passwordOut").innerText = t(
+          t("Passwords do not match.")
+        );
       }
     });
   };
@@ -56,7 +61,7 @@ const DeleteMember = (props) => {
                     id="password"
                     name="password"
                     type="password"
-                    label="password"
+                    label={t("password")}
                     autoComplete="password"
                     style={{ marginBottom: "2%" }}
                     onChange={handlePasswordChange}
@@ -78,10 +83,10 @@ const DeleteMember = (props) => {
               style={{ marginRight: "10px" }}
               onClick={submit}
             >
-              secession
+              {t("Secession")}
             </Button>
             <Button variant="contained" onClick={close}>
-              Cancel
+              {t("Cancel")}
             </Button>
           </footer>
         </section>

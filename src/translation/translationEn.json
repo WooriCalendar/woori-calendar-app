@@ -1,0 +1,90 @@
+{
+  "email": "Email",
+  "nickname": "Nickname",
+  "birthday": "Birthday",
+  "subemail": "Sub Email",
+  "language": "Language",
+  "passwordChange": "Change Password",
+  "memberDelete": "Delete Member",
+  "Create schedule": "Create Schedule",
+
+
+  "search": "Search",
+  "Create new calendar" : "Create new calendar",
+  "Logout" : "Logout",
+  
+  "Month": "Month",
+  "Week" : "Week",
+  "Day" : "Day",
+
+  "Title" : "Title",
+  "All-day" : "All-day",
+  "Repeat": "Repeat",
+  "Daily": "Daily",
+  "Weekly": "Weekly",
+  "Monthly" : "Monthly",
+  "Yearly" : "Yearly",
+  "Calendar": "Calendar",
+  "Comment" : "Comment",
+  "Complete" : "Complete",
+
+  "Add a location" : "Add a location",
+  "No locations": "No locations",
+  "Name": "Name",
+  "timeZone": "timeZone",
+  "Color": "Color",
+
+  "Modify" : "Modify",
+  "Modifying the Schedule" : "Modifying the Schedule",
+
+  "Settings" : "Settings",
+  "My Page" : "My Page",
+
+  "korean" : "korean",
+  "japanese" : "japanese",
+  "english" : "english",
+
+  "Modifying the Calendar" : "Modifying the Calendar",
+
+  "Share": "Share",
+  "Invite users": "Invite users",
+  "Unsubscribe from": "Unsubscribe from",
+  "delete calendar" : "delete calendar",
+
+  "Share with specific people" : "Share with specific people",
+  "add by email" : "add by email",
+  "Permissions" : "Permissions",
+  "View": "View",
+  "Editing" : "Editing",
+  "Management" : "Management",
+  "invitation" : "invitation",
+
+  "Are you sure you want to unsubscribe?": "Are you sure you want to unsubscribe?",
+  "You will no longer have access to these calendars and events." : "You will no longer have access to these calendars and events.",
+  "Other users with access to the calendar can continue to use it." : "Other users with access to the calendar can continue to use it.",
+  "Cancel" : "취소",
+
+  "Remove calendar?": "Remove calendar?",
+
+  "Passwords do not match." : "Passwords do not match.",
+  "password" : "password",
+  "Change Password": "Change Password",
+  "withdrawal" : "withdrawal",
+
+  "Crrunt Subemail" : "Crrunt Subemail",
+  "New Subemail" : "New Subemail",
+
+  "Current Passwords do not match." : "Current Passwords do not match.",
+  "Please enter a password between 8 and 20 characters with a mixture of uppercase and lowercase letters and numbers." : "Please enter a password between 8 and 20 characters with a mixture of uppercase and lowercase letters and numbers.",
+  "CurrentPassword" : "CurrentPassword",
+
+  "passwordcheck": "passwordcheck",
+
+  "Secession": "Secession",
+
+  "would you like to delete this account?" : "would you like to delete this account?"
+
+
+
+
+}

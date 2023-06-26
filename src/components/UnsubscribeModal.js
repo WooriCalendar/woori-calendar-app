@@ -1,7 +1,8 @@
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { call } from "../service/ApiService";
+import { call, fetchMemberData } from "../service/ApiService";
 import { fi } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
 
 const UnsubscribeModal = (props) => {
   const { open, close } = props;
@@ -10,17 +11,23 @@ const UnsubscribeModal = (props) => {
   const [shareNo, setShareNo] = useState([]);
   const [email, setEmail] = useState("");
   const [mail, setmail] = useState("");
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState("");
 
   useEffect(() => {
     call("/calendar/" + calNo, "GET").then((response) => {
       setmail(response.data);
+      i18n.changeLanguage(response.language);
     });
+
     call("/calendar/share", "GET").then((response) => {
       const filteredData = response.data.filter((item) => item.calNo === calNo);
       filteredData.filter((item) => setShareNo(item.shareNo));
       setEmail(filteredData);
     });
-  }, []);
+    fetchMemberData();
+  }, [i18n]);
+
 
   const unsubscribe = () => {
     console.log("No::::" + shareNo);
@@ -36,11 +43,15 @@ const UnsubscribeModal = (props) => {
           <main>
             <div style={{ marginBottom: "5px" }}>
               <div>
-                구독 취소하시겠습니까? <br />
+                {t("Are you sure you want to unsubscribe?")} <br />
                 <br />
-                더 이상 이 캘린더 및 일정에 액세스할 수 없게 됩니다.
-                <br /> 캘린더에 액세스할 수 있는 다른 사용자는 계속 사용할 수
-                있습니다.
+                {t(
+                  "You will no longer have access to these calendars and events."
+                )}
+                <br />{" "}
+                {t(
+                  "Other users with access to the calendar can continue to use it."
+                )}
               </div>
             </div>
           </main>
@@ -51,10 +62,10 @@ const UnsubscribeModal = (props) => {
               style={{ marginRight: "10px" }}
               onClick={unsubscribe}
             >
-              확인
+              {t("Complete")}
             </Button>
             <Button variant="contained" onClick={close}>
-              취소
+              {t("Cancel")}
             </Button>
           </footer>
         </section>

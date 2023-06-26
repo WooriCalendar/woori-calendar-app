@@ -1,8 +1,9 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Button, Grid, MenuItem, TextField} from "@mui/material";
-import {BlockPicker} from 'react-color';
-import {call} from "../service/ApiService";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Grid, MenuItem, TextField } from "@mui/material";
+import { BlockPicker } from "react-color";
+import { call, fetchMemberData } from "../service/ApiService";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const CalendarCreate = () => {
     const nameRef = useRef('');
@@ -13,16 +14,23 @@ const CalendarCreate = () => {
     const [calendar, setCalendar] = useState({name : '', comment : '', timeZone : '', color : ''})
     const titleRegEx = /[^?a-zA-Z0-9/]{2,20}$/
     const [istitleCheck, setIstitleCheck]  = useState(false);
+   const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState("");
 
-    // https://worldtimeapi.org/api/timezone/
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const memberData = await fetchMemberData();
+        const memberLanguage = memberData.language; // 멤버 데이터에서 언어 값을 추출
+        setLanguage(memberLanguage); // 언어 값을 상태에 설정
+        i18n.changeLanguage(memberLanguage); // 언어 값을 i18n에 설정
+      } catch (error) {
+        console.error("데이터 가져오기 오류:", error);
+      }
+    };
 
-    useEffect(() => {
-        axios.get('https://worldtimeapi.org/api/timezone/')
-            .then((res) => {
-                // console.log(res.data)
-                setTimeZones(res.data)
-            })
-    }, []);
+    loadData();
+  }, [i18n]);
 
     const onNameChange = (e) => {
         nameRef.current = e.target.value;
@@ -38,28 +46,33 @@ const CalendarCreate = () => {
 
     }
 
-    const onCommentChange = (e) => {
-        commentRef.current = e.target.value
-        setCalendar({...calendar, comment: commentRef.current})
-    }
+  useEffect(() => {
+    axios.get("https://worldtimeapi.org/api/timezone/").then((res) => {
+      // console.log(res.data)
+      setTimeZones(res.data);
+    });
+  }, []);
 
-    const onTimeZoneChange = async (e) => {
-        await axios.get('https://worldtimeapi.org/api/timezone/' + e.target.value)
-            .then((response) => {
-                timeZoneRef.current = e.target.value + ' (utc ' + response.data.utc_offset + ')'
-            })
-        setCalendar({...calendar, timeZone: timeZoneRef.current})
-    }
+  const onNameChange = (e) => {
+    nameRef.current = e.target.value;
+    setCalendar({ ...calendar, name: nameRef.current });
+  };
 
-    const onColorChange = (e) => {
-        colorRef.current = e.hex
-        document.querySelector(".color .notranslate").innerHTML = colorRef.current
-        // document.querySelector(".color .notranslate").parentElement.parentElement.querySelector("div:first-child").innerText = color
-        // document.querySelector(".color .notranslate").parentElement.parentElement.querySelector("div:first-child").innerText = color
-        // document.querySelector(".color .notranslate").parent.querySelector("fieldset legend").className = "css-14lo706"
+  const onCommentChange = (e) => {
+    commentRef.current = e.target.value;
+    setCalendar({ ...calendar, comment: commentRef.current });
+  };
 
-        setCalendar({...calendar, color: colorRef.current})
-    }
+  const onTimeZoneChange = async (e) => {
+    await axios
+      .get("https://worldtimeapi.org/api/timezone/" + e.target.value)
+      .then((response) => {
+        timeZoneRef.current =
+          e.target.value + " (utc " + response.data.utc_offset + ")";
+      });
+    setCalendar({ ...calendar, timeZone: timeZoneRef.current });
+  };
+
 
     const addCalendar = () => {
         console.log(calendar)
@@ -76,26 +89,20 @@ const CalendarCreate = () => {
     return (
         <Grid container className={"main"} style={{ width : 400, margin: "0 auto", justifyContent : "center"}}>
             <Grid item>
-                <h2>캘린더 생성</h2>
+                <h2>{t("Create new calendar")}</h2>
             </Grid>
             <Grid container style={{marginTop: 20}}>
-                <TextField 
-                    label={"이름"}
-                    onChange={onNameChange}
-                />
+                    <TextField label={t("Name")} onChange={onNameChange} />
                 <div id="titleCheck" style={{color:"red"}}></div>
             </Grid>
             <Grid container style={{marginTop: 20}}>
-                <TextField 
-                    label={"설명"}
-                    onChange={onCommentChange}
-                />
+                <TextField label={t("Comment")} onChange={onCommentChange} />
             </Grid>
             <Grid container style={{marginTop: 20}}>
                 <TextField
                     select
                     style={{ width : 400}}
-                    label={"timeZone"}
+                    label={t("timeZone")}
                     onChange={onTimeZoneChange}
                 >
                     {
@@ -109,7 +116,7 @@ const CalendarCreate = () => {
                 <TextField
                     select
                     style={{ width : 400}}
-                    label={"color"}
+                    label={t("Color")}
                     className={"color"}
                 >
                     <BlockPicker
@@ -121,7 +128,7 @@ const CalendarCreate = () => {
                 </TextField>
             </Grid>
             <Grid container style={{ textAlign: "right", margin: "20px" }}>
-                <Button variant="contained" onClick={addCalendar}>완료</Button>
+                <Button variant="contained" onClick={addCalendar}>{t("Complete")}</Button>
             </Grid>
         </Grid>
     );

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Button, TextField } from "@mui/material";
-import { call } from "../service/ApiService";
+import { call, fetchMemberData } from "../service/ApiService";
 import moment from "moment";
-
+import { useTranslation } from "react-i18next";
 const BirthModal = (props) => {
   const { open, close } = props;
   const [birthday, setBirthday] = useState("");
 
   const [email, setEmail] = useState([]);
-
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState("");
   // const [grade, setGrade] = useState("");
   // const handleChange = (event) => {
   //   setGrade(event.target.value);
@@ -17,8 +18,10 @@ const BirthModal = (props) => {
   useEffect(() => {
     call("/member", "GET", null).then((resp) => {
       setEmail(resp);
+      i18n.changeLanguage(resp.language);
     });
-  }, []);
+    fetchMemberData();
+  }, [i18n]);
 
   const editEventHandler = () => {
     const updatedItem = {
@@ -49,7 +52,7 @@ const BirthModal = (props) => {
               <TextField
                 // fullWidth
                 id="birthday"
-                label="생년월일"
+                label={t("birthday")}
                 variant="outlined"
                 defaultValue={moment(email.birthday).format("YYYY-MM-DD") || ""} //   {email.birthday}
                 onChange={handleNameChange}
@@ -64,10 +67,10 @@ const BirthModal = (props) => {
               style={{ marginRight: "10px" }}
               onClick={editEventHandler}
             >
-              완료
+              {t("Complete")}
             </Button>
             <Button variant="contained" onClick={close}>
-              취소
+              {t("Cancel")}
             </Button>
           </footer>
         </section>

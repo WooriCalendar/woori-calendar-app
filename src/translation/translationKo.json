@@ -1,0 +1,88 @@
+{
+  "email": "이메일",
+  "nickname": "닉네임",
+  "birthday": "생년월일",
+  "subemail": "보조 이메일",
+  "language": "언어",
+  "passwordChange": "비밀번호 변경",
+  "memberDelete": "회원 탈퇴",
+  "Create schedule": "일정 생성",
+
+
+  "search": "검색",
+  "Create new calendar" : "새 캘린더 생성",
+  "Logout": "로그 아웃",
+
+  "Month": "월",
+  "Week" : "주",
+  "Day" : "일",
+
+  "Title" : "제목",
+  "All-day" : "종일",
+  "Repeat": "반복",
+  "Daily": "매일",
+  "Weekly": "매주",
+  "Monthly" : "매달",
+  "Yearly" : "매년",
+  "Calendar": "캘린더",
+  "Comment" : "설명",
+  "Complete" : "완료",
+
+  "Add a location" : "위치 추가",
+  "No locations": "위치 없음",
+  "Name": "이름",
+  "timeZone": "시간대",
+  "Color": "색상",
+
+  "Modify": "수정",
+  "Modifying the Schedule" : "일정 수정",
+
+  "Settings" : "설정",
+  "My Page" : "내 정보",
+
+  "korean" : "한국어",
+  "japanese" : "일본어",
+  "english" : "영어",
+
+  "Modifying the Calendar" : "캘린더 수정",
+
+  "Share": "공유",
+  "Invite users": "사용자 초대",
+  "Unsubscribe from": "구독 취소",
+  "delete calendar": "캘린더 삭제",
+
+  "Share with specific people" : "특정 사용자 공유",
+  "add by email" : "이메일로 추가",
+  "Permissions" : "권한",
+  "View": "보기",
+  "Editing" : "편집",
+  "Management" : "관리",
+  "invitation" : "초대",
+
+  "Are you sure you want to unsubscribe?" : "구독 취소하시겠습니까?",
+  "You will no longer have access to these calendars and events." : "더 이상 이 캘린더 및 일정에 액세스할 수 없게 됩니다.",
+  "Other users with access to the calendar can continue to use it." : "캘린더에 액세스할 수 있는 다른 사용자는 계속 사용할 수 있습니다.",
+  "Cancel" : "취소",
+
+  "Remove calendar?" : "캘린더를 삭제하시겠습니까?",
+
+  "Passwords do not match." : "비밀번호가 일치하지 않습니다.",
+  "password" : "비밀번호",
+  "Change Password" : "비밀번호 변경",
+  "withdrawal" : "회원탈퇴",
+
+  "Crrunt Subemail" : "현재 서브이메일",
+  "New Subemail" : "새 서브이메일",
+
+  "Current Passwords do not match." : "현재 암호가 일치하지 않습니다.",
+  "Please enter a password between 8 and 20 characters with a mixture of uppercase and lowercase letters and numbers." : "비밀번호는 영문 대소문자와 숫자를 혼합하여 8~20자 이내로 입력해주세요.",
+  "CurrentPassword" : "현재 비밀번호",
+
+  "passwordcheck" : "비밀번호 확인",
+
+  "Secession" : "탈퇴",
+  
+  "would you like to delete this account?" : "이 계정을 삭제하시겠습니까?"
+
+
+}

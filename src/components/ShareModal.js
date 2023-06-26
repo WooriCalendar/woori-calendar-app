@@ -11,7 +11,9 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
+
 import { call, inviteEmail } from "../service/ApiService";
+import { useTranslation } from "react-i18next";
 
 const ShareModal = (props) => {
   const { open, close, calNo, name } = props;
@@ -20,6 +22,23 @@ const ShareModal = (props) => {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState();
   const [search, setSearch] = useState(false);
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState("");
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const memberData = await fetchMemberData();
+        const memberLanguage = memberData.language; // 멤버 데이터에서 언어 값을 추출
+        setLanguage(memberLanguage); // 언어 값을 상태에 설정
+        i18n.changeLanguage(memberLanguage); // 언어 값을 i18n에 설정
+      } catch (error) {
+        console.error("데이터 가져오기 오류:", error);
+      }
+    };
+
+    loadData();
+  }, [i18n]);
 
   console.log("상위 컴포넌트에서 받아온 캘린더 번호", calNo);
   console.log("상위 컴포넌트에서 받아온 캘린더 이름", name);
@@ -93,7 +112,7 @@ const ShareModal = (props) => {
         <section>
           <header>
             {/* {header} */}
-            <span>특정 사용자와 공유</span>
+            <span>{t("Share with specific people")}</span>
             <button className="close" onClick={close}>
               <CloseIcon />
             </button>
@@ -102,7 +121,7 @@ const ShareModal = (props) => {
             <div style={{ marginBottom: "20px" }}>
               <TextField
                 fullWidth
-                label="이메일로 추가"
+                label={t("add by email")}
                 variant="standard"
                 onChange={handleInputChange}
                 onKeyUp={handleKeyPress}
@@ -123,22 +142,24 @@ const ShareModal = (props) => {
               ></div>
             </div>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">권한</InputLabel>
+              <InputLabel id="demo-simple-select-label">
+                {t("Permissions")}
+              </InputLabel>
               <Select
                 id="outlined-select-currency"
-                label="권한"
+                label={t("Permissions")}
                 defaultValue="0"
                 onChange={handleChange}
               >
-                <MenuItem value={0}>보기</MenuItem>
-                <MenuItem value={1}>편집</MenuItem>
-                <MenuItem value={2}>관리</MenuItem>
+                <MenuItem value={0}>{t("View")}</MenuItem>
+                <MenuItem value={1}>{t("Editing")}</MenuItem>
+                <MenuItem value={2}>{t("Management")}</MenuItem>
               </Select>
             </FormControl>
           </main>
           <footer>
             <Button variant="contained" id="invite" onClick={invite}>
-              초대
+              {t("invitation")}
             </Button>
           </footer>
         </section>

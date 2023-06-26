@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Button, TextField } from "@mui/material";
-import { call, checkPassword } from "../service/ApiService";
+import { call, checkPassword, fetchMemberData } from "../service/ApiService";
 import { Grid } from "react-loader-spinner";
 import PasswordTextField from "./PasswordTextField";
-
+import { useTranslation } from "react-i18next";
 const PasswordModal = (props) => {
   const { open, close } = props;
   const [submail, setSubmail] = useState("");
@@ -11,14 +11,18 @@ const PasswordModal = (props) => {
   const [member, setMember] = useState([]);
   const [password, setPassword] = useState();
   const [checked, setChecked] = useState();
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState("");
 
   useEffect(() => {
     call("/member", "GET", null).then((resp) => {
       setMember(resp.email);
       console.log("ssssssssssssss", resp);
       console.log("eeeeeeeeeeeeeeeeeeeee", resp.nickname);
+      i18n.changeLanguage(resp.language);
     });
-  }, []);
+    fetchMemberData();
+  }, [i18n]);
 
   const pwChange = (e) => {
     setChecked(e.target.value);
@@ -50,16 +54,21 @@ const PasswordModal = (props) => {
                 close();
               });
             } else {
-              document.getElementById("passwordOut").innerText =
-                "Passwords do not match.";
+              document.getElementById("passwordOut").innerText = t(
+                t("Passwords do not match.")
+              );
             }
           } else {
-            document.getElementById("checkOut").innerText =
-              "Current Passwords do not match.";
+            document.getElementById("checkOut").innerText = t(
+              t("Current Passwords do not match.")
+            );
           }
         } else {
-          document.getElementById("passworddOut").innerText =
-            "Please enter a password between 8 and 20 characters with a mixture of uppercase and lowercase letters and numbers.";
+          document.getElementById("passworddOut").innerText = t(
+            t(
+              "Please enter a password between 8 and 20 characters with a mixture of uppercase and lowercase letters and numbers."
+            )
+          );
         }
       }
     );
@@ -73,7 +82,7 @@ const PasswordModal = (props) => {
           <main>
             <form noValidate>
               <div style={{ textAlign: "center", marginBottom: "10px" }}>
-                <p>비밀번호 변경</p>
+                <p>{t("Change Password")}</p>
               </div>
               <div style={{ marginBottom: "5px" }}>
                 <div>
@@ -81,7 +90,7 @@ const PasswordModal = (props) => {
                     variant="outlined"
                     id="currentpw"
                     name="currentpw"
-                    label="CurrentPassword"
+                    label={t("CurrentPassword")}
                     type="password"
                     style={{ marginBottom: "2%" }}
                     // value={currentpw}
@@ -105,10 +114,10 @@ const PasswordModal = (props) => {
                 type="submit"
                 onClick={handleButtonClick}
               >
-                완료
+                {t("Complete")}
               </Button>
               <Button variant="contained" onClick={close}>
-                취소
+                {t("Cancel")}
               </Button>
             </div>{" "}
           </main>

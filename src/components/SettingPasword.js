@@ -1,12 +1,15 @@
 import { Container, TextField, Button, Grid } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import MyPage from "./MyPage";
-import { call, checkPassword } from "../service/ApiService.js";
+import { call, checkPassword, fetchMemberData } from "../service/ApiService.js";
+import { useTranslation } from "react-i18next";
 
 const SettingPassword = ({ setShowMyPage }) => {
   const [password, setPassword] = useState("");
   const [member, setMember] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState("");
 
   useEffect(() => {
     call("/member", "GET", null).then((response) => {
@@ -14,6 +17,20 @@ const SettingPassword = ({ setShowMyPage }) => {
       // console.log("123123123", response.email);
     });
   }, []);
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const memberData = await fetchMemberData();
+        const memberLanguage = memberData.language; // 멤버 데이터에서 언어 값을 추출
+        setLanguage(memberLanguage); // 언어 값을 상태에 설정
+        i18n.changeLanguage(memberLanguage); // 언어 값을 i18n에 설정
+      } catch (error) {
+        console.error("데이터 가져오기 오류:", error);
+      }
+    };
+
+    loadData();
+  }, [i18n]);
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -29,8 +46,9 @@ const SettingPassword = ({ setShowMyPage }) => {
         setIsCompleted(true);
         // alert("비밀번호가 일치합니다");
       } else {
-        document.getElementById("passwordOut").innerText =
-          "Passwords do not match.";
+        document.getElementById("passwordOut").innerText = t(
+          "Passwords do not match."
+        );
       }
     });
   };
@@ -54,7 +72,7 @@ const SettingPassword = ({ setShowMyPage }) => {
                 id="password"
                 name="password"
                 type="password"
-                label="password"
+                label={t("password")}
                 autoComplete="password"
                 style={{ marginBottom: "2%" }}
                 value={password}
@@ -66,7 +84,7 @@ const SettingPassword = ({ setShowMyPage }) => {
             <Grid item xs={6} textAlign={"right"}>
               <Grid>
                 <Button type="submit" variant="contained" className="invite">
-                  완료
+                  {t("Complete")}
                 </Button>
               </Grid>
             </Grid>

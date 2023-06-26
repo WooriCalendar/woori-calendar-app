@@ -1,17 +1,29 @@
-import '../css/Sidebar.css';
+import "../css/Sidebar.css";
 import FullCalendars from "./FullCalendars";
 import Category from "./Category";
 import {Button, Fab, TextField, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import React from "react";
 import BasicMenu from "./BasicMenu";
+import { useTranslation } from "react-i18next";
+import { fetchMemberData } from "../service/ApiService";
+import { useEffect } from "react";
+const Sidebar = (
+  { visible, aspectRatio, height, contentHeight, onCategoryChange },
+  props
+) => {
+  const { t, i18n } = useTranslation();
 
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const memberData = await fetchMemberData();
+        const language = memberData.language;
 
-const Sidebar = ({visible, aspectRatio, height, contentHeight, onCategoryChange}, props) => {
-    const headerToolbar = {
-        left: '',
-        center: '',
-        right: '',
+        i18n.changeLanguage(language);
+      } catch (error) {
+        console.error("데이터 가져오기 오류:", error);
+      }
     };
 
     return (
@@ -27,7 +39,7 @@ const Sidebar = ({visible, aspectRatio, height, contentHeight, onCategoryChange}
                     />
                     <form>
                         <TextField
-                            label="검색"
+                            label={t("search")}
                             variant="outlined"
                             size="small"
                         />
@@ -36,6 +48,8 @@ const Sidebar = ({visible, aspectRatio, height, contentHeight, onCategoryChange}
                 </div>
                 )}
         </div>
-    );
+      )}
+    </div>
+  );
 };
 export default Sidebar;
