@@ -109,7 +109,6 @@ const CalModify = (props) => {
       console.log("shareNo:::", shareNo);
       console.log("이메일:::", email);
       console.log("grade:::", grade);
-
     });
     fetchMemberData();
   }, [i18n]);
@@ -127,8 +126,6 @@ const CalModify = (props) => {
     await axios
       .get("https://worldtimeapi.org/api/timezone/" + e.target.value)
       .then((response) => {
-        // timeZoneRef.current =
-        //   e.target.value + " (utc " + response.data.utc_offset + ")";
         const timeZone =
           e.target.value + " (utc " + response.data.utc_offset + ")";
         setTimeZone(timeZone);
@@ -200,9 +197,7 @@ const CalModify = (props) => {
               <TextField
                 style={{ width: "400px", marginBottom: "25px" }}
                 id="outlined-required-name"
-
                 label={t("Name")}
-
                 defaultValue={item.name}
                 // value={name}
                 onChange={handleNameChange}
@@ -213,9 +208,7 @@ const CalModify = (props) => {
             <TextField
               style={{ width: "400px" }}
               id="outlined-required-com"
-
               label={t("Comment")}
-
               defaultValue={item.comment}
               onChange={handleCommentChange}
               variant="outlined"
@@ -240,7 +233,7 @@ const CalModify = (props) => {
         </div>
 
         <div style={{ textAlign: "left", margin: "20px" }}>
-          <p>Share with specific people</p>
+          <p>{t("Share with specific people")}</p>
           {email.map((email, index) => (
             <div key={email} style={{ display: "flex", alignItems: "center" }}>
               <TextField variant="standard" disabled defaultValue={email} />
@@ -250,9 +243,9 @@ const CalModify = (props) => {
                   value={grade[index]}
                   onChange={(e) => handleChange(e, index)}
                 >
-                  <MenuItem value={0}>보기</MenuItem>
-                  <MenuItem value={1}>편집</MenuItem>
-                  <MenuItem value={2}>관리</MenuItem>
+                  <MenuItem value={0}>{t("View")}</MenuItem>
+                  <MenuItem value={1}>{t("Editing")}</MenuItem>
+                  <MenuItem value={2}>{t("Management")}</MenuItem>
                 </Select>
               </div>
             </div>

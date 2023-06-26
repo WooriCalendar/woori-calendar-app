@@ -81,7 +81,9 @@
 
   "Secession": "離脱",
 
-  "would you like to delete this account?" : "このアカウントを削除しますか?"
+  "would you like to delete this account?" : "このアカウントを削除しますか?",
+
+  "Create": "作成"
 
 
 }
