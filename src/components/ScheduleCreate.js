@@ -86,12 +86,19 @@ const ScheduleCreate = () => {
     });
   };
 
-  const onTimeChange = (e) => {
-    // setDate(moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss"))
-    dateRef.current = moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss");
-    // setDate(dateRef.current)
-    setSchedule({ ...schedule, start: dateRef.current, end: dateRef.current });
-  };
+    const onStartTimeChange = (e) => {
+        // setDate(moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss"))
+        dateRef.current = moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss")
+        // setDate(dateRef.current)
+        setSchedule({...schedule, start: dateRef.current})
+    }
+
+    const onEndTimeChange = (e) => {
+        // setDate(moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss"))
+        dateRef.current = moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss")
+        // setDate(dateRef.current)
+        setSchedule({...schedule, end : dateRef.current})
+    }
 
   const onRepeatChange = () => {
     setRepeatToggle(!repeatToggle);
@@ -138,6 +145,10 @@ const ScheduleCreate = () => {
 
   console.log(schedule);
 
+    // 웹소켓
+    // 일정 생성 알림은 아니고 생성 시 같은 캘린더를 구독하고 있는 사람 리렌더링
+    // 일정 생성 시 지정된 캘린더 번호를 구독하고 있는 모든 회원에게 메세지
+
   return (
     <Grid
       container
@@ -162,26 +173,22 @@ const ScheduleCreate = () => {
         <Grid container>
           <Grid item>
             <LocalizationProvider locale={ko} dateAdapter={AdapterDayjs}>
-              {fullDayRef.current ? (
-                <>
-                  <DatePicker
-                    defaultValue={dayjs(new Date())}
-                    format={"YYYY-MM-DD"}
-                    onChange={onStartDateChange}
-                  />
-                  <DatePicker
-                    defaultValue={dayjs(new Date())}
-                    format={"YYYY-MM-DD"}
-                    onChange={onEndDateChange}
-                  />
-                </>
-              ) : (
-                <DesktopDateTimePicker
-                  defaultValue={dayjs(new Date())}
-                  format={"YYYY-MM-DD HH:mm:ss"}
-                  onChange={onTimeChange}
-                />
-              )}
+                {
+                    fullDayRef.current ?
+                        (
+                            <>
+                                <DatePicker defaultValue={dayjs(new Date())} format={"YYYY-MM-DD"} onChange={onStartDateChange} />
+                                <DatePicker defaultValue={dayjs(new Date()).add(1, 'h')} format={"YYYY-MM-DD"} onChange={onEndDateChange} />
+                            </>
+                        )
+                        :
+                        (
+                            <>
+                                <DesktopDateTimePicker defaultValue={dayjs(new Date())} format={"YYYY-MM-DD HH:mm:ss"} onChange={onStartTimeChange} />
+                                <DesktopDateTimePicker defaultValue={dayjs(new Date())} format={"YYYY-MM-DD HH:mm:ss"} onChange={onEndTimeChange} />
+                            </>
+                        )
+                }
             </LocalizationProvider>
           </Grid>
         </Grid>
@@ -222,9 +229,12 @@ const ScheduleCreate = () => {
             label={t("Calendar")}
             onChange={onCalendarChange}
           >
-            {calendars.map((calendar) => (
-              <MenuItem value={calendar.calNo}>{calendar.name}</MenuItem>
-            ))}
+              {
+                  calendars.filter((calendar) => calendar.calNo != 90 && calendar.calNo != 98)
+                      .map((calendar) => (
+                          <MenuItem value={calendar.calNo}>{calendar.name}</MenuItem>
+                      ))
+              }
           </TextField>
         </Grid>
       </Grid>

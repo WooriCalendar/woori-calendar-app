@@ -11,6 +11,9 @@ import Loading from "./components/Loading";
 
 function App() {
     const [initialView, setInitialView] = useState('dayGridMonth');
+    const [next, setNext] = useState(false);
+    const [prev, setPrev] = useState(false);
+    const [today, setToday] = useState(false);
     const [isSideBarVisible, setSideBarVisible] = useState(true);
     const headerToolbar = {
         // left: 'prev',
@@ -40,13 +43,25 @@ function App() {
     }, []);
 
 
+    const onNextClick = () => {
+        setNext(!next)
+    }
+
+    const onPrevClick = () => {
+        setPrev(!prev);
+    }
+
+    const onTodayClick = () => {
+        setToday(!today)
+    }
+
     return (
         <div className="App">
             {loading ? (
                 <Loading />
             ) : (
                 <>
-            <Navigation SideBar={sideBarButton} initialView={onInitialViewChange}/>
+            <Navigation SideBar={sideBarButton} initialView={onInitialViewChange} next={onNextClick} prev={onPrevClick} today={onTodayClick}/>
             {/*<Container maxWidth="xl" style={{margin : '0px 0px'}}>*/}
             <Grid container spacing={3} style={{margin: '0px 0px', justifyContent: 'space-between', width: 'auto'}}>
                 <Grid item xs={2} style={{paddingLeft: '20px'}}>
@@ -66,6 +81,9 @@ function App() {
                         aspectRatio={'3'}
                         initialView={initialView}
                         category={category}
+                        next={next}
+                        prev={prev}
+                        today={today}
                     />
                 </Grid>
             </Grid>
