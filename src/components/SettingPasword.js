@@ -10,11 +10,14 @@ const SettingPassword = ({ setShowMyPage }) => {
   const [isCompleted, setIsCompleted] = useState(false);
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");
+  const [isProvider, setIsProvider] = useState();
 
   useEffect(() => {
     call("/member", "GET", null).then((response) => {
       setMember(response.email);
-      // console.log("123123123", response.email);
+      console.log("123123123", response);
+      setIsProvider(response.auth_Provider);
+      console.log("response.auth_Provider::::::::::" + response.auth_Provider);
     });
   }, []);
   useEffect(() => {
@@ -47,52 +50,76 @@ const SettingPassword = ({ setShowMyPage }) => {
         // alert("비밀번호가 일치합니다");
       } else {
         document.getElementById("passwordOut").innerText = t(
-          "Passwords do not match."
+          t("Passwords do not match.")
         );
       }
     });
   };
 
   return (
-    <Container maxWidth="xs" style={{ marginTop: "1px", marginBottom: "10%" }}>
-      {!isCompleted && (
-        <form noValidate onSubmit={handleSubmit}>
-          <Grid
-            container
-            item
-            xs={12}
-            style={{ marginTop: "3%", marginBottom: "3%" }}
-            spacing={2}
+    <>
+      {isProvider !== null ? (
+        <>
+          <h1 style={{ textAlign: "center", marginBottom: "300px" }}>
+            {t("SNS login cannot edit member information")}
+          </h1>
+        </>
+      ) : (
+        <>
+          <Container
+            maxWidth="xs"
+            style={{ marginTop: "1px", marginBottom: "10%" }}
           >
-            <Grid container item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="password"
-                name="password"
-                type="password"
-                label={t("password")}
-                autoComplete="password"
-                style={{ marginBottom: "2%" }}
-                value={password}
-                onChange={handlePasswordChange}
-              />
-            </Grid>
-            <Grid id="passwordOut" style={{ color: "red" }} item xs={6}></Grid>
+            {!isCompleted && (
+              <form noValidate onSubmit={handleSubmit}>
+                <Grid
+                  container
+                  item
+                  xs={12}
+                  style={{ marginTop: "3%", marginBottom: "3%" }}
+                  spacing={2}
+                >
+                  <Grid container item xs={12}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="password"
+                      name="password"
+                      type="password"
+                      label={t("password")}
+                      autoComplete="password"
+                      style={{ marginBottom: "2%" }}
+                      value={password}
+                      onChange={handlePasswordChange}
+                    />
+                  </Grid>
+                  <Grid
+                    id="passwordOut"
+                    style={{ color: "red" }}
+                    item
+                    xs={6}
+                  ></Grid>
 
-            <Grid item xs={6} textAlign={"right"}>
-              <Grid>
-                <Button type="submit" variant="contained" className="invite">
-                  {t("Complete")}
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
-        </form>
+                  <Grid item xs={6} textAlign={"right"}>
+                    <Grid>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        className="invite"
+                      >
+                        {t("Complete")}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </form>
+            )}
+            {isCompleted && <MyPage />}
+          </Container>
+        </>
       )}
-      {isCompleted && <MyPage />}
-    </Container>
+    </>
   );
 };
 
