@@ -11,6 +11,8 @@ const CalendarCreate = () => {
     const timeZoneRef = useRef('');
     const colorRef = useRef('');
     const [calendar, setCalendar] = useState({name : '', comment : '', timeZone : '', color : ''})
+    const titleRegEx = /[^?a-zA-Z0-9/]{2,20}$/
+    const [istitleCheck, setIstitleCheck]  = useState(false);
 
     // https://worldtimeapi.org/api/timezone/
 
@@ -25,6 +27,15 @@ const CalendarCreate = () => {
     const onNameChange = (e) => {
         nameRef.current = e.target.value;
         setCalendar({...calendar, name : nameRef.current})
+        titleRegEx.test(e.target.value);
+        if(!titleRegEx.test(e.target.value)) {
+            document.getElementById('titleCheck').innerText = "Please enter at least 2 characters and no more than 20 characters";
+
+        }else{
+            document.getElementById('titleCheck').innerText = "it's possible";
+            setIstitleCheck(true);
+        }
+
     }
 
     const onCommentChange = (e) => {
@@ -52,13 +63,14 @@ const CalendarCreate = () => {
 
     const addCalendar = () => {
         console.log(calendar)
+        if(istitleCheck) {
+            call("/calendar", "POST", calendar)
+                .then((response) => {
+                    console.log(response.data)
+                })
 
-        call("/calendar", "POST", calendar)
-            .then((response) => {
-                console.log(response.data)
-            })
-
-        window.location.pathname = "/"
+            window.location.pathname = "/"
+        }
     }
 
     return (
@@ -71,6 +83,7 @@ const CalendarCreate = () => {
                     label={"이름"}
                     onChange={onNameChange}
                 />
+                <div id="titleCheck" style={{color:"red"}}></div>
             </Grid>
             <Grid container style={{marginTop: 20}}>
                 <TextField 

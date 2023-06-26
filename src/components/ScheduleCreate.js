@@ -19,6 +19,7 @@ const ScheduleCreate = () => {
     const untilRef = useRef(moment(new Date()).format("YYYY-MM-DD"));
     const repeatRef = useRef('');
     const [schedule, setSchedule] = useState({title : '', comment : '', start : dateRef.current, end : dateRef.current, calNo : '', place : '', rrule : {}, status : ''})
+    const [istitleCheck, setIstitleCheck]  = useState(false);
 
     useEffect(() => {
         call("/calendar", "GET", null).then((response) => {
@@ -26,9 +27,17 @@ const ScheduleCreate = () => {
             setCalendars(response.data);
         });
     }, []);
-
+    const titleRegEx = /[^?a-zA-Z0-9/]{2,20}$/
     const onTitleChange = (e) => {
-        setSchedule({...schedule, title : e.target.value})
+        setSchedule({...schedule, title : e.target.value});
+        titleRegEx.test(e.target.value);
+        if(!titleRegEx.test(e.target.value)) {
+            document.getElementById('titleCheck').innerText = "Please enter at least 2 characters and no more than 20 characters";
+
+        }else{
+            document.getElementById('titleCheck').innerText = "it's possible";
+            setIstitleCheck(true);
+        }
     }
 
     const onSwitchChange = () => {
@@ -90,12 +99,14 @@ const ScheduleCreate = () => {
     const addSchedule = () => {
         console.log(schedule)
 
-        call("/schedule",  "POST", schedule)
-            .then((response) => {
-                console.log(response.data)
-            })
+        if(istitleCheck) {
+            call("/schedule", "POST", schedule)
+                .then((response) => {
+                    console.log(response.data)
+                })
 
-        window.location.pathname = "/"
+            window.location.pathname = "/"
+        }
     }
 
     console.log(schedule)
@@ -110,6 +121,7 @@ const ScheduleCreate = () => {
                 label={"제목"}
                 onChange={onTitleChange}
             />
+            <div id="titleCheck" style={{color:"red"}}></div>
             <Grid container style={{ marginTop : 20 }}>
                 <Grid container>
                     <FontAwesomeIcon icon={faClock} style={{color: "#3b3b3b",}} />

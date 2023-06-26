@@ -16,6 +16,7 @@ import NotFound from "./NotFound";
 import Settings from "./Settings";
 import MyPage from "./MyPage";
 import SettingNavigation from "./SettingNavigation";
+import ForgotEmail from "./ForgotEmail";
 
 /**
  * @author        : DGeon
@@ -46,6 +47,7 @@ const AppRouter = () => {
           <Route path="PrivacyPolicyKo" element={<PrivacyPolicyKo />} />
           <Route path="PrivacyPolicyJa" element={<PrivacyPolicyJa />} />
           <Route path="Forgotpassword" element={<Forgot />} />
+          <Route path="ForgotEmail" element={<ForgotEmail />} />
           <Route path={"schedule"} element={<ScheduleCreate />} />
           <Route path={"calendar"} element={<CalendarCreate />} />
           <Route path="/*" element={<NotFound />} />
