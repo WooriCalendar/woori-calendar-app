@@ -1,8 +1,11 @@
 import '../css/Sidebar.css';
 import FullCalendars from "./FullCalendars";
 import Category from "./Category";
-import {Button, TextField} from "@mui/material";
+import {Button, Fab, TextField, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
+import React from "react";
+import BasicMenu from "./BasicMenu";
+
 
 const Sidebar = ({visible, aspectRatio, height, contentHeight, onCategoryChange}, props) => {
     const headerToolbar = {
@@ -15,11 +18,17 @@ const Sidebar = ({visible, aspectRatio, height, contentHeight, onCategoryChange}
         <div>
             {visible && (
                 <div className="slide-out">
-                    <Link to={"/schedule"}>
-                        <Button variant="contained" color="primary">
-                            일정추가버튼
-                        </Button>
-                    </Link>
+                    <BasicMenu />
+                    {/*<Fab variant="extended">*/}
+                    {/*    <AddIcon sx={{ mr: 1 }} />*/}
+                    {/*    만들기*/}
+                    {/*</Fab>*/}
+                    {/*<Link to={"/schedule"}>*/}
+                        {/*<Button variant="outlined" color="primary">*/}
+                            {/*<FontAwesomeIcon icon={faPlus} size={"xl"}/>*/}
+                            {/*<Typography>만들기</Typography>*/}
+                        {/*</Button>*/}
+                    {/*</Link>*/}
                     <FullCalendars
                         headerToolbar={headerToolbar}
                         heigth={height}
@@ -33,11 +42,6 @@ const Sidebar = ({visible, aspectRatio, height, contentHeight, onCategoryChange}
                             size="small"
                         />
                     </form>
-                    <Link to={"/calendar"}>
-                        <Button variant="contained" color="primary">
-                            캘린더추가버튼
-                        </Button>
-                    </Link>
                     <Category onCategoryChange={onCategoryChange}/>
                 </div>
                 )}
