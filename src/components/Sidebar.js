@@ -19,16 +19,6 @@ const Sidebar = ({visible, aspectRatio, height, contentHeight, onCategoryChange}
             {visible && (
                 <div className="slide-out">
                     <BasicMenu />
-                    {/*<Fab variant="extended">*/}
-                    {/*    <AddIcon sx={{ mr: 1 }} />*/}
-                    {/*    만들기*/}
-                    {/*</Fab>*/}
-                    {/*<Link to={"/schedule"}>*/}
-                        {/*<Button variant="outlined" color="primary">*/}
-                            {/*<FontAwesomeIcon icon={faPlus} size={"xl"}/>*/}
-                            {/*<Typography>만들기</Typography>*/}
-                        {/*</Button>*/}
-                    {/*</Link>*/}
                     <FullCalendars
                         headerToolbar={headerToolbar}
                         heigth={height}
