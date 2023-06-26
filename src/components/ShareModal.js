@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { call, inviteEmail, signupemail } from "../service/ApiService";
+import { call, inviteEmail } from "../service/ApiService";
 
 const ShareModal = (props) => {
   const { open, close, calNo, name } = props;
