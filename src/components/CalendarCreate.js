@@ -9,7 +9,7 @@ const CalendarCreate = () => {
   const nameRef = useRef("");
   const commentRef = useRef("");
   const [timeZones, setTimeZones] = useState([]);
-  const timeZoneRef = useRef("");
+  const timeZoneRef = useRef(Intl.DateTimeFormat().resolvedOptions().timeZone);
   const colorRef = useRef("");
   const [calendar, setCalendar] = useState({
     name: "",
