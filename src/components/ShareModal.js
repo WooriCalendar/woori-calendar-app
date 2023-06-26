@@ -11,13 +11,10 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-  call,
-  inviteEmail,
-  signupemail,
-  fetchMemberData,
-} from "../service/ApiService";
+
+import { call, inviteEmail } from "../service/ApiService";
 import { useTranslation } from "react-i18next";
+
 const ShareModal = (props) => {
   const { open, close, calNo, name } = props;
 

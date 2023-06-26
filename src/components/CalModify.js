@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import ShareModal from "./ShareModal";
-import { Button, TextField, MenuItem, Grid } from "@mui/material";
+import { Button, TextField, MenuItem, Grid, Select } from "@mui/material";
 // import Navigation from "./Navigation";
 import { call, fetchMemberData } from "../service/ApiService";
 import { useParams } from "react-router-dom";
@@ -9,9 +9,13 @@ import { BlockPicker } from "react-color";
 import axios from "axios";
 import UnsubscribeModal from "./UnsubscribeModal";
 import { useTranslation } from "react-i18next";
+import { eachMonthOfInterval } from "date-fns";
+
 const CalModify = (props) => {
   const [calNo, setCalNo] = useState(props.calNo);
-  const [shareNo, setShareNo] = useState(props.shareNo);
+  const [shareNo, setShareNo] = useState([]);
+  const [email, setEmail] = useState([]);
+  const [grade, setGrade] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [bmodalOpen, setBmodalOpen] = useState(false);
   const [cmodalOpen, setCmodalOpen] = useState(false);
@@ -63,6 +67,7 @@ const CalModify = (props) => {
     colorRef.current = e.hex;
     document.querySelector(".color .notranslate").innerHTML = colorRef.current;
   };
+
   // console.log("asdasdasasd", colorRef.current);
   const editEventHandler = () => {
     const updatedItem = {
@@ -91,18 +96,23 @@ const CalModify = (props) => {
       // console.log("3333336666666333", response);
       setCalendar(response.data);
       i18n.changeLanguage(response.language);
+      console.log("이 캘린더 번호:::", response.data);
+    });
+    call("/share/retrieve/" + calNo, "GET", null).then((response) => {
+      const filteredData = response.data.filter((item) => item.calNo === calNo);
+      const shareNo = filteredData.map((item) => item.shareNo);
+      setShareNo(shareNo);
+      const email = filteredData.map((item) => item.email);
+      setEmail(email);
+      const grade = filteredData.map((item) => item.grade);
+      setGrade(grade);
+      console.log("shareNo:::", shareNo);
+      console.log("이메일:::", email);
+      console.log("grade:::", grade);
+
     });
     fetchMemberData();
   }, [i18n]);
-
-  //shareNo 가져오기
-  // useEffect(() => {
-  //   call("/share/" + shareNo, "GET").then((resp) => {
-  //     // setCalendar(resp.data);
-  //     setShareNo(resp.data);
-  //     console.log("shareNo는????", shareNo);
-  //   });
-  // }, []);
 
   const [timeZones, setTimeZones] = useState([]);
   const [timeZone, setTimeZone] = useState("");
@@ -123,6 +133,23 @@ const CalModify = (props) => {
           e.target.value + " (utc " + response.data.utc_offset + ")";
         setTimeZone(timeZone);
       });
+  };
+
+  const handleChange = (e, index) => {
+    const updatedShareNo = [...shareNo]; // shareNo 배열 복사
+    const currentShareNo = updatedShareNo[index]; // 해당 인덱스의 shareNo 값 가져오기
+    const updatedGrade = [...grade];
+    updatedGrade[index] = e.target.value;
+    setGrade(updatedGrade);
+
+    const updatedItem = {
+      shareNo: currentShareNo,
+      grade: updatedGrade[index],
+    };
+
+    call("/share", "PUT", updatedItem).then((resp) => {
+      console.log("새로운 값", updatedItem);
+    });
   };
 
   return (
@@ -173,7 +200,9 @@ const CalModify = (props) => {
               <TextField
                 style={{ width: "400px", marginBottom: "25px" }}
                 id="outlined-required-name"
+
                 label={t("Name")}
+
                 defaultValue={item.name}
                 // value={name}
                 onChange={handleNameChange}
@@ -184,7 +213,9 @@ const CalModify = (props) => {
             <TextField
               style={{ width: "400px" }}
               id="outlined-required-com"
+
               label={t("Comment")}
+
               defaultValue={item.comment}
               onChange={handleCommentChange}
               variant="outlined"
@@ -208,17 +239,40 @@ const CalModify = (props) => {
           </Grid>
         </div>
 
-        <div style={{ textAlign: "center", margin: "20px" }}>
-          <TextField
-            style={{ width: "400px" }}
-            id="outlined-basic"
-            label={t("Share")}
-            variant="outlined"
-          />
+//         <div style={{ textAlign: "center", margin: "20px" }}>
+//           <TextField
+//             style={{ width: "400px" }}
+//             id="outlined-basic"
+//             label={t("Share")}
+//             variant="outlined"
+//           />
+//         </div>
+//         <div style={{ textAlign: "left", margin: "20px" }}>
+//           <Button variant="outlined" onClick={openModal}>
+//             {t("Invite users")}
+
+        <div style={{ textAlign: "left", margin: "20px" }}>
+          <p>Share with specific people</p>
+          {email.map((email, index) => (
+            <div key={email} style={{ display: "flex", alignItems: "center" }}>
+              <TextField variant="standard" disabled defaultValue={email} />
+              <div style={{ marginLeft: "auto" }}>
+                <Select
+                  variant="standard"
+                  value={grade[index]}
+                  onChange={(e) => handleChange(e, index)}
+                >
+                  <MenuItem value={0}>보기</MenuItem>
+                  <MenuItem value={1}>편집</MenuItem>
+                  <MenuItem value={2}>관리</MenuItem>
+                </Select>
+              </div>
+            </div>
+          ))}
         </div>
         <div style={{ textAlign: "left", margin: "20px" }}>
           <Button variant="outlined" onClick={openModal}>
-            {t("Invite users")}
+            Add People
           </Button>
         </div>
         {calendar.map((item) => (

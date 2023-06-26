@@ -51,7 +51,6 @@ export function signin(memberDTO) {
       }
     })
     .catch(() => {
-      alert("login fail");
       window.location.href = "/login";
     });
 }
@@ -90,11 +89,19 @@ export function signuppassword(emailPostDto) {
   });
 }
 
+export function forgotEmail(emailPostDto) {
+  return call("/sendmail/findemail", "POST", emailPostDto).then((resp) => {
+    return resp.code;
+  });
+}
+
+
 export function findemail(email) {
   console.log({ email });
   return call("/findemail", "POST", { email }).then((resp) => {
     console.log("findemail::" + resp);
     console.log("email::" + email);
+
     return resp;
   });
 }

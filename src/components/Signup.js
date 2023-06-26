@@ -50,7 +50,8 @@ const Signup = () => {
     const [sendCodeConfirmDisabled, setSendCodeConfirmDisabled] = useState(false);
     const [display, setDisplay] = useState('none');
 
-    const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
+    // const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
+    const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
     const passwordRegEx = /^[A-Za-z0-9]{8,20}$/
 
     const settings = {
@@ -141,7 +142,6 @@ const Signup = () => {
                 setTimeout(() => {
                     signupemail({email}).then((resp) => {
                         setCode(resp);
-                        alert(resp);
                         setIsCodeVisible(true);
                         setLoding(true);
                         setDisplay('block');
@@ -185,8 +185,6 @@ const Signup = () => {
 
     const confirm = () => {
         let confirmCode = document.getElementById('code').value;
-        alert("code::"+ code);
-        alert("confirmCode::"+ confirmCode);
         if (code === confirmCode) {
             console.log("일치함");
             setButtonDisabled(false);
@@ -194,7 +192,7 @@ const Signup = () => {
             setSendCodeDisabled(true);
             setSendCodeConfirmDisabled(true);
         } else {
-            alert("It doesn't match. please verify again");
+            document.getElementById('codeCheck').innerText ="It doesn't match. please verify again";
         }
     }
 
@@ -219,8 +217,6 @@ const Signup = () => {
     };
 
     const handleCodeChange = (code) => {
-        // setCode(code);
-        // console.log(code);
     };
     return (
         <Container component="main" maxWidth="xs" style={{marginTop: "8%"}}>
@@ -280,9 +276,9 @@ const Signup = () => {
                                 )}
                                 {isCodeVisible ? (
                                     <div>
-                                        {/*onChange={handleCodeChange}*/}
-                                        <ForgotTextField value={{value: "code", sendCodeDisabled:sendCodeDisabled}} />
+                                        <ForgotTextField value={{value: "code", sendCodeDisabled:sendCodeDisabled}} onChange={handleCodeChange}/>
                                         <Button id="confirm" onClick={confirm}>Confirm verification code</Button>
+                                        <div id="codeCheck" style={{color: "red"}}></div>
                                     </div>) : ''
                                 }
                                 {/*loading ? ( <h1>메일 발송중..</h1> ):''*/}

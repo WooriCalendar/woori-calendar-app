@@ -1,5 +1,5 @@
 import React from "react";
-import {signin, socialLogin} from "../service/ApiService";
+import {call, signin, socialLogin} from "../service/ApiService";
 import {Button, Container, Grid, TextField, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import LoginSvg from "./LoginSvg";
@@ -25,10 +25,27 @@ const Login = () => {
         const password = data.get("password");
         console.log("email", email);
         console.log("password", password);
-        signin({email: email, password: password}).then((resp) => {
-            console.log("login", resp);
-            // localStorage.setItem("email", email); 로컬스토리지에 이메일만 저장 필요없어짐 
-        });
+        // signin({email: email, password: password}).then((resp) => {
+        //     console.log("login", resp);
+        //
+        //     // localStorage.setItem("email", email); 로컬스토리지에 이메일만 저장 필요없어짐
+        // });
+
+        call("/member/signin", "POST", {email: email, password: password})
+            .then((response) => {
+                console.log("response : ", response);
+                // alert('로그인 토큰 : ' + response.token);
+                if (response.token) {
+                    localStorage.setItem("ACCESS_TOKEN", response.token);
+                    // alert(window.navigator.language);
+
+                    window.location.href = "/";
+                }
+            })
+            .catch(() => {
+                document.getElementById('loginCheck').innerText="login fail"
+                // window.location.href = "/login";
+            });
     };
 
     /**
@@ -90,6 +107,10 @@ const Login = () => {
                         />
                     </Grid>
                     <Grid item xs={12}>
+
+                        <div id="loginCheck" style={{color: "red"}}></div>
+                    </Grid>
+                    <Grid item xs={12}>
                         <Button type="submit" fullWidth variant="contained" color="primary">
                             Login
                         </Button>
@@ -121,16 +142,23 @@ const Login = () => {
 
                     </Grid>
                 </Grid>
-                <Grid container direction="column">
-                    <Grid item>
+                <Grid container direction="column" justify="space-between">
+                    <Grid item xs={12}>
                         <Link to="/Signup" variant="body2">
                             Don't have an account? sign up here
                         </Link>
                     </Grid>
-                    <Grid item>
-                        <Link to="/Forgotpassword" variant="body2">
-                            Forgot password?
-                        </Link>
+                    <Grid item container justify="space-between">
+                        <Grid item xs={9}>
+                            <Link to="/Forgotpassword" variant="body2">
+                                Forgot password?
+                            </Link>
+                        </Grid>
+                        <Grid item xs={3} container justify="flex-end">
+                            <Link to="/ForgotEmail" variant="body2">
+                                Forgot email?
+                            </Link>
+                        </Grid>
                     </Grid>
                 </Grid>
             </form>

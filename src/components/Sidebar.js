@@ -1,8 +1,10 @@
 import "../css/Sidebar.css";
 import FullCalendars from "./FullCalendars";
 import Category from "./Category";
-import { Button, TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import {Button, Fab, TextField, Typography} from "@mui/material";
+import {Link} from "react-router-dom";
+import React from "react";
+import BasicMenu from "./BasicMenu";
 import { useTranslation } from "react-i18next";
 import { fetchMemberData } from "../service/ApiService";
 import { useEffect } from "react";
@@ -24,39 +26,27 @@ const Sidebar = (
       }
     };
 
-    loadData();
-  }, [i18n]);
-
-  const headerToolbar = {
-    left: "",
-    center: "",
-    right: "",
-  };
-
-  return (
-    <div>
-      {visible && (
-        <div className="slide-out">
-          <Link to={"/schedule"}>
-            <Button variant="contained" color="primary">
-              {t("Create schedule")}
-            </Button>
-          </Link>
-          <FullCalendars
-            headerToolbar={headerToolbar}
-            heigth={height}
-            contentHeight={contentHeight}
-            aspectRatio={aspectRatio}
-          />
-          <form>
-            <TextField label={t("search")} variant="outlined" size="small" />
-          </form>
-          <Link to={"/calendar"}>
-            <Button variant="contained" color="primary">
-              {t("Create new calendar")}
-            </Button>
-          </Link>
-          <Category onCategoryChange={onCategoryChange} />
+    return (
+        <div>
+            {visible && (
+                <div className="slide-out">
+                    <BasicMenu />
+                    <FullCalendars
+                        headerToolbar={headerToolbar}
+                        heigth={height}
+                        contentHeight={contentHeight}
+                        aspectRatio={aspectRatio}
+                    />
+                    <form>
+                        <TextField
+                            label={t("search")}
+                            variant="outlined"
+                            size="small"
+                        />
+                    </form>
+                    <Category onCategoryChange={onCategoryChange}/>
+                </div>
+                )}
         </div>
       )}
     </div>

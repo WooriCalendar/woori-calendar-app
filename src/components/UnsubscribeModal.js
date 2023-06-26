@@ -17,8 +17,6 @@ const UnsubscribeModal = (props) => {
   useEffect(() => {
     call("/calendar/" + calNo, "GET").then((response) => {
       setmail(response.data);
-      console.log("캘린더 번호???", calNo);
-      console.log("이건 뭔가요???", response.data);
       i18n.changeLanguage(response.language);
     });
 
@@ -26,18 +24,16 @@ const UnsubscribeModal = (props) => {
       const filteredData = response.data.filter((item) => item.calNo === calNo);
       filteredData.filter((item) => setShareNo(item.shareNo));
       setEmail(filteredData);
-      console.log("이건 뭐죠????", response.data);
-      console.log("filteredData", filteredData);
     });
     fetchMemberData();
   }, [i18n]);
-  // });
-  // call("/share", "GET").then((response) => {});
-  // }, []);
+
 
   const unsubscribe = () => {
-    alert("No::::" + shareNo);
-    call("/share", "DELETE", shareNo).then((response) => {});
+    console.log("No::::" + shareNo);
+    call("/share", "DELETE", shareNo).then((response) => {
+      window.location = "/settings";
+    });
   };
 
   return (
