@@ -3,8 +3,11 @@ import Navigation from "./components/Navigation";
 import {Container, Grid} from "@mui/material";
 import Sidebar from "./components/Sidebar";
 import FullCalendars from "./components/FullCalendars";
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {call} from "./service/ApiService";
+import companyLogo from "./assets/logo(ver3).png";
+import {TailSpin} from "react-loader-spinner";
+import Loading from "./components/Loading";
 
 function App() {
     const [initialView, setInitialView] = useState('dayGridMonth');
@@ -31,9 +34,18 @@ function App() {
     const onCategoryChange = () => {
         setCategory(!category);
     }
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        setTimeout(() => setLoading(false), 1000); // 1초
+    }, []);
+
 
     return (
         <div className="App">
+            {loading ? (
+                <Loading />
+            ) : (
+                <>
             <Navigation SideBar={sideBarButton} initialView={onInitialViewChange}/>
             {/*<Container maxWidth="xl" style={{margin : '0px 0px'}}>*/}
             <Grid container spacing={3} style={{margin: '0px 0px', justifyContent: 'space-between', width: 'auto'}}>
@@ -58,6 +70,8 @@ function App() {
                 </Grid>
             </Grid>
             {/*</Container>*/}
+                </>
+            )}
         </div>
     );
 }
