@@ -7,13 +7,13 @@ import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
-import {Avatar, Button, css, ListItem, ListItemAvatar, ListItemText, Typography} from "@mui/material";
+import {Avatar, Button, css, ListItem, ListItemAvatar, ListItemText, Modal, Typography} from "@mui/material";
 import {call} from "../service/ApiService";
 import moment from "moment/moment";
 import '../css/./Notification.css';
 import {TransitionGroup, CSSTransition} from "react-transition-group";
 import {faXmark} from "@fortawesome/free-solid-svg-icons";
-
+import NotificationModal from "./NotificationModal";
 
 
 const Notification = () => {
@@ -24,19 +24,30 @@ const Notification = () => {
     const [chatt, setChatt] = useState([]);
     const [socketData, setSocketData] = useState();
     const ws = useRef(null);
+    const [hoveredItem, setHoveredItem] = useState(null);
+    const [selectedItemNo, setSelectedItemNo] = useState(null);
+    const [emptyMsg, setEmptyMsg] = useState();
 
+    useEffect(() => {
+        call("/member", "GET", null).then((response) => {
+            setEmail(response.email);
+        });
+    }, []);
+    const handleMouseEnter = (itemNo) => {
+        setHoveredItem(itemNo);
+    };
+
+    const handleMouseLeave = () => {
+        setHoveredItem(null);
+    };
     const msgBox = chatt.slice().reverse().map((item, idx) => (
         // <div key={idx} className={item.name === name ? 'me' : 'other'}>
         <div key={idx}>
             <ListItemButton
-                // selected={selectedIndex === 0}
                 onClick={(event) => handleListItemClick(event, item.msg)}
             >
                 <List sx={{width: '100%', maxWidth: 360}}>
                     <ListItem alignItems="flex-start">
-                        {/*<ListItemAvatar>*/}
-                            {/*<Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>*/}
-                        {/*</ListItemAvatar>*/}
                         <ListItemText
                             primary={
                                 <React.Fragment>
@@ -74,7 +85,7 @@ const Notification = () => {
     ));
 
     useEffect(() => {
-        if(socketData !== undefined) {
+        if (socketData !== undefined) {
             const tempData = chatt.concat(socketData);
             setChatt(tempData);
         }
@@ -87,47 +98,53 @@ const Notification = () => {
     const webSocketLogin = useCallback(() => {
         ws.current = new WebSocket("ws://localhost:8080/socket/chatt");
         ws.current.onmessage = (message) => {
+            console.log("메시지 수신",message)
+            setEmptyMsg(null);
             const dataSet = JSON.parse(message.data);
-            if(dataSet.revEmail == email) {
+            if (dataSet.revEmail === email) {
+                setCount(count + 1);
+                console.log("나한테옴?")
                 setSocketData(dataSet);
             }
         }
     });
 
+    const handleButtonClick = (itemNo) => {
+        setSelectedItemNo(itemNo);
+    };
     const send = useCallback(() => {
-            webSocketLogin();
-        if(msg !== ''){
+        webSocketLogin();
+
             const data = {
-                sendEmail: "kang@gmail.com",
+                sendEmail: "",
                 revEmail: "7ceojun@naver.com",
-                comment: "알림발송 Test",
+                comment: "알림이 없어요!",
                 type: "test",
-                date: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+                date: "",
                 calNo: 3,
                 nno: 20
             };  //전송 데이터(JSON)
             const temp = JSON.stringify(data);
-            if(ws.current.readyState === 0) {   //readyState는 웹 소켓 연결 상태를 나타냄
+            if (ws.current.readyState === 0) {   //readyState는 웹 소켓 연결 상태를 나타냄
                 ws.current.onopen = () => { //webSocket이 맺어지고 난 후, 실행
+                    console.log("발송완료1")
                     ws.current.send(temp);
                 }
-            }else {
+            } else {
+                console.log("발송완료2")
                 ws.current.send(temp);
             }
-        }else {
-            alert("메세지를 입력하세요.");
-            document.getElementById("msg").focus();
-            return;
-        }
-        setMsg("");
     });
-    //////////////////////////////////////
     useEffect(() => {
         call("/notification", "GET", null).then((response) => {
-            if(response.data.length !== 0) {
+            if (response.data.length !== 0) {
                 setNotification(response.data);
-                setEmail(response.data[0].revEmail);
+                // setEmail(response.data[0].revEmail);
                 setCount(response.data.filter(item => item.rdate == null).length);
+            }else{
+                setEmptyMsg(<ListItemButton>
+                    <Typography>알림이없어요!</Typography>
+                </ListItemButton>);
             }
         });
     }, []);
@@ -135,7 +152,7 @@ const Notification = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleIconClick = () => {
-        if(notification.length !== 0) {
+        if (notification.length !== 0) {
             setIsOpen(!isOpen);
             if (!isOpen) {
                 const fetchData = async () => {
@@ -144,8 +161,8 @@ const Notification = () => {
                 };
                 fetchData();
             }
-        }else{
-            alert("알림이없습니다!")
+        } else {
+            setIsOpen(!isOpen)
         }
     };
 
@@ -167,74 +184,85 @@ const Notification = () => {
             </Button>
             <div className="className" style={{position: "fixed", right: "200px", zIndex: 9999}}>
                 <TransitionGroup>
-                {isOpen && (
-                    <CSSTransition timeout={300} classNames="notification-fade">
-                    <Box sx={{
-                        width: '100%',
-                        minWidth: 100,
-                        maxWidth: 999999999,
-                        bgcolor: 'background.paper',
-                        // borderLeft: '1px solid #444444',
-                    }}>
-                        <Divider/>
-                        <List component="nav" aria-label="main mailbox folders">
-                            {msgBox}
-                            {notification.map((item) => (
-                                <div key={item.ntNo}>
-                                    <ListItemButton
-                                        selected={selectedIndex === 0}
-                                        onClick={(event) => handleListItemClick(event, item.ntNo)}
-                                    >
-                                        <List sx={{width: '100%', maxWidth: 360}}>
-                                            <ListItem alignItems="flex-start">
-                                                {/*<ListItemAvatar>*/}
-                                                {/*    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>*/}
-                                                {/*</ListItemAvatar>*/}
-                                                <ListItemText
-                                                    primary={
-                                                        <React.Fragment>
-                                                            <span className="hover-icon">
-  <FontAwesomeIcon icon={faXmark} style={{ float: "right", marginLeft: "10px" }} />
-</span>
-                                                            <Typography
-                                                                sx={{display: 'flex', justifyContent: 'space-between'}}
-                                                            >
+                    {isOpen && (
+                        <CSSTransition timeout={300} classNames="notification-fade">
+                            <Box sx={{
+                                width: '100%',
+                                minWidth: 100,
+                                maxWidth: 999999999,
+                                bgcolor: 'background.paper',
+                                // borderLeft: '1px solid #444444',
+                            }}>
+                                <Divider/>
+                                <List component="nav" aria-label="main mailbox folders" sx={{ maxHeight: 400, overflow: 'auto' }}>
+                                    {msgBox}
+                                    {emptyMsg}
+                                    {notification.map((item) => (
+                                        <div key={item.ntNo}>
+                                            <ListItemButton
+                                                onMouseEnter={() => handleMouseEnter(item.ntNo)}
+                                                onMouseLeave={handleMouseLeave}
+                                                selected={selectedIndex === 0}
+                                                onClick={(event) => handleListItemClick(event, item.ntNo)}
+
+                                            >
+                                                <List sx={{width: '100%', maxWidth: 360}}>
+                                                    <ListItem alignItems="flex-start"
+                                                              >
+                                                        <ListItemText
+                                                            primary={
+                                                                <React.Fragment>
+                                                                    {hoveredItem === item.ntNo && (
+                                                                        <Button
+                                                                            onClick={() => handleButtonClick(item.ntNo)}
+                                                                            style={{ position: "absolute", top: "5%", right: "2px", transform: "translateY(-50%)", color : "black"}}
+                                                                        >
+                                                                            <FontAwesomeIcon icon={faXmark} style={{ marginLeft: "10px" }} />
+                                                                        </Button>
+                                                                    )}
+                                                                    <Typography
+                                                                        sx={{
+                                                                            display: 'flex',
+                                                                            justifyContent: 'space-between'
+                                                                        }}
+                                                                    >
                                                                 <span
                                                                     style={{wordWrap: 'break-word'}}>{item.comment}</span>
-                                                                <span><Typography color="red" variant="caption"
-                                                                                  display="block"
-                                                                                  gutterBottom>
-            {new Date(item.rdate) < new Date(Date.now() - 100) ? "New!" : ""}
+                                                                        <span><Typography color="red" variant="caption"
+                                                                                          display="block"
+                                                                                          gutterBottom>
+            {new Date(item.rdate) > new Date(Date.now() - 100) ? "New!" : ""}
       </Typography></span>
-                                                            </Typography>
-                                                        </React.Fragment>
-                                                    }
-                                                    secondary={
-                                                        <React.Fragment>
-                                                            <Typography
-                                                                sx={{display: 'inline'}}
-                                                                component="span"
-                                                                variant="body2"
-                                                                color="text.primary"
-                                                            >
-                                                                {item.sendEmail}
-                                                            </Typography>
-                                                            {" — " + moment(new Date(item.sdate)).format("YYYY-MM-DD HH:mm:ss")}
-                                                        </React.Fragment>
-                                                    }
-                                                />
-                                            </ListItem>
-                                        </List>
-                                    </ListItemButton>
-                                        <Divider/>
-                                </div>
-                            ))}
-                        </List>
-                    </Box>
-                    </CSSTransition>
-                )}
+                                                                    </Typography>
+                                                                </React.Fragment>
+                                                            }
+                                                            secondary={
+                                                                <React.Fragment>
+                                                                    <Typography
+                                                                        sx={{display: 'inline'}}
+                                                                        component="span"
+                                                                        variant="body2"
+                                                                        color="text.primary"
+                                                                    >
+                                                                        {item.sendEmail}
+                                                                    </Typography>
+                                                                    {" — " + moment(new Date(item.sdate)).format("YYYY-MM-DD HH:mm:ss")}
+                                                                </React.Fragment>
+                                                            }
+                                                        />
+                                                    </ListItem>
+                                                </List>
+                                            </ListItemButton>
+                                            <Divider/>
+                                        </div>
+                                    ))}
+                                </List>
+                            </Box>
+                        </CSSTransition>
+                    )}
                 </TransitionGroup>
             </div>
+            {selectedItemNo && <NotificationModal itemNo={selectedItemNo} />}
         </div>
     );
 }
