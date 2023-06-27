@@ -140,7 +140,7 @@ const Signup = () => {
                 // setBtnSendEmailDisabled(true);
 
                 setTimeout(() => {
-                    signupemail({email}).then((resp) => {
+                    signupemail({email:email, language:window.navigator.language}).then((resp) => {
                         setCode(resp);
                         setIsCodeVisible(true);
                         setLoding(true);
