@@ -43,8 +43,9 @@ const Login = () => {
                 }
             })
             .catch(() => {
+                alert("실패")
                 document.getElementById('loginCheck').innerText="login fail"
-                // window.location.href = "/login";
+                window.location.href = "/login";
             });
     };
 

@@ -61,7 +61,7 @@ const Forgotpassword = () => {
             {email}).then((resp)=> {
             if(resp.email) {
                 setTimeout(() => {
-                    signuppassword({email}).then((resp) => {
+                    signuppassword({email:email, language:window.navigator.language }).then((resp) => {
                         console.log("발송완료");
                         setCode(resp);
                         console.log(code);
@@ -199,7 +199,7 @@ const Forgotpassword = () => {
                             {isCodeVisible ? (
                                 <div>
                                     {/*onChange={handleCodeChange}*/}
-                                    <ForgotTextField value={{value: "code", sendCodeDisabled:sendCodeDisabled}} />
+                                    <ForgotTextField value={{value: "code", sendCodeDisabled:sendCodeDisabled}} onChange={handleCodeChange}/>
                                     <Button id="confirm" onClick={confirm} disabled={sendCodeDisabled}>Confirm verification code</Button>
                                 </div>) : ''
                             }
