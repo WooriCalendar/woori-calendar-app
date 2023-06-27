@@ -71,6 +71,7 @@ const MyPage = () => {
       setMember(updatedData);
       i18n.changeLanguage(selectedLanguage);
     });
+    // window.location.reload();
   };
 
   return (
