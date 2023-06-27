@@ -28,8 +28,6 @@ const NotificationModal = (props) => {
 
     const deleteNotification = () => {
         call("/notification", "DELETE",  ntNo).then((response) => {
-            console.log("찍테", ntNo)
-            console.log(response.data);
             window.location.reload()
         });
         handleClose();
