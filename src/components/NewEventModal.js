@@ -21,7 +21,7 @@ const NewEventModal = (props) => {
   const { open, close, calendar, scheduleDTO } = props;
   // console.log("asdasdasdasasdd99", scheduleNo);
   // alert(scheduleNo.scNo);
-  console.log("scheduleDTOscheduleDTO", scheduleDTO);
+  // console.log("scheduleDTOscheduleDTO", scheduleDTO);
 
   const fullDayRef = useRef(false);
   const dateRef = useRef(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
@@ -44,7 +44,7 @@ const NewEventModal = (props) => {
   useEffect(() => {
     setSchedule(scheduleDTO);
   }, [scheduleDTO]);
-  console.log("000000000000000000000088888888", schedule);
+  // console.log("000000000000000000000088888888", schedule);
   const [calendars, setCalendars] = useState(false);
   // const [title, setTitle] = useState("");
   // const [comment, setComment] = useState("");

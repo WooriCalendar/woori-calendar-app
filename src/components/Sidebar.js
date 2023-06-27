@@ -1,40 +1,58 @@
-import '../css/Sidebar.css';
+import "../css/Sidebar.css";
 import FullCalendars from "./FullCalendars";
 import Category from "./Category";
-import {Button, Fab, TextField, Typography} from "@mui/material";
-import React from "react";
+import { Button, Fab, TextField, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import BasicMenu from "./BasicMenu";
+import { useTranslation } from "react-i18next";
+import { fetchMemberData } from "../service/ApiService";
 
-
-const Sidebar = ({visible, aspectRatio, height, contentHeight, onCategoryChange}, props) => {
+const Sidebar = (
+  { visible, aspectRatio, height, contentHeight, onCategoryChange },
+  props
+) => {
   const headerToolbar = {
-    left: '',
-    center: '',
-    right: '',
+    left: "",
+    center: "",
+    right: "",
   };
 
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState("");
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const memberData = await fetchMemberData();
+        const memberLanguage = memberData.language; // 멤버 데이터에서 언어 값을 추출
+        setLanguage(memberLanguage); // 언어 값을 상태에 설정
+        i18n.changeLanguage(memberLanguage); // 언어 값을 i18n에 설정
+      } catch (error) {
+        console.error("데이터 가져오기 오류:", error);
+      }
+    };
+
+    loadData();
+  }, [i18n]);
+
   return (
-      <div>
-        {visible && (
-            <div className="slide-out">
-              <BasicMenu />
-              <FullCalendars
-                  headerToolbar={headerToolbar}
-                  heigth={height}
-                  contentHeight={contentHeight}
-                  aspectRatio={aspectRatio}
-              />
-              <form>
-                <TextField
-                    label="검색"
-                    variant="outlined"
-                    size="small"
-                />
-              </form>
-              <Category onCategoryChange={onCategoryChange}/>
-            </div>
-        )}
-      </div>
+    <div>
+      {visible && (
+        <div className="slide-out">
+          <BasicMenu />
+          <FullCalendars
+            headerToolbar={headerToolbar}
+            heigth={height}
+            contentHeight={contentHeight}
+            aspectRatio={aspectRatio}
+          />
+          <form>
+            <TextField label={t("search")} variant="outlined" size="small" />
+          </form>
+          <Category onCategoryChange={onCategoryChange} />
+        </div>
+      )}
+    </div>
   );
 };
 export default Sidebar;

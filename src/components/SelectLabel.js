@@ -42,8 +42,8 @@ const SelectLabel = ({ initialView }) => {
           // inputProps={{ 'aria-label': 'Without label' }}
         >
           <MenuItem value={"dayGridMonth"}>{t("Month")}</MenuItem>
-          <MenuItem value={"dayGridWeek"}>{t("Week")}</MenuItem>
-          <MenuItem value={"dayGridDay"}>{t("Day")}</MenuItem>
+          <MenuItem value={"timeGridWeek"}>{t("Week")}</MenuItem>
+          <MenuItem value={"timeGridDay"}>{t("Day")}</MenuItem>
         </Select>
       </FormControl>
     </div>

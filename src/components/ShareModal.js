@@ -12,7 +12,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { call, inviteEmail } from "../service/ApiService";
+import { call, inviteEmail, fetchMemberData } from "../service/ApiService";
 import { useTranslation } from "react-i18next";
 
 const ShareModal = (props) => {

@@ -36,7 +36,7 @@ const SettingNavigation = ({ selectedCategory }) => {
       return t("Settings");
     }
     // 기본값 또는 빈 상태 처리
-    return "Settings";
+    return t("Settings");
   };
   const categoryTitle = getCategoryTitle(selectedCategory);
 

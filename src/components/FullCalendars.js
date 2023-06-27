@@ -11,21 +11,20 @@ import ScheduleModal from "./ScheduleModal"; // must go before plugins
 import "../App.css"
 import EventModal from "./EventModal";
 import moment from 'moment';
-import axios from "axios";
-import async from "async";
 
 const FullCalendars = (
-    {headerToolbar, height, aspectRatio, contentHeight, category, initialView}, props
+    {headerToolbar, height, aspectRatio, contentHeight, category, initialView, next, prev, today}, props
 ) => {
     const [items, setItems] = useState([]);
     const scheduleRef = useRef([]);
     const [calendar, setCalendar] = useState([]);
     const [scheduleModal, setScheduleModal] = useState(false)
     const [eventModal, setEventModal] = useState(false);
-    const [date, setDate] = useState('')
+    const date = useRef('')
     const eventRef = useRef('');
     const dayOfWeekRef = useRef('');
     const calendarRef = React.useRef('dayGridMonth');
+
 
     useEffect( () => {
         call("/schedule", "GET", null)
@@ -34,13 +33,30 @@ const FullCalendars = (
             });
         }, [category]
     )
-    console.log(items)
 
     useEffect( () => {
         const { current: calendarDom } = calendarRef;
         const API = calendarDom ? calendarDom.getApi() : null;
         if (initialView) API && API.changeView(initialView);
     }, [initialView]);
+
+    useEffect( () => {
+        const { current: calendarDom } = calendarRef;
+        const API = calendarDom ? calendarDom.getApi() : null;
+        if (next) API && API.next();
+    }, [next]);
+
+    useEffect( () => {
+        const { current: calendarDom } = calendarRef;
+        const API = calendarDom ? calendarDom.getApi() : null;
+        if (prev) API && API.prev();
+    }, [prev]);
+
+    useEffect( () => {
+        const { current: calendarDom } = calendarRef;
+        const API = calendarDom ? calendarDom.getApi() : null;
+        if (today) API && API.today();
+    }, [today]);
 
     const openScheduleModal = () => {
         setScheduleModal(true)
@@ -96,7 +112,7 @@ const FullCalendars = (
         // console.log("클릭한 Date:", arg.dateStr);
         console.log(arg)
         dayOfWeekRef.current = arg.date;
-        setDate(arg.dateStr)
+        date.current = arg.dateStr
         openScheduleModal()
     }
 
@@ -140,15 +156,13 @@ const FullCalendars = (
             <ScheduleModal
                 open={scheduleModal}
                 close={closeScheduleModal}
-                date={date}
+                date={date.current}
                 events={events.filter((event) => (
-                    (
-                        event.rrule === null ?
-                            (moment(event.start).format("yyyy-MM-DD") === moment(event.end).format("yyyy-MM-DD") ? event.start.includes(date) && event.end.includes(date) : event.start <= date && event.end >= date)
-                            :
-                            event.rrule.freq === 'weekly' ? event.start <= date && event.rrule.until >= date && moment(dayOfWeekRef.current).format("dddd").includes(event.dayOfWeek) : (event.start <= date || event.start.includes(date)) && event.rrule.until >= date
+                    event.rrule === null ?
+                        (moment(event.start).format("yyyy-MM-DD") === moment(event.end).format("yyyy-MM-DD") ? event.start.includes(date) && event.end.includes(date) : event.start <= date && event.end >= date)
+                        :
+                        event.rrule.freq === 'weekly' ? event.start <= date && event.rrule.until >= date && moment(dayOfWeekRef.current).format("dddd").includes(event.dayOfWeek) : (event.start <= date || event.start.includes(date)) && event.rrule.until >= date
 
-                    )
                 ))}
             />
 

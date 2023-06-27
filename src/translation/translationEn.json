@@ -82,8 +82,13 @@
 
   "Secession": "Secession",
 
-  "would you like to delete this account?" : "would you like to delete this account?"
+  "would you like to delete this account?" : "would you like to delete this account?",
 
+  "Create": "Create",
+
+  "SNS login cannot edit member information" : "SNS login cannot edit member information"
+
+ 
 
 
 

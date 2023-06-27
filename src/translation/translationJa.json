@@ -22,20 +22,20 @@
   "Repeat": "繰り返し",
   "Daily": "毎日",
   "Weekly": "毎週",
-  "Monthly" : "Mo毎月nthly",
+  "Monthly" : "毎月",
   "Yearly" : "毎年",
   "Calendar": "カレンダー",
   "Comment" : "コメント",
   "Complete" : "完了",
 
-  "Add a location" : "位置を追加する",
-  "No locations": "場所がありません",
+  "Add a location" : "場所を追加",
+  "No locations": "場所なし",
   "Name": "名前",
   "timeZone": "タイムゾーン",
   "Color": "色",
 
   "Modify": "変更",
-  "Modifying the Schedule" : "スケジュールの変更",
+  "Modifying the Schedule" : "スケジュール変更",
 
   "Settings" : "設定",
   "My Page" : "個人情報",
@@ -47,20 +47,20 @@
   "Modifying the Calendar" : "カレンダー修正",
 
   "Share": "カレンダー修正",
-  "Invite users": "ユーザーを招待する",
-  "Unsubscribe from": "の登録を解除",
-  "delete calendar": "カレンダーを削除する",
+  "Invite users": "ユーザーを招待",
+  "Unsubscribe from": "登録解除",
+  "delete calendar": "カレンダーを削除",
 
-  "Share with specific people" : "特定の人たちと共有する",
+  "Share with specific people" : "特定のユーザーと共有する",
   "add by email" : "メールで追加",
   "Permissions" : "権限",
-  "View": "意見",
+  "View": "ビュー",
   "Editing" : "編集",
   "Management" : "管理",
   "invitation" : "招待",
 
-  "Are you sure you want to unsubscribe?": "購読を解除してもよろしいですか?",
-  "You will no longer have access to these calendars and events." : "これらのカレンダーやイベントにはアクセスできなくなります。",
+  "Are you sure you want to unsubscribe?": "登録解除しますか?",
+  "You will no longer have access to these calendars and events." : "これからカレンダーやイベントにアクセスできなくなります。",
   "Other users with access to the calendar can continue to use it." : "カレンダーにアクセスできる他のユーザーは、カレンダーを引き続き使用できます。",
   "Cancel" : "キャンセル",
 
@@ -69,19 +69,24 @@
   "Passwords do not match." : "パスワードが一致していません。",
   "password" : "パスワード",
   "Change Password": "パスワードを変更する",
-  "withdrawal": "撤退",
-  "Crrunt Subemail" : "現在のサブメール",
-  "New Subemail" : "新しいサブメール",
+  "withdrawal": "退会",
+  "Crrunt Subemail" : "現在のサブメールアドレス",
+  "New Subemail" : "新しいサブメールアドレス",
 
-  "Current Passwords do not match." : "現在のパスワードが一致しません.",
+  "Current Passwords do not match." : "現在のパスワードが一致しません。",
   "Please enter a password between 8 and 20 characters with a mixture of uppercase and lowercase letters and numbers." : "パスワードは8文字以上20文字以内で、大文字、小文字、数字を組み合わせて入力してください。",
   "CurrentPassword" : "現在のパスワード",
 
   "passwordcheck" : "パスワードチェック",
 
-  "Secession": "離脱",
+  "Secession": "退会",
 
-  "would you like to delete this account?" : "このアカウントを削除しますか?"
+  "would you like to delete this account?" : "このアカウントを削除しますか?",
+
+  "Create": "作成"
+,
+
+  "SNS login cannot edit member information" : "SNSログインでは会員情報の編集ができません。"
 
 
 }
