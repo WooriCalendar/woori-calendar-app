@@ -52,7 +52,7 @@ const DeleteModal = (props) => {
               style={{ marginRight: "10px" }}
               onClick={deleteButton}
             >
-              {t("Completion")}
+              {t("Complete")}
             </Button>
             <Button variant="contained" onClick={close}>
               {t("Cancel")}

@@ -89,9 +89,21 @@
   "SNS login cannot edit member information" : "SNSログインでは会員情報の編集ができません。",
 
   "Please enter at least 2 characters and no more than 20 characters" : "2文字以上20文字以内で入力してください",
-  "it's possible": "それが可能だ",
+  "it's possible": "可能です",
 
-  "Back" : "戻る"
+  "Back" : "戻る", 
+  
+  "Today" : "今日",
+
+  "delete": "消去",
+
+  "Are you sure to delete the schedule?" : "スケジュールを削除してもよろしいですか?",
+
+  "Do you want to delete notification? If deleted, it is not possible to check it!" : "通知を削除しますか?削除された場合は確認できません!",
+  "Yes!": "はい!",
+  "No" : "いいえ",
+
+  "No notifications!" : "通知はありません!"
 
 
 }
