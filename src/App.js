@@ -58,7 +58,7 @@ function App() {
     return (
         <div className="App">
             {loading ? (
-                <Loading />
+                <Loading/>
             ) : (
                 <>
             <Navigation SideBar={sideBarButton} initialView={onInitialViewChange} next={onNextClick} prev={onPrevClick} today={onTodayClick}/>
