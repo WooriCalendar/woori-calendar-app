@@ -197,7 +197,7 @@ const Notification = () => {
                                 <List component="nav" aria-label="main mailbox folders" sx={{ maxHeight: 400, overflow: 'auto' }}>
                                     {msgBox}
                                     {emptyMsg}
-                                    {notification.map((item) => (
+                                    {[...notification].reverse().map((item) => (
                                         <div key={item.ntNo}>
                                             <ListItemButton
                                                 onMouseEnter={() => handleMouseEnter(item.ntNo)}
