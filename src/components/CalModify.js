@@ -86,7 +86,7 @@ const CalModify = (props) => {
     call("/calendar", "PUT", updatedItem).then((resp) => {
       // console.log(resp);
     });
-    window.location.pathname = "/";
+    // window.location.pathname = "/";
   };
 
   // calNo로 기존에 입력된 캘린더 가져오기

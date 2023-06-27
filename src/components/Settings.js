@@ -10,7 +10,7 @@ import SettingPasword from "./SettingPasword";
 import LanguageSelector from "./LanguageSelector";
 import { call } from "../service/ApiService";
 
-const Settings = (itemCalNo) => {
+const Settings = () => {
   const [calendar, setCalendar] = useState([]);
   const [calNo, setCalNo] = useState([]);
 

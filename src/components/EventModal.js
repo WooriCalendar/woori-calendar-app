@@ -1,24 +1,27 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import Grid from "@mui/material/Grid";
 import moment from "moment";
 import { call, fetchMemberData } from "../service/ApiService";
 import axios from "axios";
-import {Button} from "@mui/material";
+import { Button } from "@mui/material";
 import NewEventModal from "./NewEventModal";
-import {faCalendar, faClock} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import PlaceIcon from '@mui/icons-material/Place';
-import EventIcon from '@mui/icons-material/Event';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import SubjectIcon from '@mui/icons-material/Subject';
+import { faCalendar, faClock } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PlaceIcon from "@mui/icons-material/Place";
+import EventIcon from "@mui/icons-material/Event";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import SubjectIcon from "@mui/icons-material/Subject";
+import EventDeleteModal from "./EventDeleteModal";
 
 import { useTranslation } from "react-i18next";
 const EventModal = (props) => {
   const { open, close, event, schedule, calendar } = props;
   const [modalOpen, setModalOpen] = useState(false);
+  const [bmodalOpen, setBmodalOpen] = useState(false);
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");
+
   const openModal = (e) => {
     setModalOpen(true);
   };
@@ -26,7 +29,14 @@ const EventModal = (props) => {
     setModalOpen(false);
   };
 
-    let regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
+  const bopenModal = (e) => {
+    setBmodalOpen(true);
+  };
+  const bcloseModal = () => {
+    setBmodalOpen(false);
+  };
+
+  let regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
 
   useEffect(() => {
     const loadData = async () => {
@@ -55,47 +65,60 @@ const EventModal = (props) => {
           </header>
           <main>
             <Grid container style={{ marginBottom: "20px" }}>
-                <AccessTimeIcon style={{marginRight : "10px"}}/>
-                {
-                    regex.test(schedule.start) ?
-                        (
-                            moment(schedule.end).format("DD") - moment(schedule.start).format("DD") === 1 ?
-                                "종일" : moment(schedule.start).format("yyyy-MM-DD") + " - " + moment(schedule.end).format("yyyy-MM-DD")
-                        ) :
-                        moment(schedule.start).format("mm : ss") + " - " + moment(schedule.end).format("mm : ss")
-                }
+              <AccessTimeIcon style={{ marginRight: "10px" }} />
+              {regex.test(schedule.start)
+                ? moment(schedule.end).format("DD") -
+                    moment(schedule.start).format("DD") ===
+                  1
+                  ? "종일"
+                  : moment(schedule.start).format("yyyy-MM-DD") +
+                    " - " +
+                    moment(schedule.end).format("yyyy-MM-DD")
+                : moment(schedule.start).format("mm : ss") +
+                  " - " +
+                  moment(schedule.end).format("mm : ss")}
             </Grid>
-              {
-                  schedule.comment ? (
-                      <Grid container style={{marginBottom: "20px"}}>
-                          <SubjectIcon style={{marginRight : "10px"}}/>
-                          {schedule.comment}
-                      </Grid>
-                  ) : ''
-              }
-              {
-                  schedule.place ? (
-                      <Grid container style={{marginBottom: "20px"}}>
-                          <PlaceIcon style={{marginRight : "10px"}}/>
-                          {schedule.place}
-                      </Grid>
-                  ) : ''
-              }
+            {schedule.comment ? (
+              <Grid container style={{ marginBottom: "20px" }}>
+                <SubjectIcon style={{ marginRight: "10px" }} />
+                {schedule.comment}
+              </Grid>
+            ) : (
+              ""
+            )}
+            {schedule.place ? (
+              <Grid container style={{ marginBottom: "20px" }}>
+                <PlaceIcon style={{ marginRight: "10px" }} />
+                {schedule.place}
+              </Grid>
+            ) : (
+              ""
+            )}
             <Grid container style={{ marginBottom: "20px" }}>
-                <EventIcon style={{marginRight : "10px"}}/>
+              <EventIcon style={{ marginRight: "10px" }} />
               {calendar.name}
             </Grid>
-            <Grid container style={{ marginBottom: "20px" }}>
-              <Button color={"warning"} onClick={openModal}>
-                {t("Modify")}
-              </Button>
-              <NewEventModal
-                open={modalOpen}
-                close={closeModal}
-                calendar={calendar}
-                scheduleDTO={schedule}
-              />
-            </Grid>
+            {calendar.calNo !== 90 && calendar.calNo !== 98 && (
+              <Grid container style={{ marginBottom: "20px" }}>
+                <Button color={"warning"} onClick={openModal}>
+                  {t("Modify")}
+                </Button>
+                <NewEventModal
+                  open={modalOpen}
+                  close={closeModal}
+                  calendar={calendar}
+                  scheduleDTO={schedule}
+                />
+                <Button color={"warning"} onClick={bopenModal}>
+                  {t("delete")}
+                </Button>
+                <EventDeleteModal
+                  open={bmodalOpen}
+                  close={bcloseModal}
+                  scheduleDTO={schedule}
+                />
+              </Grid>
+            )}
           </main>
         </section>
       ) : null}
