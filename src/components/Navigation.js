@@ -53,9 +53,8 @@ const Navigation = ({SideBar, initialView, next, prev, today}) => {
                 <Toolbar>
                     <Grid container spacing={2} align-item="center">
                         <Grid item style={{marginTop: "10px"}}>
-                            <Button>
+                            <Button onClick={SideBar}>
                                 <FontAwesomeIcon
-                                    onClick={SideBar}
                                     icon={faBars}
                                     size="2xl"
                                     style={{color: "black"}}
