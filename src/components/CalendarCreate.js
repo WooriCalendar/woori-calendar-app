@@ -4,6 +4,7 @@ import { BlockPicker } from "react-color";
 import { call, fetchMemberData } from "../service/ApiService";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const CalendarCreate = () => {
   const nameRef = useRef("");
@@ -50,10 +51,11 @@ const CalendarCreate = () => {
     setCalendar({ ...calendar, name: nameRef.current });
     titleRegEx.test(e.target.value);
     if (!titleRegEx.test(e.target.value)) {
-      document.getElementById("titleCheck").innerText =
-        "Please enter at least 2 characters and no more than 20 characters";
+      document.getElementById("titleCheck").innerText = t(
+        "Please enter at least 2 characters and no more than 20 characters"
+      );
     } else {
-      document.getElementById("titleCheck").innerText = "it's possible";
+      document.getElementById("titleCheck").innerText = t("it's possible");
       setIstitleCheck(true);
     }
   };
@@ -92,6 +94,12 @@ const CalendarCreate = () => {
 
       window.location.pathname = "/";
     }
+  };
+
+  const navigate = useNavigate();
+
+  const onClickBtn = () => {
+    navigate(-1);
   };
 
   return (
@@ -148,9 +156,24 @@ const CalendarCreate = () => {
           />
         </TextField>
       </Grid>
-      <Grid container style={{ textAlign: "right", margin: "20px" }}>
-        <Button variant="contained" onClick={addCalendar}>
+      <Grid item xs={12} style={{ marginTop: "20px" }}>
+        <Button
+          item
+          xs={6}
+          style={{ textAlign: "left" }}
+          variant="contained"
+          onClick={addCalendar}
+        >
           {t("Complete")}
+        </Button>
+        <Button
+          item
+          xs={6}
+          variant=""
+          onClick={onClickBtn}
+          style={{ textAlign: "right", marginLeft: "246px" }}
+        >
+          {t("Back")}
         </Button>
       </Grid>
     </Grid>
