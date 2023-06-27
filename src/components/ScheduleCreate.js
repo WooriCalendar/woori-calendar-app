@@ -14,6 +14,7 @@ import { call, fetchMemberData } from "../service/ApiService";
 import moment from "moment";
 import GoogleMaps from "./GooglePlace";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const ScheduleCreate = () => {
   const fullDayRef = useRef(false);
@@ -49,10 +50,11 @@ const ScheduleCreate = () => {
     setSchedule({ ...schedule, title: e.target.value });
     titleRegEx.test(e.target.value);
     if (!titleRegEx.test(e.target.value)) {
-      document.getElementById("titleCheck").innerText =
-        "Please enter at least 2 characters and no more than 20 characters";
+      document.getElementById("titleCheck").innerText = t(
+        t("Please enter at least 2 characters and no more than 20 characters")
+      );
     } else {
-      document.getElementById("titleCheck").innerText = "it's possible";
+      document.getElementById("titleCheck").innerText = t("it's possible");
       setIstitleCheck(true);
     }
   };
@@ -86,19 +88,19 @@ const ScheduleCreate = () => {
     });
   };
 
-    const onStartTimeChange = (e) => {
-        // setDate(moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss"))
-        dateRef.current = moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss")
-        // setDate(dateRef.current)
-        setSchedule({...schedule, start: dateRef.current})
-    }
+  const onStartTimeChange = (e) => {
+    // setDate(moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss"))
+    dateRef.current = moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss");
+    // setDate(dateRef.current)
+    setSchedule({ ...schedule, start: dateRef.current });
+  };
 
-    const onEndTimeChange = (e) => {
-        // setDate(moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss"))
-        dateRef.current = moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss")
-        // setDate(dateRef.current)
-        setSchedule({...schedule, end : dateRef.current})
-    }
+  const onEndTimeChange = (e) => {
+    // setDate(moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss"))
+    dateRef.current = moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss");
+    // setDate(dateRef.current)
+    setSchedule({ ...schedule, end: dateRef.current });
+  };
 
   const onRepeatChange = () => {
     setRepeatToggle(!repeatToggle);
@@ -143,11 +145,17 @@ const ScheduleCreate = () => {
     }
   };
 
+  const navigate = useNavigate();
+
+  const onClickBtn = () => {
+    navigate(-1);
+  };
+
   console.log(schedule);
 
-    // 웹소켓
-    // 일정 생성 알림은 아니고 생성 시 같은 캘린더를 구독하고 있는 사람 리렌더링
-    // 일정 생성 시 지정된 캘린더 번호를 구독하고 있는 모든 회원에게 메세지
+  // 웹소켓
+  // 일정 생성 알림은 아니고 생성 시 같은 캘린더를 구독하고 있는 사람 리렌더링
+  // 일정 생성 시 지정된 캘린더 번호를 구독하고 있는 모든 회원에게 메세지
 
   return (
     <Grid
@@ -173,22 +181,33 @@ const ScheduleCreate = () => {
         <Grid container>
           <Grid item>
             <LocalizationProvider locale={ko} dateAdapter={AdapterDayjs}>
-                {
-                    fullDayRef.current ?
-                        (
-                            <>
-                                <DatePicker defaultValue={dayjs(new Date())} format={"YYYY-MM-DD"} onChange={onStartDateChange} />
-                                <DatePicker defaultValue={dayjs(new Date()).add(1, 'h')} format={"YYYY-MM-DD"} onChange={onEndDateChange} />
-                            </>
-                        )
-                        :
-                        (
-                            <>
-                                <DesktopDateTimePicker defaultValue={dayjs(new Date())} format={"YYYY-MM-DD HH:mm:ss"} onChange={onStartTimeChange} />
-                                <DesktopDateTimePicker defaultValue={dayjs(new Date())} format={"YYYY-MM-DD HH:mm:ss"} onChange={onEndTimeChange} />
-                            </>
-                        )
-                }
+              {fullDayRef.current ? (
+                <>
+                  <DatePicker
+                    defaultValue={dayjs(new Date())}
+                    format={"YYYY-MM-DD"}
+                    onChange={onStartDateChange}
+                  />
+                  <DatePicker
+                    defaultValue={dayjs(new Date()).add(1, "h")}
+                    format={"YYYY-MM-DD"}
+                    onChange={onEndDateChange}
+                  />
+                </>
+              ) : (
+                <>
+                  <DesktopDateTimePicker
+                    defaultValue={dayjs(new Date())}
+                    format={"YYYY-MM-DD HH:mm:ss"}
+                    onChange={onStartTimeChange}
+                  />
+                  <DesktopDateTimePicker
+                    defaultValue={dayjs(new Date())}
+                    format={"YYYY-MM-DD HH:mm:ss"}
+                    onChange={onEndTimeChange}
+                  />
+                </>
+              )}
             </LocalizationProvider>
           </Grid>
         </Grid>
@@ -229,12 +248,13 @@ const ScheduleCreate = () => {
             label={t("Calendar")}
             onChange={onCalendarChange}
           >
-              {
-                  calendars.filter((calendar) => calendar.calNo != 90 && calendar.calNo != 98)
-                      .map((calendar) => (
-                          <MenuItem value={calendar.calNo}>{calendar.name}</MenuItem>
-                      ))
-              }
+            {calendars
+              .filter(
+                (calendar) => calendar.calNo != 90 && calendar.calNo != 98
+              )
+              .map((calendar) => (
+                <MenuItem value={calendar.calNo}>{calendar.name}</MenuItem>
+              ))}
           </TextField>
         </Grid>
       </Grid>
@@ -253,9 +273,25 @@ const ScheduleCreate = () => {
           onChange={onCommentChange}
         />
       </Grid>
-      <Grid container style={{ textAlign: "right", margin: "20px" }}>
-        <Button variant="contained" onClick={addSchedule}>
+      <Grid item xs={12} style={{ marginTop: "20px" }}>
+        <Button
+          item
+          xs={6}
+          style={{ textAlign: "left" }}
+          variant="contained"
+          onClick={addSchedule}
+        >
           {t("Complete")}
+        </Button>
+        <Button
+          item
+          xs={6}
+          variant="outline"
+          // variant="outlined"
+          onClick={onClickBtn}
+          style={{ textAlign: "right", marginLeft: "246px" }}
+        >
+          {t("Back")}
         </Button>
       </Grid>
     </Grid>
