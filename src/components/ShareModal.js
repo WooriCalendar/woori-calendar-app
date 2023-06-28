@@ -24,6 +24,7 @@ const ShareModal = (props) => {
   const [search, setSearch] = useState(false);
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -52,6 +53,7 @@ const ShareModal = (props) => {
     console.log("캘린더 번호 : ", calNo);
     console.log("캘린더 이름 : ", name);
     console.log("권한 : ", grade);
+    // openModal(true);
     setTimeout(() => {
       inviteEmail({ email, calNo, name, grade }).then((resp) => {
         console.log("발송");
@@ -63,6 +65,16 @@ const ShareModal = (props) => {
         // 받을 사람 : 수신자의email
       });
     }, 100);
+    openModal(true);
+  };
+
+  const openModal = () => {
+    setModalOpen(true);
+    console.log("클릭");
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
   };
 
   const handleInputChange = (event) => {
@@ -76,8 +88,7 @@ const ShareModal = (props) => {
       sendSearchRequest();
     } else if (email.length < 8 && email.length > 1) {
       document.getElementById("emailCheck").innerText = "";
-    }
-    {
+    } else {
       setSearch(false);
       console.log(".이 안포함되어있음");
     }
@@ -106,12 +117,10 @@ const ShareModal = (props) => {
   };
 
   return (
-    // 모달이 열릴때 openModal 클래스가 생성된다.
     <div className={open ? "openModal modal" : "modal"}>
       {open ? (
         <section>
           <header>
-            {/* {header} */}
             <span>{t("Share with specific people")}</span>
             <button className="close" onClick={close}>
               <CloseIcon />
@@ -163,6 +172,20 @@ const ShareModal = (props) => {
             </Button>
           </footer>
         </section>
+      ) : null}
+      {open ? (
+        <div className={modalOpen ? "openModal modal" : "modal"}>
+          <section>
+            <main>
+              <span>{email} 님에게 초대 이메일을 발송하였습니다.</span>
+            </main>
+            <footer>
+              <Button variant="contained" id="invite" onClick={closeModal}>
+                확인
+              </Button>
+            </footer>
+          </section>
+        </div>
       ) : null}
     </div>
   );
