@@ -76,16 +76,16 @@ const Category = (props) => {
                         />
                         {hoveredItem === item.calNo && (
                             <Link to={`/settings`} state={{categoryCalNo: item.calNo}}>
-                                <Button
-                                    style={{
-                                        position: 'absolute', right: '0'
-                                    }}
-                                >
+                                {/*<Button*/}
+                                {/*    style={{*/}
+                                {/*        position: 'absolute', right: '0'*/}
+                                {/*    }}*/}
+                                {/*>*/}
                                     <FontAwesomeIcon
                                         style={{color: 'black'}}
                                         icon={faEllipsisVertical}
                                     />
-                                </Button>
+                                {/*</Button>*/}
                             </Link>
                         )}
                     </ListItemButton>
