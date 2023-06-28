@@ -3,21 +3,21 @@ import Error from "../assets/error.png";
 import {Container, Grid} from "@mui/material";
 
 const NotFound = () => {
-    const languageRef = useRef();
+    const [language, setLanguage] = useState(window.navigator.language.substring(0, 2));
 
     useEffect(() => {
-        languageRef.current = window.navigator.language.substring(0, 2);
-        console.log(languageRef.current);
+        setLanguage(window.navigator.language.substring(0, 2));
     }, []);
 
     const windowLanguage = () => {
-        alert(languageRef.current);
-        switch (languageRef.current) {
+        switch (language) {
             case 'ko' :
+                console.log("ko들어옴");
                 return <Ko />;
             case 'ja' :
                 return <Ja />;
             default:
+                console.log("en들어옴");
                 return <En />;
         }
     };
@@ -154,7 +154,7 @@ const NotFound = () => {
                                 <main style={{width: "100%"}}>
                                     <div style={{width: "max-content"}}>
                                         <div>Woori Calendar</div>
-                                        <h1><span style={{color: "rgb(3, 199, 90)"}}>Sorry,</span></h1>
+                                        <h1><span style={{color: "rgb(3, 199, 90)"}}>申し訳ありません,</span></h1>
                                         <br/>
                                         <br/>
 

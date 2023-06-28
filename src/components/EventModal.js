@@ -74,9 +74,9 @@ const EventModal = (props) => {
                   : moment(schedule.start).format("yyyy-MM-DD") +
                     " - " +
                     moment(schedule.end).format("yyyy-MM-DD")
-                : moment(schedule.start).format("mm : ss") +
+                : moment(schedule.start).format("HH : MM") +
                   " - " +
-                  moment(schedule.end).format("mm : ss")}
+                  moment(schedule.end).format("HH : MM")}
             </Grid>
             {schedule.comment ? (
               <Grid container style={{ marginBottom: "20px" }}>

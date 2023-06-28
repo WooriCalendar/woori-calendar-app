@@ -55,10 +55,25 @@ const CalModify = (props) => {
   //     setItems(resp.data)
   //   );
   // };
-
+  const [istitleCheck, setIstitleCheck] = useState(false);
+  const nameRegEx = /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?]{2,20}$/;
   const handleNameChange = (e) => {
-    setName(e.target.value);
+    setName({
+      ...calendar,
+      name: e.target.value,
+    });
+
+    nameRegEx.test(e.target.value);
+    if (!nameRegEx.test(e.target.value)) {
+      document.getElementById("titleCheck").innerText = t(
+        t("Please enter at least 2 characters and no more than 20 characters")
+      );
+    } else {
+      document.getElementById("titleCheck").innerText = t("it's possible");
+      setIstitleCheck(true);
+    }
   };
+
   const handleCommentChange = (e) => {
     setComment(e.target.value);
   };
@@ -70,23 +85,25 @@ const CalModify = (props) => {
 
   // console.log("asdasdasasd", colorRef.current);
   const editEventHandler = () => {
-    const updatedItem = {
-      calNo: document.getElementById("outlined-required-calno").value,
-      // calNo: calendar.calNo;
-      name: document.getElementById("outlined-required-name").value,
-      comment: document.getElementById("outlined-required-com").value,
-      timeZone: timeZone,
-      color: colorRef.current,
-    };
-    console.log("12312312312321321321321312", timeZone);
-    // console.log("아이템", updatedItem);
-    // console.log(document.getElementById("outlined-select-currency").value);
-    // console.log(name);
-    // console.log(comment);
-    call("/calendar", "PUT", updatedItem).then((resp) => {
-      // console.log(resp);
-    });
-    // window.location.pathname = "/";
+    if (istitleCheck) {
+      const updatedItem = {
+        calNo: document.getElementById("outlined-required-calno").value,
+        // calNo: calendar.calNo;
+        name: document.getElementById("outlined-required-name").value,
+        comment: document.getElementById("outlined-required-com").value,
+        timeZone: timeZone,
+        color: colorRef.current,
+      };
+      console.log("12312312312321321321321312", timeZone);
+      // console.log("아이템", updatedItem);
+      // console.log(document.getElementById("outlined-select-currency").value);
+      // console.log(name);
+      // console.log(comment);
+      call("/calendar", "PUT", updatedItem).then((resp) => {
+        // console.log(resp);
+      });
+      // window.location.pathname = "/";
+    }
   };
 
   // calNo로 기존에 입력된 캘린더 가져오기
@@ -187,7 +204,6 @@ const CalModify = (props) => {
             <TextField
               style={{ width: "400px", display: "none" }}
               id="outlined-required-calno"
-              label={t("Name")}
               defaultValue={calendar.calNo}
               value={item.calNo}
               onChange={handleNameChange}
@@ -203,7 +219,8 @@ const CalModify = (props) => {
                 onChange={handleNameChange}
                 variant="outlined"
                 rows={4}
-              ></TextField>
+              />
+              <div id="titleCheck" style={{ color: "red" }}></div>
             </Grid>
             <TextField
               style={{ width: "400px" }}
@@ -280,7 +297,7 @@ const CalModify = (props) => {
         </div>
         <div style={{ textAlign: "right", margin: "20px" }}>
           <Button variant="contained" onClick={editEventHandler}>
-            {t("Completion")}
+            {t("Complete")}
           </Button>
         </div>
       </div>

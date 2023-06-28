@@ -21,7 +21,9 @@ const ScheduleCreate = () => {
   const [repeatToggle, setRepeatToggle] = useState(false);
   const [calendars, setCalendars] = useState([]);
   const dateRef = useRef(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
-  const untilRef = useRef(moment(new Date()).format("YYYY-MM-DD"));
+  const untilRef = useRef(
+    moment(new Date().setMonth(new Date().getMonth() + 1)).format("YYYY-MM-DD")
+  );
   const repeatRef = useRef("");
   const [schedule, setSchedule] = useState({
     title: "",
@@ -45,7 +47,7 @@ const ScheduleCreate = () => {
     });
     fetchMemberData();
   }, [i18n]);
-  const titleRegEx = /[^?a-zA-Z0-9/]{2,20}$/;
+  const titleRegEx = /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?]{2,20}$/;
   const onTitleChange = (e) => {
     setSchedule({ ...schedule, title: e.target.value });
     titleRegEx.test(e.target.value);
@@ -231,7 +233,9 @@ const ScheduleCreate = () => {
             <LocalizationProvider locale={ko} dateAdapter={AdapterDayjs}>
               <Grid container style={{ marginTop: 20 }}>
                 <DatePicker
-                  defaultValue={dayjs(new Date())}
+                  defaultValue={dayjs(
+                    new Date().setMonth(new Date().getMonth() + 1)
+                  )}
                   format={"YYYY-MM-DD"}
                   onChange={onUntilChange}
                 />
@@ -277,21 +281,20 @@ const ScheduleCreate = () => {
         <Button
           item
           xs={6}
+          variant="outline"
+          onClick={onClickBtn}
           style={{ textAlign: "left" }}
-          variant="contained"
-          onClick={addSchedule}
         >
-          {t("Complete")}
+          {t("Back")}
         </Button>
         <Button
           item
           xs={6}
-          variant="outline"
-          // variant="outlined"
-          onClick={onClickBtn}
           style={{ textAlign: "right", marginLeft: "246px" }}
+          variant="contained"
+          onClick={addSchedule}
         >
-          {t("Back")}
+          {t("Complete")}
         </Button>
       </Grid>
     </Grid>

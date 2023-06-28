@@ -40,19 +40,24 @@ const SettingSidebar = ({ handleSidebarClick }) => {
         </Grid>
         <Grid>
           <div>
-            {calendar.map((item) => (
-              <div key={item.calNo}>
-                <FormControlLabel
-                  control={<Checkbox name={item.name} checked={true} />}
-                  value={item.calNo}
-                  label={item.name}
-                  onClick={() => {
-                    handleClick("Category", item.calNo);
-                  }}
-                />
-                {console.log(item.calNo)}
-              </div>
-            ))}
+            {calendar.map((item) => {
+              if (item.calNo !== 90 && item.calNo !== 98) {
+                return (
+                    <div key={item.calNo}>
+                      <FormControlLabel
+                          control={<Checkbox name={item.name} checked={true} />}
+                          value={item.calNo}
+                          label={item.name}
+                          onClick={() => {
+                            handleClick("Category", item.calNo);
+                          }}
+                      />
+                      {console.log(item.calNo)}
+                    </div>
+                );
+              }
+              return null;
+            })}
           </div>
           {/* <Category type="Button" onClick={() => handleClick("Category")} /> */}
         </Grid>
