@@ -13,8 +13,8 @@ const NicnameModal = (props) => {
   useEffect(() => {
     call("/member", "GET", null).then((resp) => {
       setEmail(resp);
-      console.log("ssssssssssssss", resp);
-      console.log("eeeeeeeeeeeeeeeeeeeee", resp.nickname);
+      // console.log("ssssssssssssss", resp);
+      // console.log("eeeeeeeeeeeeeeeeeeeee", resp.nickname);
       i18n.changeLanguage(resp.language);
     });
     fetchMemberData();
@@ -25,17 +25,17 @@ const NicnameModal = (props) => {
       ...email,
       nickname: document.getElementById("standard-basic").value,
     };
-    console.log("riprip", updatedItem);
+    // console.log("riprip", updatedItem);
 
     call("/member", "PUT", updatedItem).then((resp) => {
-      console.log("rrrrrrrrrr::", resp);
+      // console.log("rrrrrrrrrr::", resp);
       close();
     });
   };
 
   const handleNameChange = (e) => {
     setNickName(e.target.value);
-    console.log("0000000000000000", handleNameChange);
+    // console.log("0000000000000000", handleNameChange);
   };
 
   return (

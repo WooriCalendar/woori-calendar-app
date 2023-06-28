@@ -28,52 +28,52 @@ const NewEventModal = (props) => {
   const untilRef = useRef(moment(new Date()).format("YYYY-MM-DD"));
   const repeatRef = useRef("");
   const [repeatToggle, setRepeatToggle] = useState(false);
+  const [language, setLanguage] = useState("");
+  const { t, i18n } = useTranslation();
+  const [calendars, setCalendars] = useState(false);
   const [schedule, setSchedule] = useState({
     scNo: "",
     title: "",
     comment: "",
-    start: dateRef.current,
-    end: dateRef.current,
+    start: dateRef,
+    end: dateRef,
     calNo: "",
     place: "",
     rrule: {},
     status: "",
   });
-  const [language, setLanguage] = useState("");
-  const { t, i18n } = useTranslation();
+
+  // console.log("뉴이벤트모달테스트", scheduleDTO);
   useEffect(() => {
     setSchedule(scheduleDTO);
   }, [scheduleDTO]);
   // console.log("000000000000000000000088888888", schedule);
-  const [calendars, setCalendars] = useState(false);
-  // const [title, setTitle] = useState("");
-  // const [comment, setComment] = useState("");
 
   useEffect(() => {
     call("/calendar", "GET", null).then((response) => {
       // console.log("뉴이벤트모달", response.data[0]);
       setCalendars(response.data);
-      // setSchedule(response);
       i18n.changeLanguage(response.language);
     });
     fetchMemberData();
   }, [i18n]);
 
-  // useState(() => {
-  //   call("/schedule/", "GET", null).then((response) => {
-  //     console.log("뉴이벤트모달", response.data[0]);
-  //     // setSchedule(response.data[0]);
-  //     setSchedule(response.data);
-  //     // setSchedule(response);
-  //   });
-  // }, []);
-
+  const [istitleCheck, setIstitleCheck] = useState(false);
+  const titleRegEx = /[^?a-zA-Z0-9/]{2,20}$/;
   const onTitleChange = (e) => {
     setSchedule({
       ...schedule,
       title: e.target.value,
     });
-    console.log("setSchedule 타이틀", schedule.title);
+    titleRegEx.test(e.target.value);
+    if (!titleRegEx.test(e.target.value)) {
+      document.getElementById("titleCheck").innerText = t(
+        t("Please enter at least 2 characters and no more than 20 characters")
+      );
+    } else {
+      document.getElementById("titleCheck").innerText = t("it's possible");
+      setIstitleCheck(true);
+    }
   };
 
   const onSwitchChange = (e) => {
@@ -111,15 +111,14 @@ const NewEventModal = (props) => {
     });
   };
 
-  const onTimeChange = (e) => {
-    // setDate(moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss"))
+  const onStartTimeChange = (e) => {
     dateRef.current = moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss");
-    // setDate(dateRef.current)
-    setSchedule({
-      ...schedule,
-      start: dateRef.current,
-      end: dateRef.current,
-    });
+    setSchedule({ ...schedule, start: dateRef.current });
+  };
+
+  const onEndTimeChange = (e) => {
+    dateRef.current = moment(dayjs(e).$d).format("YYYY-MM-DD HH:mm:ss");
+    setSchedule({ ...schedule, end: dateRef.current });
   };
 
   const onRepeatChange = (e) => {
@@ -165,18 +164,18 @@ const NewEventModal = (props) => {
     const updatedItem = {
       ...schedule,
       rrule: { ...schedule.rrule },
-      scNo: 828,
-      // title: document.getElementById("title-modal").value,
     };
-    console.log("asdasdas66677667", updatedItem);
-    console.log("asdasdas66+++++", schedule.scNo);
-    // window.location.pathname = "/";
-    call("/schedule", "PUT", updatedItem).then((response) => {
-      console.log("response.dataresponse.dataresponse.data", response.data);
-      // alert("먼데 된거야");
-    });
-    window.location.pathname = "/";
+    // console.log("1번", updatedItem);
+    if (istitleCheck) {
+      console.log("2번", updatedItem);
+      call("/schedule", "PUT", updatedItem).then((response) => {
+        // console.log("3번", updatedItem);
+        // console.log("response.dataresponse.dataresponse.data", response.data);
+      });
+      window.location.pathname = "/";
+    }
   };
+  // console.log("asdasdas66+++++", schedule.scNo);
 
   // console.log("ㄹ라라라랄라라라", schedule);
   return (
@@ -220,6 +219,7 @@ const NewEventModal = (props) => {
               style={{ width: "350px", paddingBottom: "10px" }}
               onChange={onTitleChange}
             />
+            <div id="titleCheck" style={{ color: "red" }}></div>
           </Grid>
           <Grid>
             <Grid container style={{ width: "350px" }}>
@@ -238,23 +238,30 @@ const NewEventModal = (props) => {
                         onChange={onStartDateChange}
                       />
                       <DatePicker
-                        defaultValue={dayjs(new Date())}
+                        defaultValue={dayjs(new Date()).add(1, "h")}
                         format={"YYYY-MM-DD"}
                         onChange={onEndDateChange}
                       />
                     </>
                   ) : (
-                    <DesktopDateTimePicker
-                      defaultValue={dayjs(new Date())}
-                      format={"YYYY-MM-DD HH:mm:ss"}
-                      onChange={onTimeChange}
-                    />
+                    <>
+                      <DesktopDateTimePicker
+                        defaultValue={dayjs(new Date())}
+                        format={"YYYY-MM-DD HH:mm:ss"}
+                        onChange={onStartTimeChange}
+                      />
+                      <DesktopDateTimePicker
+                        defaultValue={dayjs(new Date())}
+                        format={"YYYY-MM-DD HH:mm:ss"}
+                        onChange={onEndTimeChange}
+                      />
+                    </>
                   )}
                 </LocalizationProvider>
               </Grid>
             </Grid>
           </Grid>
-          <Grid container style={{ marginTop: 10 }}>
+          <Grid container style={{ marginTop: 20 }}>
             <span>{t("Repeat")}</span>
             <Switch checked={repeatToggle} onChange={onRepeatChange} />
           </Grid>
@@ -291,9 +298,13 @@ const NewEventModal = (props) => {
               label={t("Calendar")}
               onChange={onCalendarChange}
             >
-              {calendars.map((calendars) => (
-                <MenuItem value={calendars.calNo}>{calendars.name}</MenuItem>
-              ))}
+              {calendars
+                .filter(
+                  (calendar) => calendar.calNo != 90 && calendar.calNo != 98
+                )
+                .map((calendar) => (
+                  <MenuItem value={calendar.calNo}>{calendar.name}</MenuItem>
+                ))}
             </TextField>
           </Grid>
           <Grid container style={{ marginTop: 20 }}>
@@ -308,7 +319,7 @@ const NewEventModal = (props) => {
             />
           </Grid>
 
-          <Grid container style={{ textAlign: "right", margin: "20px" }}>
+          <Grid item xs={12} style={{ textAlign: "right", margin: "20px" }}>
             <Button variant="contained" onClick={onUpdate}>
               {t("Complete")}
             </Button>

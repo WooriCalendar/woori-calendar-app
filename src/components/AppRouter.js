@@ -41,8 +41,6 @@ const AppRouter = () => {
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
           <Route path="socialLogin" element={<SocialLogin />} />
-          {/* <Route path="calendar/:calNo" element={<CalModify />} /> */}
-          {/* <Route path="calModify" element={<CalModify />} /> */}
           <Route path="PrivacyPolicyEn" element={<PrivacyPolicyEn />} />
           <Route path="PrivacyPolicyKo" element={<PrivacyPolicyKo />} />
           <Route path="PrivacyPolicyJa" element={<PrivacyPolicyJa />} />
@@ -51,7 +49,7 @@ const AppRouter = () => {
           <Route path={"schedule"} element={<ScheduleCreate />} />
           <Route path={"calendar"} element={<CalendarCreate />} />
           <Route path="/*" element={<NotFound />} />
-          <Route path="Settings" element={<Settings value={false} />} />
+          <Route path="Settings" element={<Settings />} />
           <Route path="MyPage" element={<MyPage />} />
           <Route path="SettingNavigation" element={<SettingNavigation />} />
         </Routes>

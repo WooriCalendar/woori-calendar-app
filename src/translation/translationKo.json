@@ -11,7 +11,7 @@
 
   "search": "검색",
   "Create new calendar" : "새 캘린더 생성",
-  "Logout": "로그 아웃",
+  "Logout": "로그아웃",
 
   "Month": "월",
   "Week" : "주",
@@ -85,7 +85,24 @@
   "would you like to delete this account?" : "이 계정을 삭제하시겠습니까?",
   "Create" : "만들기",
 
-  "SNS login cannot edit member information" : "sns 로그인은 회원 정보를 수정할수 없습니다"
+  "SNS login cannot edit member information" : "sns 로그인은 회원 정보를 수정할수 없습니다",
+
+  "Please enter at least 2 characters and no more than 20 characters" : "2자 이상 20자 이내로 입력해주세요.",
+  "it's possible" : "가능합니다",
+
+  "Back": "뒤로가기",
+
+  "Today": "오늘",
+
+  "delete" : "삭제",
+
+  "Are you sure to delete the schedule?" : "일정을 삭제하시겠습니까?",
+
+  "Do you want to delete notification? If deleted, it is not possible to check it!" : "  알림을 삭제하시겠어요? 삭제된 알림은 다시 볼 수 없어요!",
+  "Yes!": "네!",
+  "No" : "아니요",
+
+  "No notifications!" : "알림이 없어요!"
 
 
 }
