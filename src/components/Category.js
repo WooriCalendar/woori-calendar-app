@@ -8,11 +8,17 @@ import ListItemButton from "@mui/material/ListItemButton";
 import CalModify from "./CalModify";
 import {Link} from 'react-router-dom';
 import List from "@mui/material/List";
+import {useDispatch, useSelector} from "react-redux";
 
 const Category = (props) => {
     const [calendars, setCalendars] = useState([]);
     const calendarRef = useRef({});
     const [hoveredItem, setHoveredItem] = useState(null);
+
+    const calNo = useSelector(state => state.calNo);
+    console.log(calNo)
+
+    const dispatch = useDispatch();
 
     const handleMouseEnter = (itemNo) => {
         setHoveredItem(itemNo);
@@ -75,7 +81,13 @@ const Category = (props) => {
                             }
                         />
                         {hoveredItem === item.calNo && (
-                            <Link to={`/settings`} state={{categoryCalNo: item.calNo}}>
+                            <Link
+                                to={`/settings`}
+                                state={{calNo: item.calNo}}
+                                onClick={() => {
+                                    dispatch({type : 'SET', value : item.calNo})
+                                }}
+                            >
                                 {/*<Button*/}
                                 {/*    style={{*/}
                                 {/*        position: 'absolute', right: '0'*/}

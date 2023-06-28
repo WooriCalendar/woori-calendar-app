@@ -5,11 +5,32 @@ import i18n from "./service/i18n";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import AppRouter from "./components/AppRouter";
+import {Provider} from "react-redux";
+import {createStore} from "redux";
+
+const initialState = {
+    calNo : null
+};
+
+function reducer(state = initialState, action) {
+    switch (action.type) {
+        case 'SET' :
+            return {calNo : action.value}
+        case 'UNSET' :
+            return {calNo : null}
+        default :
+            return state
+    }
+}
+
+let store = createStore(reducer);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <I18nextProvider i18n={i18n}>
-    <AppRouter />
+      <Provider store={store}>
+          <AppRouter />
+      </Provider>
   </I18nextProvider>
 );
 
