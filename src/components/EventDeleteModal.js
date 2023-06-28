@@ -6,15 +6,19 @@ import moment from "moment";
 
 const EventDeleteModal = (props) => {
   const { open, close, scheduleDTO } = props;
+  console.log("deleteupdatedItem2" + scheduleDTO);
   const { t, i18n } = useTranslation();
   const dateRef = useRef(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
-  const untilRef = useRef(moment(new Date()).format("YYYY-MM-DD"));
+  const untilRef = useRef(
+    moment(new Date().setMonth(new Date().getMonth() + 1)).format("YYYY-MM-DD")
+  );
+  const repeatRef = useRef("");
   const [schedule, setSchedule] = useState({
     scNo: "",
     title: "",
     comment: "",
-    start: dateRef,
-    end: dateRef,
+    start: dateRef.current,
+    end: dateRef.current,
     calNo: "",
     place: "",
     rrule: {},
@@ -28,9 +32,14 @@ const EventDeleteModal = (props) => {
     const updatedItem = {
       ...schedule,
       rrule: { ...schedule.rrule },
+      // rrule: { until: untilRef, freq: repeatRef },
     };
+    // console.log("deleteupdatedItem", ...schedule);
+    // console.log("deleteupdatedItem2", ...updatedItem);
 
-    call("/schedule", "DELETE", updatedItem).then((response) => {});
+    call("/schedule", "DELETE", scheduleDTO.scNo).then((response) => {
+      console.log("responseresponse", response);
+    });
     window.location.pathname = "/";
   };
 
@@ -42,7 +51,7 @@ const EventDeleteModal = (props) => {
             <div
               style={{ marginBottom: "5px", width: "300px", height: "100px" }}
             >
-              <h2> {t("Are you sure to delete the schedule?")}</h2>
+              <span> {t("Are you sure to delete the schedule?")}</span>
             </div>
           </main>
           <footer>
