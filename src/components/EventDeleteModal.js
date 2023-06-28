@@ -42,7 +42,7 @@ const EventDeleteModal = (props) => {
             <div
               style={{ marginBottom: "5px", width: "300px", height: "100px" }}
             >
-              <h2> {t("Are you sure to delete the schedule?")}</h2>
+              <span> {t("Are you sure to delete the schedule?")}</span>
             </div>
           </main>
           <footer>

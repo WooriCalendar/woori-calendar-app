@@ -18,7 +18,7 @@ const CalendarCreate = () => {
     timeZone: "",
     color: "",
   });
-  const titleRegEx = /[^?a-zA-Z0-9/]{2,20}$/;
+  const titleRegEx = /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?]{2,20}$/;
   const [istitleCheck, setIstitleCheck] = useState(false);
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");
@@ -160,20 +160,20 @@ const CalendarCreate = () => {
         <Button
           item
           xs={6}
+          variant=""
+          onClick={onClickBtn}
           style={{ textAlign: "left" }}
-          variant="contained"
-          onClick={addCalendar}
         >
-          {t("Complete")}
+          {t("Back")}
         </Button>
         <Button
           item
           xs={6}
-          variant=""
-          onClick={onClickBtn}
           style={{ textAlign: "right", marginLeft: "246px" }}
+          variant="contained"
+          onClick={addCalendar}
         >
-          {t("Back")}
+          {t("Complete")}
         </Button>
       </Grid>
     </Grid>

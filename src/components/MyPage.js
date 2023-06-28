@@ -73,6 +73,24 @@ const MyPage = () => {
     });
     // window.location.reload();
   };
+  const handleNicknameChange = (newNickname) => {
+    setMember((prevMember) => ({
+      ...prevMember,
+      nickname: newNickname,
+    }));
+  };
+  const BirthdayChange = (newBirthday) => {
+    setMember((prevMember) => ({
+      ...prevMember,
+      birthday: newBirthday,
+    }));
+  };
+  const handleSubmailChange = (newSubmail) => {
+    setMember((prevMember) => ({
+      ...prevMember,
+      subemail: newSubmail,
+    }));
+  };
 
   return (
     <Container maxWidth="xs" style={{ marginTop: "1px", marginBottom: "10%" }}>
@@ -117,7 +135,11 @@ const MyPage = () => {
             style={{ marginBottom: "20px" }}
             onClick={openModal}
           />
-          <NicnameModal open={modalOpen} close={closeModal} />
+          <NicnameModal
+            open={modalOpen}
+            close={closeModal}
+            handleNicknameChange={handleNicknameChange}
+          />
         </Grid>
       </Grid>
       <Grid container item xs={12}>
@@ -136,7 +158,11 @@ const MyPage = () => {
             style={{ marginBottom: "20px" }}
             onClick={bopenModal}
           />
-          <BirthModal open={bmodalOpen} close={bcloseModal} />
+          <BirthModal
+            open={bmodalOpen}
+            close={bcloseModal}
+            BirthdayChange={BirthdayChange}
+          />
         </Grid>
       </Grid>
       <Grid container item xs={12}>
@@ -155,7 +181,11 @@ const MyPage = () => {
             style={{ marginBottom: "20px" }}
             onClick={copenModal}
           />
-          <SubEmailModal open={cmodalOpen} close={ccloseModal} />
+          <SubEmailModal
+            open={cmodalOpen}
+            close={ccloseModal}
+            handleSubmailChange={handleSubmailChange}
+          />
         </Grid>
       </Grid>
       <Grid container item xs={12}>

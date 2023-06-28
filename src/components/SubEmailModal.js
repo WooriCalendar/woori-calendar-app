@@ -4,7 +4,7 @@ import { call, fetchMemberData } from "../service/ApiService";
 import { Grid } from "react-loader-spinner";
 import { useTranslation } from "react-i18next";
 const SubEmailModal = (props) => {
-  const { open, close } = props;
+  const { open, close, handleSubmailChange } = props;
   const [submail, setSubmail] = useState("");
 
   const [email, setEmail] = useState([]);
@@ -34,14 +34,15 @@ const SubEmailModal = (props) => {
     console.log("riprip", updatedItem);
 
     call("/member", "PUT", updatedItem).then((resp) => {
-      console.log("rrrrrrrrrr::", resp);
+      // console.log("rrrrrrrrrr::", resp);
+      handleSubmailChange(submail);
       close();
     });
   };
 
   const handleNameChange = (e) => {
     setSubmail(e.target.value);
-    console.log("0000000000000000", handleNameChange);
+    // console.log("0000000000000000", handleNameChange);
   };
 
   return (

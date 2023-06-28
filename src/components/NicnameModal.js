@@ -3,7 +3,7 @@ import { Button, TextField } from "@mui/material";
 import { call, fetchMemberData } from "../service/ApiService";
 import { useTranslation } from "react-i18next";
 const NicnameModal = (props) => {
-  const { open, close } = props;
+  const { open, close, handleNicknameChange } = props;
   const [nickname, setNickName] = useState("");
 
   const [email, setEmail] = useState([]);
@@ -29,6 +29,7 @@ const NicnameModal = (props) => {
 
     call("/member", "PUT", updatedItem).then((resp) => {
       // console.log("rrrrrrrrrr::", resp);
+      handleNicknameChange(nickname);
       close();
     });
   };
