@@ -6,14 +6,13 @@ import rrulePlugin from '@fullcalendar/rrule'
 import {call} from "../service/ApiService";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import FullCalendar from '@fullcalendar/react'
-import ShareModal from "./ShareModal";
 import ScheduleModal from "./ScheduleModal"; // must go before plugins
 import "../App.css"
 import EventModal from "./EventModal";
 import moment from 'moment';
 
 const FullCalendars = (
-    {headerToolbar, height, aspectRatio, contentHeight, category, initialView, next, prev, today}, props
+    {headerToolbar, height, aspectRatio, contentHeight, category, initialView, next, prev, today, setTitle}, props
 ) => {
     const [items, setItems] = useState([]);
     const scheduleRef = useRef([]);
@@ -25,8 +24,7 @@ const FullCalendars = (
     const dayOfWeekRef = useRef('');
     const calendarRef = React.useRef('dayGridMonth');
 
-
-    useEffect( () => {
+    useEffect(() => {
         call("/schedule", "GET", null)
             .then((response) => {
                 setItems(response.data)
@@ -34,26 +32,26 @@ const FullCalendars = (
         }, [category]
     )
 
-    useEffect( () => {
-        const { current: calendarDom } = calendarRef;
+    useEffect(() => {
+        const {current: calendarDom} = calendarRef;
         const API = calendarDom ? calendarDom.getApi() : null;
         if (initialView) API && API.changeView(initialView);
     }, [initialView]);
 
-    useEffect( () => {
-        const { current: calendarDom } = calendarRef;
+    useEffect(() => {
+        const {current: calendarDom} = calendarRef;
         const API = calendarDom ? calendarDom.getApi() : null;
         if (next) API && API.next();
     }, [next]);
 
-    useEffect( () => {
-        const { current: calendarDom } = calendarRef;
+    useEffect(() => {
+        const {current: calendarDom} = calendarRef;
         const API = calendarDom ? calendarDom.getApi() : null;
         if (prev) API && API.prev();
     }, [prev]);
 
-    useEffect( () => {
-        const { current: calendarDom } = calendarRef;
+    useEffect(() => {
+        const {current: calendarDom} = calendarRef;
         const API = calendarDom ? calendarDom.getApi() : null;
         if (today) API && API.today();
     }, [today]);
@@ -123,20 +121,21 @@ const FullCalendars = (
      * 일정 추가
      * @type {[{date: string, title: string},{date: string, title: string}]}
      */
-    // const startdate = '2023-05-31 00:00:00.000'
+        // const startdate = '2023-05-31 00:00:00.000'
 
     const events = [
             ...items,
-        // {
-        //     title : "반복 테스트",
-        //     start : '2023-06-15',
-        //     color : '#222',
-        //     rrule : {
-        //         freq : "weekly",
-        //         dtstart : '2023-06-15'
-        //     },
-        // }
-    ];
+            // {
+            //     title : "반복 테스트",
+            //     start : '2023-06-15',
+            //     color : '#222',
+            //     rrule : {
+            //         freq : "weekly",
+            //         dtstart : '2023-06-15'
+            //     },
+            // }
+        ];
+
 
     return (
         <>
@@ -150,7 +149,11 @@ const FullCalendars = (
                 dateClick={handleDateClick}
                 contentHeight={contentHeight}
                 aspectRatio={aspectRatio}
+                showNonCurrentDates={true}
                 ref={calendarRef}
+                titleFormat={(date) => {
+                    if(setTitle) setTitle(moment(date.date.marker).format('YYYY.M'))
+                }}
             />
 
             <ScheduleModal
@@ -159,9 +162,9 @@ const FullCalendars = (
                 date={date.current}
                 events={events.filter((event) => (
                     event.rrule === null ?
-                        (moment(event.start).format("yyyy-MM-DD") === moment(event.end).format("yyyy-MM-DD") ? event.start.includes(date) && event.end.includes(date) : event.start <= date && event.end >= date)
+                        (moment(event.start).format("yyyy-MM-DD") === moment(event.end).format("yyyy-MM-DD") ? event.start.includes(date.current) && event.end.includes(date.current) : event.start <= date.current && moment(event.end).format("yyyy-MM-DD") > date.current)
                         :
-                        event.rrule.freq === 'weekly' ? event.start <= date && event.rrule.until >= date && moment(dayOfWeekRef.current).format("dddd").includes(event.dayOfWeek) : (event.start <= date || event.start.includes(date)) && event.rrule.until >= date
+                        event.rrule.freq === 'weekly' ? event.start <= date.current && event.rrule.until >= date.current && moment(dayOfWeekRef.current).format("dddd").includes(event.dayOfWeek) : (event.start <= date.current || event.start.includes(date.current)) && event.rrule.until >= date
 
                 ))}
             />
