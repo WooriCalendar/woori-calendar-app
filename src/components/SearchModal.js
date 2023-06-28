@@ -67,7 +67,7 @@ const SearchModal = (props) => {
                                     <CloseIcon />
                                 </button>
                             </header>
-                            <main>
+                            <main style={{height : 300}}>
                                 {
                                     result.map((r) => (
                                         <Grid container value={r.scNo} style={{ marginBottom: "20px" }} onClick={openEventModal}>
