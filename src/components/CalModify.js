@@ -56,7 +56,7 @@ const CalModify = (props) => {
   //   );
   // };
   const [istitleCheck, setIstitleCheck] = useState(false);
-  const nameRegEx = /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?]{2,20}$/;
+  const nameRegEx = /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?\s]{2,20}$/;
   const handleNameChange = (e) => {
     setName({
       ...calendar,
