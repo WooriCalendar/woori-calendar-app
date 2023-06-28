@@ -16,6 +16,8 @@ const CalModify = (props) => {
   const [shareNo, setShareNo] = useState([]);
   const [email, setEmail] = useState([]);
   const [grade, setGrade] = useState([]);
+  const [userEmail, setUserEmail] = useState([]);
+  const [userGrade, setUserGrade] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [bmodalOpen, setBmodalOpen] = useState(false);
   const [cmodalOpen, setCmodalOpen] = useState(false);
@@ -55,25 +57,10 @@ const CalModify = (props) => {
   //     setItems(resp.data)
   //   );
   // };
-  const [istitleCheck, setIstitleCheck] = useState(false);
-  const nameRegEx = /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?]{2,20}$/;
+
   const handleNameChange = (e) => {
-    setName({
-      ...calendar,
-      name: e.target.value,
-    });
-
-    nameRegEx.test(e.target.value);
-    if (!nameRegEx.test(e.target.value)) {
-      document.getElementById("titleCheck").innerText = t(
-        t("Please enter at least 2 characters and no more than 20 characters")
-      );
-    } else {
-      document.getElementById("titleCheck").innerText = t("it's possible");
-      setIstitleCheck(true);
-    }
+    setName(e.target.value);
   };
-
   const handleCommentChange = (e) => {
     setComment(e.target.value);
   };
@@ -85,25 +72,23 @@ const CalModify = (props) => {
 
   // console.log("asdasdasasd", colorRef.current);
   const editEventHandler = () => {
-    if (istitleCheck) {
-      const updatedItem = {
-        calNo: document.getElementById("outlined-required-calno").value,
-        // calNo: calendar.calNo;
-        name: document.getElementById("outlined-required-name").value,
-        comment: document.getElementById("outlined-required-com").value,
-        timeZone: timeZone,
-        color: colorRef.current,
-      };
-      console.log("12312312312321321321321312", timeZone);
-      // console.log("아이템", updatedItem);
-      // console.log(document.getElementById("outlined-select-currency").value);
-      // console.log(name);
-      // console.log(comment);
-      call("/calendar", "PUT", updatedItem).then((resp) => {
-        // console.log(resp);
-      });
-      // window.location.pathname = "/";
-    }
+    const updatedItem = {
+      calNo: document.getElementById("outlined-required-calno").value,
+      // calNo: calendar.calNo;
+      name: document.getElementById("outlined-required-name").value,
+      comment: document.getElementById("outlined-required-com").value,
+      timeZone: timeZone,
+      color: colorRef.current,
+    };
+    console.log("12312312312321321321321312", timeZone);
+    // console.log("아이템", updatedItem);
+    // console.log(document.getElementById("outlined-select-currency").value);
+    // console.log(name);
+    // console.log(comment);
+    call("/calendar", "PUT", updatedItem).then((resp) => {
+      // console.log(resp);
+    });
+    // window.location.pathname = "/";
   };
 
   // calNo로 기존에 입력된 캘린더 가져오기
@@ -126,6 +111,15 @@ const CalModify = (props) => {
       console.log("shareNo:::", shareNo);
       console.log("이메일:::", email);
       console.log("grade:::", grade);
+    });
+    call("/calendar/share", "GET").then((response) => {
+      const filteredData = response.data.filter((item) => item.calNo === calNo);
+      filteredData.map((item) => setUserEmail(item.email));
+      filteredData.map((item) => setUserGrade(item.grade));
+      console.log("이 캘린더의 shareNo", response.data);
+      console.log("이 캘린더의 shareNo2", filteredData);
+      console.log("이 유저 메일", userEmail);
+      console.log("이 유저 등급", userGrade);
     });
     fetchMemberData();
   }, [i18n]);
@@ -152,12 +146,15 @@ const CalModify = (props) => {
   const handleChange = (e, index) => {
     const updatedShareNo = [...shareNo]; // shareNo 배열 복사
     const currentShareNo = updatedShareNo[index]; // 해당 인덱스의 shareNo 값 가져오기
+    const updatedEmail = [...email];
+    const currentEmail = updatedEmail[index];
     const updatedGrade = [...grade];
     updatedGrade[index] = e.target.value;
     setGrade(updatedGrade);
 
     const updatedItem = {
       shareNo: currentShareNo,
+      email: currentEmail,
       grade: updatedGrade[index],
     };
 
@@ -179,6 +176,7 @@ const CalModify = (props) => {
             label={t("Color")}
             className={"color"}
             value={"color" || ""}
+            disabled={userGrade === 0}
           >
             <BlockPicker
               width={400}
@@ -204,6 +202,7 @@ const CalModify = (props) => {
             <TextField
               style={{ width: "400px", display: "none" }}
               id="outlined-required-calno"
+              label={t("Name")}
               defaultValue={calendar.calNo}
               value={item.calNo}
               onChange={handleNameChange}
@@ -215,12 +214,11 @@ const CalModify = (props) => {
                 id="outlined-required-name"
                 label={t("Name")}
                 defaultValue={item.name}
-                // value={name}
                 onChange={handleNameChange}
                 variant="outlined"
+                disabled={userGrade === 0}
                 rows={4}
-              />
-              <div id="titleCheck" style={{ color: "red" }}></div>
+              ></TextField>
             </Grid>
             <TextField
               style={{ width: "400px" }}
@@ -230,6 +228,7 @@ const CalModify = (props) => {
               onChange={handleCommentChange}
               variant="outlined"
               multiline
+              disabled={userGrade === 0}
               rows={4}
             />
           </div>
@@ -241,6 +240,7 @@ const CalModify = (props) => {
               style={{ width: 400 }}
               label={t("timeZone")}
               onChange={onTimeZoneChange}
+              disabled={userGrade === 0}
             >
               {timeZones.map((timeZone) => (
                 <MenuItem value={timeZone}>{timeZone}</MenuItem>
@@ -255,9 +255,11 @@ const CalModify = (props) => {
             <div key={email} style={{ display: "flex", alignItems: "center" }}>
               <TextField variant="standard" disabled defaultValue={email} />
               <div style={{ marginLeft: "auto" }}>
+                {/* {index[email]} */}
                 <Select
                   variant="standard"
                   value={grade[index]}
+                  disabled={userGrade === 0 || userEmail === email}
                   onChange={(e) => handleChange(e, index)}
                 >
                   <MenuItem value={0}>{t("View")}</MenuItem>
@@ -269,9 +271,11 @@ const CalModify = (props) => {
           ))}
         </div>
         <div style={{ textAlign: "left", margin: "20px" }}>
-          <Button variant="outlined" onClick={openModal}>
-            {t("Invite users")}
-          </Button>
+          {userGrade === 2 ? (
+            <Button variant="outlined" onClick={openModal}>
+              {t("Invite users")}
+            </Button>
+          ) : null}
         </div>
         {calendar.map((item) => (
           <ShareModal
@@ -290,14 +294,16 @@ const CalModify = (props) => {
             close={ccloseModal}
             calNo={calNo}
           />
-          <Button variant="text" color="error" onClick={bopenModal}>
-            {t("delete calendar")}
-          </Button>
+          {userGrade === 2 ? (
+            <Button variant="text" color="error" onClick={bopenModal}>
+              {t("delete calendar")}
+            </Button>
+          ) : null}
           <DeleteModal open={bmodalOpen} close={bcloseModal} calNo={calNo} />
         </div>
         <div style={{ textAlign: "right", margin: "20px" }}>
           <Button variant="contained" onClick={editEventHandler}>
-            {t("Complete")}
+            {t("Completion")}
           </Button>
         </div>
       </div>
