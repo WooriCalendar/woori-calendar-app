@@ -21,7 +21,7 @@ const ScheduleCreate = () => {
   const [repeatToggle, setRepeatToggle] = useState(false);
   const [calendars, setCalendars] = useState([]);
   const dateRef = useRef(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
-  const untilRef = useRef(moment(new Date()).format("YYYY-MM-DD"));
+  const untilRef = useRef(moment(new Date().setMonth(new Date().getMonth() + 1)).format("YYYY-MM-DD"));
   const repeatRef = useRef("");
   const [schedule, setSchedule] = useState({
     title: "",
@@ -231,7 +231,7 @@ const ScheduleCreate = () => {
             <LocalizationProvider locale={ko} dateAdapter={AdapterDayjs}>
               <Grid container style={{ marginTop: 20 }}>
                 <DatePicker
-                  defaultValue={dayjs(new Date())}
+                  defaultValue={dayjs(new Date().setMonth(new Date().getMonth() + 1))}
                   format={"YYYY-MM-DD"}
                   onChange={onUntilChange}
                 />
