@@ -9,8 +9,9 @@ import Category from "./Category";
 import SettingPasword from "./SettingPasword";
 import LanguageSelector from "./LanguageSelector";
 import { call } from "../service/ApiService";
+import {useDispatch, useSelector} from "react-redux";
 
-const Settings = () => {
+const Settings = ({location}) => {
   const [calendar, setCalendar] = useState([]);
   const [calNo, setCalNo] = useState([]);
 
@@ -19,23 +20,37 @@ const Settings = () => {
   const [activeComponent, setActiveComponent] = useState("Settings");
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [showMyPage, setShowMyPage] = useState(false);
+
+    const no = useSelector(state => state.calNo);
+    console.log(no)
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (no !== null) {
+            setCalNo(no)
+            setActiveComponent("Category")
+
+            dispatch({type : "UNSET"})
+        }
+    }, [no])
+
   const handleSidebarClick = (component, calNo) => {
     setActiveComponent(component);
     setSelectedComponent(component);
     setCalNo(calNo);
-    console.log("asdasdasdasd00+", component);
+    // console.log("asdasdasdasd00+", component);
   };
 
   useEffect(() => {
     call("/calendar", "GET", null).then((response) => {
-      console.log("캘린더 데이터");
+      // console.log("캘린더 데이터");
       // console.log("11133333333311", response);
-      console.log("11133333333311", response.data);
+      // console.log("11133333333311", response.data);
       setCalendar(response.data);
       // setCalendar(response.data);
     });
   }, []);
-  console.log(calendar.calNo);
+  // console.log(calendar.calNo);
   // useEffect(() => {
   //   call("/calendar/" + calendar.calNo, "GET", null).then((response) => {
   //     console.log("캘린더 데이터");
@@ -59,7 +74,7 @@ const Settings = () => {
       // activeComponent === "CalModify"
     ) {
       // return <CalModify calNo={calendar.calNo} />;
-      return <CalModify calNo={calNo} />;
+      return <CalModify calNo={calNo} key={calNo} />;
     }
 
     return null;

@@ -9,6 +9,7 @@ import companyLogo from "./assets/logo(ver3).png";
 import {TailSpin} from "react-loader-spinner";
 import Loading from "./components/Loading";
 import moment from 'moment';
+import {useDispatch, useSelector} from "react-redux";
 
 function App() {
     const [initialView, setInitialView] = useState('dayGridMonth');
@@ -75,7 +76,6 @@ function App() {
                         <Grid item xs={2} style={{paddingLeft: '20px'}}>
                             <Sidebar
                                 visible={isSideBarVisible}
-                                // height={'200px'}
                                 contentHeight={'410px'}
                                 aspectRatio={'2'}
                                 onCategoryChange={onCategoryChange}
