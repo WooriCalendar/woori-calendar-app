@@ -14,7 +14,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
-const Navigation = ({ SideBar, initialView, next, prev, today }) => {
+const Navigation = ({ SideBar, initialView, next, prev, today, date }) => {
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");
   const [searchModal, setSearchModal] = useState(false);
@@ -73,6 +73,7 @@ const Navigation = ({ SideBar, initialView, next, prev, today }) => {
               <Button onClick={prev} style={{ color: "black" }}>
                 <ArrowBackIosNewIcon />
               </Button>
+                <span style={{fontWeight: "bold", fontSize: "20px", marginTop: 50}}>{date}</span>
               <Button onClick={next} style={{ color: "black" }}>
                 <ArrowForwardIosIcon />
               </Button>
