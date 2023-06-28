@@ -25,7 +25,9 @@ const NewEventModal = (props) => {
 
   const fullDayRef = useRef(false);
   const dateRef = useRef(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
-  const untilRef = useRef(moment(new Date()).format("YYYY-MM-DD"));
+  const untilRef = useRef(
+    moment(new Date().setMonth(new Date().getMonth() + 1)).format("YYYY-MM-DD")
+  );
   const repeatRef = useRef("");
   const [repeatToggle, setRepeatToggle] = useState(false);
   const [language, setLanguage] = useState("");
@@ -35,8 +37,8 @@ const NewEventModal = (props) => {
     scNo: "",
     title: "",
     comment: "",
-    start: dateRef,
-    end: dateRef,
+    start: dateRef.current,
+    end: dateRef.current,
     calNo: "",
     place: "",
     rrule: {},
@@ -59,7 +61,7 @@ const NewEventModal = (props) => {
   }, [i18n]);
 
   const [istitleCheck, setIstitleCheck] = useState(false);
-  const titleRegEx = /[^?a-zA-Z0-9/]{2,20}$/;
+  const titleRegEx = /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?\s]{2,20}$/;
   const onTitleChange = (e) => {
     setSchedule({
       ...schedule,
@@ -123,8 +125,8 @@ const NewEventModal = (props) => {
 
   const onRepeatChange = (e) => {
     setRepeatToggle(!repeatToggle);
-    console.log(schedule);
-    alert(e.target.checked);
+    // console.log(schedule);
+    // alert(e.target.checked);
   };
 
   const onFreqChange = (e) => {
@@ -160,20 +162,22 @@ const NewEventModal = (props) => {
   };
 
   const onUpdate = () => {
-    console.log(schedule);
-    const updatedItem = {
-      ...schedule,
-      rrule: { ...schedule.rrule },
-    };
-    // console.log("1번", updatedItem);
+    // console.log(schedule);
     if (istitleCheck) {
+      const updatedItem = {
+        ...schedule,
+        rrule: { ...schedule.rrule },
+      };
+      // console.log("1번", updatedItem);
+      // if (istitleCheck) {
       console.log("2번", updatedItem);
       call("/schedule", "PUT", updatedItem).then((response) => {
         // console.log("3번", updatedItem);
         // console.log("response.dataresponse.dataresponse.data", response.data);
       });
-      window.location.pathname = "/";
     }
+    window.location.pathname = "/";
+    // }
   };
   // console.log("asdasdas66+++++", schedule.scNo);
 
@@ -281,7 +285,9 @@ const NewEventModal = (props) => {
               <LocalizationProvider locale={ko} dateAdapter={AdapterDayjs}>
                 <Grid container style={{ marginTop: 20 }}>
                   <DatePicker
-                    defaultValue={dayjs(new Date())}
+                    defaultValue={dayjs(
+                      new Date().setMonth(new Date().getMonth() + 1)
+                    )}
                     format={"YYYY-MM-DD"}
                     onChange={onUntilChange}
                   />
