@@ -47,7 +47,7 @@ const ScheduleCreate = () => {
     });
     fetchMemberData();
   }, [i18n]);
-  const titleRegEx = /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?]{2,20}$/;
+  const titleRegEx = /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?\s]{2,20}$/;
   const onTitleChange = (e) => {
     setSchedule({ ...schedule, title: e.target.value });
     titleRegEx.test(e.target.value);
