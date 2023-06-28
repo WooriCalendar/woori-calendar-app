@@ -259,7 +259,7 @@ const CalModify = (props) => {
                 <Select
                   variant="standard"
                   value={grade[index]}
-                  disabled={userGrade === 0 || userEmail === email}
+                  disabled={userGrade !== 2 || userEmail === email}
                   onChange={(e) => handleChange(e, index)}
                 >
                   <MenuItem value={0}>{t("View")}</MenuItem>
