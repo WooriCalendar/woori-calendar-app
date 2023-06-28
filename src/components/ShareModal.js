@@ -25,6 +25,7 @@ const ShareModal = (props) => {
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
@@ -40,6 +41,7 @@ const ShareModal = (props) => {
 
     loadData();
   }, [i18n]);
+  console.log("페치", fetchMemberData);
 
   console.log("상위 컴포넌트에서 받아온 캘린더 번호", calNo);
   console.log("상위 컴포넌트에서 받아온 캘린더 이름", name);
@@ -104,14 +106,24 @@ const ShareModal = (props) => {
     }
   };
 
+  const buttonActivate = () => {
+    setButtonDisabled(false);
+    document.getElementById(
+      "emailCheck"
+    ).innerHTML = `<Button id="email">${email}</Button>`;
+  };
+
+  const buttonInActivate = () => {
+    setButtonDisabled(true);
+  };
   const sendSearchRequest = () => {
     // 검색 요청을 처리하는 로직을 구현하고, searchText를 활용합니다.
     console.log("검색 요청:", email);
     call("/member/findemail", "POST", { email }).then((resp) => {
       if (resp.email) {
-        document.getElementById(
-          "emailCheck"
-        ).innerHTML = `<button id="email">${email}</button>`;
+        buttonActivate();
+      } else {
+        buttonInActivate();
       }
     });
   };
@@ -167,7 +179,12 @@ const ShareModal = (props) => {
             </FormControl>
           </main>
           <footer>
-            <Button variant="contained" id="invite" onClick={invite}>
+            <Button
+              variant="contained"
+              id="invite"
+              onClick={invite}
+              disabled={buttonDisabled}
+            >
               {t("invitation")}
             </Button>
           </footer>
