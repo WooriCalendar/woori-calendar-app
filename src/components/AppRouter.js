@@ -54,9 +54,9 @@ const AppRouter = () => {
           <Route path="SettingNavigation" element={<SettingNavigation />} />
         </Routes>
       </BrowserRouter>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
+      {/*<Box mt={5}>*/}
+      {/*  <Copyright />*/}
+      {/*</Box>*/}
     </div>
   );
 };

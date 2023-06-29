@@ -6,6 +6,12 @@ import React, { useEffect, useState } from "react";
 import BasicMenu from "./BasicMenu";
 import { useTranslation } from "react-i18next";
 import { fetchMemberData } from "../service/ApiService";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import momentPlugin from "@fullcalendar/moment";
+import interactionPlugin from "@fullcalendar/interaction";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import rrulePlugin from "@fullcalendar/rrule";
 
 const Sidebar = (
   { visible, aspectRatio, height, contentHeight, onCategoryChange },
@@ -40,16 +46,20 @@ const Sidebar = (
       {visible && (
         <div className="slide-out">
           <BasicMenu />
-          <FullCalendars
-            headerToolbar={headerToolbar}
+          <FullCalendar
+              plugins={[dayGridPlugin, momentPlugin, interactionPlugin, timeGridPlugin, rrulePlugin]}
+              initialView={'dayGridMonth'}
+              headerToolbar={headerToolbar}
             heigth={height}
             contentHeight={contentHeight}
             aspectRatio={aspectRatio}
           />
-          <form>
-            <TextField label={t("search")} variant="outlined" size="small" />
-          </form>
-          <Category onCategoryChange={onCategoryChange} />
+            <div style={{height : 300, overflow : 'scroll', marginTop : 10, marginBottom : 10}} >
+                <Category onCategoryChange={onCategoryChange} />
+            </div>
+            <Typography variant="body2" color="textSecondary" align="center">
+                Copyright &copy; Woori Calendar {new Date().getFullYear()}
+            </Typography>
         </div>
       )}
     </div>
