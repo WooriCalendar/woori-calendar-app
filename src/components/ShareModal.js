@@ -48,11 +48,6 @@ const ShareModal = (props) => {
 
   // 캘린더 초대 이벤트
   const invite = () => {
-    console.log("메일 : ", email);
-    console.log("캘린더 번호 : ", calNo);
-    console.log("캘린더 이름 : ", name);
-    console.log("권한 : ", grade);
-    // openModal(true);
     setTimeout(() => {
       inviteEmail({ email, calNo, name, grade }).then((resp) => {
         setCode(resp);
@@ -67,7 +62,6 @@ const ShareModal = (props) => {
 
   const openModal = () => {
     setModalOpen(true);
-    console.log("클릭");
   };
 
   const closeModal = () => {
@@ -81,13 +75,11 @@ const ShareModal = (props) => {
   useEffect(() => {
     if (email.includes(".")) {
       setSearch(true);
-      console.log(".이 포함되어있는거 감지");
       sendSearchRequest();
     } else if (email.length > 1) {
       document.getElementById("emailCheck").innerText = "";
     } else {
       setSearch(false);
-      console.log(".이 안포함되어있음");
     }
   }, [email]); // 의존성 배열에 email 추가
 
