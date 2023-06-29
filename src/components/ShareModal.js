@@ -16,7 +16,7 @@ import { call, inviteEmail, fetchMemberData } from "../service/ApiService";
 import { useTranslation } from "react-i18next";
 
 const ShareModal = (props) => {
-  const { open, close, calNo, name } = props;
+  const { open, close, calNo, name, userEmail } = props;
 
   const [grade, setGrade] = useState(0);
   const [email, setEmail] = useState("");
@@ -86,25 +86,13 @@ const ShareModal = (props) => {
   useEffect(() => {
     if (email.includes(".")) {
       setSearch(true);
-      console.log(".이 포함되어있는거 감지");
       sendSearchRequest();
-    } else if (email.length < 8 && email.length > 1) {
+    } else if (email.length > 1) {
       document.getElementById("emailCheck").innerText = "";
     } else {
       setSearch(false);
-      console.log(".이 안포함되어있음");
     }
-
-    // 다른 코드를 여기에 추가할 수 있습니다.
   }, [email]); // 의존성 배열에 email 추가
-
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      // 검색 값 보내기
-      console.log("엔터감지");
-      sendSearchRequest();
-    }
-  };
 
   const buttonActivate = () => {
     setButtonDisabled(false);
@@ -120,9 +108,11 @@ const ShareModal = (props) => {
     // 검색 요청을 처리하는 로직을 구현하고, searchText를 활용합니다.
     console.log("검색 요청:", email);
     call("/member/findemail", "POST", { email }).then((resp) => {
-      if (resp.email) {
+      if (resp.email != userEmail) {
         buttonActivate();
       } else {
+        document.getElementById("emailCheck").innerText =
+          "본인은 초대할 수 없습니다.";
         buttonInActivate();
       }
     });
@@ -145,13 +135,10 @@ const ShareModal = (props) => {
                 label={t("add by email")}
                 variant="standard"
                 onChange={handleInputChange}
-                onKeyUp={handleKeyPress}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <Button onClick={sendSearchRequest}>
-                        <SearchIcon />
-                      </Button>
+                      <SearchIcon />
                     </InputAdornment>
                   ),
                 }}

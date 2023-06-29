@@ -70,7 +70,6 @@ const CalModify = (props) => {
       setIstitleCheck(true);
     }
   };
-
   const handleCommentChange = (e) => {
     setComment(e.target.value);
   };
@@ -130,6 +129,8 @@ const CalModify = (props) => {
     });
     fetchMemberData();
   }, [i18n]);
+  console.log("userEmail", userEmail);
+
   const [timeZones, setTimeZones] = useState([]);
   const [timeZone, setTimeZone] = useState("");
   useEffect(() => {
@@ -284,6 +285,7 @@ const CalModify = (props) => {
             close={closeModal}
             calNo={calNo}
             name={item.name}
+            userEmail={userEmail}
           />
         ))}
         <div style={{ textAlign: "left", margin: "20px" }}>
