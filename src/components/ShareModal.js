@@ -16,7 +16,7 @@ import { call, inviteEmail, fetchMemberData } from "../service/ApiService";
 import { useTranslation } from "react-i18next";
 
 const ShareModal = (props) => {
-  const { open, close, calNo, name } = props;
+  const { open, close, calNo, name, userEmail } = props;
 
   const [grade, setGrade] = useState(0);
   const [email, setEmail] = useState("");
@@ -41,26 +41,16 @@ const ShareModal = (props) => {
 
     loadData();
   }, [i18n]);
-  console.log("페치", fetchMemberData);
 
-  console.log("상위 컴포넌트에서 받아온 캘린더 번호", calNo);
-  console.log("상위 컴포넌트에서 받아온 캘린더 이름", name);
   const handleChange = (event) => {
     setGrade(event.target.value);
   };
 
   // 캘린더 초대 이벤트
   const invite = () => {
-    console.log("메일 : ", email);
-    console.log("캘린더 번호 : ", calNo);
-    console.log("캘린더 이름 : ", name);
-    console.log("권한 : ", grade);
-    // openModal(true);
     setTimeout(() => {
       inviteEmail({ email, calNo, name, grade }).then((resp) => {
-        console.log("발송");
         setCode(resp);
-        console.log(code);
         // 알림보내기
         // 보낼 내용 : ~님이 ~님을 [캘린더이름]캘린더에 초대하셨습니다.
         // 보낸 사람 : 캘린더초대자의email
@@ -72,7 +62,6 @@ const ShareModal = (props) => {
 
   const openModal = () => {
     setModalOpen(true);
-    console.log("클릭");
   };
 
   const closeModal = () => {
@@ -86,25 +75,13 @@ const ShareModal = (props) => {
   useEffect(() => {
     if (email.includes(".")) {
       setSearch(true);
-      console.log(".이 포함되어있는거 감지");
       sendSearchRequest();
-    } else if (email.length < 8 && email.length > 1) {
+    } else if (email.length > 1) {
       document.getElementById("emailCheck").innerText = "";
     } else {
       setSearch(false);
-      console.log(".이 안포함되어있음");
     }
-
-    // 다른 코드를 여기에 추가할 수 있습니다.
   }, [email]); // 의존성 배열에 email 추가
-
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      // 검색 값 보내기
-      console.log("엔터감지");
-      sendSearchRequest();
-    }
-  };
 
   const buttonActivate = () => {
     setButtonDisabled(false);
@@ -117,13 +94,16 @@ const ShareModal = (props) => {
     setButtonDisabled(true);
   };
   const sendSearchRequest = () => {
-    // 검색 요청을 처리하는 로직을 구현하고, searchText를 활용합니다.
-    console.log("검색 요청:", email);
+    // 검색 요청을 처리
     call("/member/findemail", "POST", { email }).then((resp) => {
-      if (resp.email) {
-        buttonActivate();
-      } else {
+      if (resp.email == null) {
         buttonInActivate();
+      } else if (resp.email != userEmail) {
+        buttonActivate();
+      } else if (resp.email == userEmail) {
+        setButtonDisabled(true);
+        document.getElementById("emailCheck").innerText =
+          "본인은 초대할 수 없습니다.";
       }
     });
   };
@@ -145,13 +125,10 @@ const ShareModal = (props) => {
                 label={t("add by email")}
                 variant="standard"
                 onChange={handleInputChange}
-                onKeyUp={handleKeyPress}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <Button onClick={sendSearchRequest}>
-                        <SearchIcon />
-                      </Button>
+                      <SearchIcon />
                     </InputAdornment>
                   ),
                 }}
