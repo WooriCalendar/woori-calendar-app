@@ -13,7 +13,7 @@ const SettingSidebar = ({handleSidebarClick}) => {
     useEffect(() => {
         call("/calendar", "GET", null).then((response) => {
             console.log("캘린더 데이터");
-            console.log("333333333", response);
+            // console.log("333333333", response);
 
             setCalendar(response.data);
             // setCalNo(calNo);

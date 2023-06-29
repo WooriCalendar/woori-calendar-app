@@ -24,6 +24,7 @@ const FullCalendars = (
     const dayOfWeekRef = useRef('');
     const calendarRef = React.useRef('dayGridMonth');
 
+
     useEffect(() => {
         call("/schedule", "GET", null)
             .then((response) => {
@@ -135,6 +136,9 @@ const FullCalendars = (
             //     },
             // }
         ];
+
+    console.log(events)
+
 
 
     return (
