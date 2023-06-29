@@ -103,7 +103,10 @@
   "Yes!": "はい!",
   "No" : "いいえ",
 
-  "No notifications!" : "通知はありません!"
+  "No notifications!" : "通知がありません!",
 
+  "An invitation email has been sent." : "様に招待メールを発送しました。",
+
+  "Cannot invite yourself." : "自身は招待できません。"
 
 }

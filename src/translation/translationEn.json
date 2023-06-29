@@ -103,7 +103,11 @@
   "Yes!": "Yes!",
   "No" : "No",
 
-  "No notifications!": "No notifications!"
+  "No notifications!": "No notifications!",
+
+  "An invitation email has been sent.": "An invitation email has been sent.",
+
+  "Cannot invite yourself." : "Cannot invite yourself."
 
 
  

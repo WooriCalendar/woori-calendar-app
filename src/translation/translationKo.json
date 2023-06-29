@@ -102,7 +102,11 @@
   "Yes!": "네!",
   "No" : "아니요",
 
-  "No notifications!" : "알림이 없어요!"
+  "No notifications!" : "알림이 없어요!",
+
+  "An invitation email has been sent." : "님에게 초대 이메일을 발송했습니다.",
+
+  "Cannot invite yourself." : "본인은 초대할 수 없습니다."
 
 
 }
