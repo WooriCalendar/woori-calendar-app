@@ -38,22 +38,22 @@ export function call(api, method, request) {
     });
 }
 
-export function signin(memberDTO) {
-  return call("/member/signin", "POST", memberDTO)
-    .then((response) => {
-      console.log("response : ", response);
-      // alert('로그인 토큰 : ' + response.token);
-      if (response.token) {
-        localStorage.setItem("ACCESS_TOKEN", response.token);
-        // alert(window.navigator.language);
-
-        window.location.href = "/";
-      }
-    })
-    .catch(() => {
-      window.location.href = "/login";
-    });
-}
+// export function signin(memberDTO) {
+//   return call("/member/signin", "POST", memberDTO)
+//     .then((response) => {
+//       console.log("response : ", response);
+//       // alert('로그인 토큰 : ' + response.token);
+//       if (response.token) {
+//         localStorage.setItem("ACCESS_TOKEN", response.token);
+//         // alert(window.navigator.language);
+//
+//         window.location.href = "/";
+//       }
+//     })
+//     .catch(() => {
+//       window.location.href = "/login";
+//     });
+// }
 
 export function socialLogin(provider) {
   window.location.href =
@@ -67,12 +67,12 @@ export function socialLogin(provider) {
 export function signout() {
   // localStorage.setItem("ACCESS_TOKEN", null);
   localStorage.removeItem("ACCESS_TOKEN");
-  localStorage.removeItem("email");
+  // localStorage.removeItem("email");
   window.location.href = "/login";
 }
 
 export function signup(memberDTO) {
-  return call("/member/signup", "POST", memberDTO).then(() => {});
+  return call("/member/signup", "POST", memberDTO).then();
 }
 
 export function signupemail(emailPostDto) {
