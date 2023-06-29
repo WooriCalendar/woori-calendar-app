@@ -83,7 +83,7 @@ const Navigation = ({ SideBar, initialView, next, prev, today, date }) => {
                 <SearchIcon />
               </Button>
             </Grid>
-            <Grid item style={{ marginLeft: "auto", marginTop: "10px" }}>
+            <Grid item style={{ marginTop: "10px" }}>
               <Notification />
             </Grid>
             <Grid item style={{ marginTop: "19px", marginRight: "7px" }}>

@@ -39,8 +39,10 @@ const ScheduleCreate = () => {
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");
 
+    console.log(calendars)
+
   useEffect(() => {
-    call("/calendar", "GET", null).then((response) => {
+    call("/calendar/share", "GET", null).then((response) => {
       console.log("캘린더 데이터");
       setCalendars(response.data);
       i18n.changeLanguage(response.language);
@@ -254,10 +256,10 @@ const ScheduleCreate = () => {
           >
             {calendars
               .filter(
-                (calendar) => calendar.calNo != 90 && calendar.calNo != 98
+                (calendar) => calendar.calNo != 90 && calendar.calNo != 98 && calendar.grade !== 0
               )
               .map((calendar) => (
-                <MenuItem value={calendar.calNo}>{calendar.name}</MenuItem>
+                <MenuItem value={calendar.calNo}>{calendar.calName}</MenuItem>
               ))}
           </TextField>
         </Grid>

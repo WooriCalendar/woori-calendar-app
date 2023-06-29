@@ -8,6 +8,7 @@ import moment from "moment";
 import EventModal from "./EventModal";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircle} from "@fortawesome/free-solid-svg-icons";
+import CircleIcon from "@mui/icons-material/Circle";
 
 const SearchModal = (props) => {
     const {open, close} = props;
@@ -71,7 +72,7 @@ const SearchModal = (props) => {
                                 {
                                     result.map((r) => (
                                         <Grid container value={r.scNo} style={{ marginBottom: "20px" }} onClick={openEventModal}>
-                                            <FontAwesomeIcon icon={faCircle} size="xs" color={r.color} /> {!r.startTime ? moment(r.startDate).format("yyyy.MM.DD") : moment(r.startTime).format("yyyy.MM.DD")}  {r.name}
+                                            <CircleIcon style={{color : r.color, fontSize : 'small', margin : '0 10'}}/> {!r.startTime ? moment(r.startDate).format("yyyy.MM.DD") : moment(r.startTime).format("yyyy.MM.DD")}  {r.name}
                                         </Grid>
                                     ))
                                 }
