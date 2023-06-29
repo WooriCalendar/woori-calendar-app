@@ -10,6 +10,7 @@ import axios from "axios";
 import UnsubscribeModal from "./UnsubscribeModal";
 import { useTranslation } from "react-i18next";
 import { eachMonthOfInterval } from "date-fns";
+
 const CalModify = (props) => {
   const [calNo, setCalNo] = useState(props.calNo);
   const [shareNo, setShareNo] = useState([]);
@@ -23,12 +24,15 @@ const CalModify = (props) => {
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");
   const colorRef = useRef("");
+  const [time, setTime] = useState("");
+  const [calColor, setCalColor] = useState();
   const openModal = () => {
     setModalOpen(true);
   };
   const closeModal = () => {
     setModalOpen(false);
   };
+
   const bopenModal = () => {
     setBmodalOpen(true);
   };
@@ -41,8 +45,10 @@ const CalModify = (props) => {
   const ccloseModal = () => {
     setCmodalOpen(false);
   };
+
   const [calendar, setCalendar] = useState([]);
   // const { calNo } = useParams();
+
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
   // console.log("0000000000909090", calNo);
@@ -73,10 +79,14 @@ const CalModify = (props) => {
   const handleCommentChange = (e) => {
     setComment(e.target.value);
   };
+
   const onColorChange = (e) => {
     colorRef.current = e.hex;
+    setCalColor(colorRef.current);
     document.querySelector(".color .notranslate").innerHTML = colorRef.current;
   };
+
+
   // console.log("asdasdasasd", colorRef.current);
   const editEventHandler = () => {
     const updatedItem = {
@@ -84,19 +94,19 @@ const CalModify = (props) => {
       // calNo: calendar.calNo;
       name: document.getElementById("outlined-required-name").value,
       comment: document.getElementById("outlined-required-com").value,
-      timeZone: timeZone,
-      color: colorRef.current,
+      timeZone: time,
+      color: calColor,
     };
-    console.log("12312312312321321321321312", timeZone);
     // console.log("아이템", updatedItem);
     // console.log(document.getElementById("outlined-select-currency").value);
     if (istitleCheck) {
       call("/calendar", "PUT", updatedItem).then((resp) => {
         // console.log(resp);
       });
-      // window.location.pathname = "/";
+      window.location.pathname = "/settings";
     }
   };
+
   // calNo로 기존에 입력된 캘린더 가져오기
   useEffect(() => {
     call("/calendar/" + calNo, "GET", null).then((response) => {
@@ -105,6 +115,16 @@ const CalModify = (props) => {
       setCalendar(response.data);
       i18n.changeLanguage(response.language);
       console.log("이 캘린더 번호:::", response.data);
+      setTime(response.data[0].timeZone.split(" ")[0]);
+      // colorRef.current = response.data[0].color;
+      // console.log("text::"+text);
+      setCalColor(response.data[0].color);
+      document.querySelector(".color .notranslate").innerHTML = response.data[0].color;
+
+      if (nameRegEx.test(response.data[0].name)) {
+        setIstitleCheck(true);
+      }
+
     });
     call("/share/retrieve/" + calNo, "GET", null).then((response) => {
       const filteredData = response.data.filter((item) => item.calNo === calNo);
@@ -114,9 +134,6 @@ const CalModify = (props) => {
       setEmail(email);
       const grade = filteredData.map((item) => item.grade);
       setGrade(grade);
-      console.log("shareNo:::", shareNo);
-      console.log("이메일:::", email);
-      console.log("grade:::", grade);
     });
     call("/calendar/share", "GET").then((response) => {
       const filteredData = response.data.filter((item) => item.calNo === calNo);
@@ -129,7 +146,6 @@ const CalModify = (props) => {
     });
     fetchMemberData();
   }, [i18n]);
-  console.log("userEmail", userEmail);
 
   const [timeZones, setTimeZones] = useState([]);
   const [timeZone, setTimeZone] = useState("");
@@ -139,6 +155,7 @@ const CalModify = (props) => {
       setTimeZones(res.data);
     });
   }, []);
+
   const onTimeZoneChange = async (e) => {
     await axios
       .get("https://worldtimeapi.org/api/timezone/" + e.target.value)
@@ -146,8 +163,10 @@ const CalModify = (props) => {
         const timeZone =
           e.target.value + " (utc " + response.data.utc_offset + ")";
         setTimeZone(timeZone);
+        setTime(e.target.value)
       });
   };
+
   const handleChange = (e, index) => {
     const updatedShareNo = [...shareNo]; // shareNo 배열 복사
     const currentShareNo = updatedShareNo[index]; // 해당 인덱스의 shareNo 값 가져오기
@@ -156,15 +175,18 @@ const CalModify = (props) => {
     const updatedGrade = [...grade];
     updatedGrade[index] = e.target.value;
     setGrade(updatedGrade);
+
     const updatedItem = {
       shareNo: currentShareNo,
       email: currentEmail,
       grade: updatedGrade[index],
     };
+
     call("/share", "PUT", updatedItem).then((resp) => {
       console.log("새로운 값", updatedItem);
     });
   };
+
   return (
     <div>
       <div className="main" style={{ width: "440px", margin: "0 auto" }}>
@@ -177,8 +199,8 @@ const CalModify = (props) => {
             style={{ width: 400 }}
             label={t("Color")}
             className={"color"}
-            value={"color" || ""}
             disabled={userGrade === 0}
+            value={"color"||""}
           >
             <BlockPicker
               width={400}
@@ -195,7 +217,7 @@ const CalModify = (props) => {
                 "#9900EF",
               ]}
               onChange={onColorChange}
-              color={colorRef.current}
+              color={calColor}
             />
           </TextField>
         </Grid>
@@ -220,6 +242,7 @@ const CalModify = (props) => {
                 variant="outlined"
                 disabled={userGrade === 0}
                 rows={4}
+
               />
               <div id="titleCheck" style={{ color: "red" }}></div>
             </Grid>
@@ -243,7 +266,10 @@ const CalModify = (props) => {
               style={{ width: 400 }}
               label={t("timeZone")}
               onChange={onTimeZoneChange}
+              defaultValue={time}
+              value={time}
               disabled={userGrade === 0}
+
             >
               {timeZones.map((timeZone) => (
                 <MenuItem value={timeZone}>{timeZone}</MenuItem>
@@ -251,6 +277,7 @@ const CalModify = (props) => {
             </TextField>
           </Grid>
         </div>
+
         <div style={{ textAlign: "left", margin: "20px" }}>
           <p>{t("Share with specific people")}</p>
           {email.map((email, index) => (
@@ -313,4 +340,5 @@ const CalModify = (props) => {
     </div>
   );
 };
+
 export default CalModify;

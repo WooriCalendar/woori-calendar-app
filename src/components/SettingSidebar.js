@@ -46,10 +46,11 @@ const SettingSidebar = ({handleSidebarClick}) => {
                             if (item.calNo !== 90 && item.calNo !== 98) {
                                 return (
                                     <p
-                                        style={{marginLeft: 10}}
+                                        style={{marginLeft: 10, cursor:"pointer"}}
                                         key={item.calNo}
                                         value={item.calNo}
                                         label={item.name}
+
                                         onClick={() => {
                                             handleClick("Category", item.calNo);
                                         }}>
