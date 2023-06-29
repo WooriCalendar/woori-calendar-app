@@ -66,10 +66,21 @@ const Signup = () => {
     //     });
     // }, []);
 
-    useEffect(()=>{
-        setEmail(document.getElementById('email').value);
-        console.log(email);
-    }, [email]);
+    // useEffect(()=>{
+    //     setEmail(document.getElementById('email').value);
+    //     if(passwordRegEx.test(document.getElementById('password').value) || passwordRegEx.test(document.getElementById('passwordcheck').value)) {
+    //         if (document.getElementById('password').value === document.getElementById('passwordcheck').value) {
+    //             setPassword(document.getElementById('password').value);
+    //         } else {
+    //             document.getElementById('passwordOut').innerText = "Passwords do not match.";
+    //         }
+    //     }else {
+    //         document.getElementById('passwordOut').innerText = "Please enter a password between 8 and 20 characters with a mixture of uppercase and lowercase letters and numbers.";
+    //     }
+    //     setNickname(document.getElementById('nickname').value);
+    //     setSubemail(document.getElementById('subemail').value);
+    //     birthday = moment().format("yyyy-MM-DD");
+    // }, [email, password, nickname, subemail, birthday]);
 
     /**
      * @author: DGeon
@@ -77,12 +88,11 @@ const Signup = () => {
      * @date: 2023-06-08
      */
     const handleButtonClick = (event) => {
+        event.preventDefault();
+        if (isEmailVisible || isPassVisible || isNicknameVisible || isSubemailVisible || isBirthdayVisible) {
 
-        if (isEmailVisible || isPassVisible || isNicknameVisible || isBirthdayVisible) {
-            event.preventDefault();
             setLanguage(window.navigator.language);
             if (isEmailVisible) {
-
                 setEmail(document.getElementById('email').value);
                 setIsEmailVisible(false);
                 document.getElementById('email').value = "";
@@ -115,15 +125,22 @@ const Signup = () => {
                 birthday = moment().format("yyyy-MM-DD");
                 setIsEmailVisible(false);
                 setIsBirthdayVisible(false);
-                sliderRef.current.slickNext();
+                // sliderRef.current.slickNext();
                 document.getElementById('handleButton').innerText = "Account Create";
             }
         } else {
             signup({email, password, nickname, subemail, birthday, language}).then(() => {
                 window.location.href = "/login";
             });
+            console.log("시작")
+            console.log(email)
+            console.log(password)
+            console.log(nickname)
+            console.log(subemail)
+            console.log(birthday)
+            console.log(language)
+            console.log("종료")
         }
-
     }
     const handleEmail = () => {
         // emailRef.current = document.getElementById('email').value;
