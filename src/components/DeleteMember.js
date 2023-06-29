@@ -29,6 +29,7 @@ const DeleteMember = (props) => {
       if (resp) {
         // alert("비밀번호가 일치합니다");
         call("/member", "DELETE", { member }).then((resp) => {
+          localStorage.removeItem("ACCESS_TOKEN");
           window.location = "/login";
           // console.log("삭제삭제삭제삭제", member);
         });
