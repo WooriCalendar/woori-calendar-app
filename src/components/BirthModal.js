@@ -22,32 +22,34 @@ const BirthModal = (props) => {
     fetchMemberData();
   }, [i18n]);
 
-  const editEventHandler = () => {
-    const updatedItem = {
-      ...email,
-      birthday: moment(birthday).format("YYYY-MM-DD"),
-      // birthday: birthday,
-    };
-    console.log("updatedItem:", updatedItem);
-
-    call("/member", "PUT", updatedItem).then((resp) => {
-      console.log("response:", resp);
-      BirthdayChange(birth);
-      close();
-    });
-  };
-
   const handleBirthdayChange = (e) => {
     const inputValue = e.target.value;
     const numericValue = inputValue.replace(/\D/g, ""); // 숫자만 추출
-    const formattedValue = numericValue
-      .replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3") // YYYYMMDD 형식을 YYYY-MM-DD로 변환
-      .slice(0, 10); // 최대 길이 제한
-    setBirthday(formattedValue);
-    // setBirthday(e.target.value);
-    // console.log("br" + );
-    setBirth(e.target.value);
-    // console.log("birth" + birth);
+    const formattedValue = numericValue.slice(0, 8); // 최대 8자리 숫자로 제한
+    const formattedBirthday = moment(formattedValue, "YYYYMMDD").format(
+      "YYYY-MM-DD"
+    );
+    setBirthday(formattedBirthday);
+    setBirth(formattedValue);
+  };
+
+  const editEventHandler = () => {
+    if (birthday === "") {
+      // 생년월일이 비어있을 경우 수정하지 않음
+      close();
+      return;
+    }
+
+    const updatedItem = {
+      ...email,
+      birthday: moment(birthday, "YYYY-MM-DD").format("YYYY-MM-DD"),
+    };
+
+    call("/member", "PUT", updatedItem).then((resp) => {
+      // console.log("response:", resp);
+      BirthdayChange(birth);
+      close();
+    });
   };
 
   return (
@@ -61,9 +63,15 @@ const BirthModal = (props) => {
                 label={t("birthday")}
                 variant="outlined"
                 value={birthday}
-                // format={"YYYY-MM-DD"}
                 onChange={handleBirthdayChange}
-                inputProps={{ pattern: "\\d*", inputMode: "numeric" }} // 숫자만 입력 가능하도록 설정
+                inputProps={{
+                  pattern: "\\d{4}-\\d{2}-\\d{2}",
+                  inputMode: "numeric",
+                }}
+                type="date"
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </div>
           </main>
@@ -87,5 +95,3 @@ const BirthModal = (props) => {
 };
 
 export default BirthModal;
-
-// ====================================================================================

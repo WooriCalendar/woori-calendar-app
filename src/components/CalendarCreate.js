@@ -18,7 +18,8 @@ const CalendarCreate = () => {
     timeZone: "",
     color: "",
   });
-  const titleRegEx = /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?\s]{2,20}$/;
+  const titleRegEx =
+    /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?][ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?\s]{0,18}[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?]$/;
   const [istitleCheck, setIstitleCheck] = useState(false);
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");

@@ -31,7 +31,7 @@ const SubEmailModal = (props) => {
       ...email,
       subemail: document.getElementById("subemail").value,
     };
-    console.log("riprip", updatedItem);
+    // console.log("riprip", updatedItem);
 
     call("/member", "PUT", updatedItem).then((resp) => {
       // console.log("rrrrrrrrrr::", resp);
@@ -51,9 +51,8 @@ const SubEmailModal = (props) => {
       {open ? (
         <section>
           <main>
-            {/* {email.map((item) => ( */}
             <div style={{ textAlign: "center", marginBottom: "40px" }}>
-              <p>보조 이메일 변경</p>
+              <p>{t("SubEmail change")}</p>
             </div>
             <div
               style={{
@@ -84,8 +83,6 @@ const SubEmailModal = (props) => {
                 onChange={handleNameChange}
               />
             </div>
-
-            {/* ))} */}
           </main>
           <footer>
             <Button

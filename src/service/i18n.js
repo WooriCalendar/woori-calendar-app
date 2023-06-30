@@ -17,6 +17,8 @@ const resources = {
   },
 };
 
+const userLanguage = window.navigator.language || window.navigator.userLanguage;
+
 i18n.use(initReactI18next).init({
   resources,
   lng: "ko",

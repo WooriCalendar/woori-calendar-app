@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import MyPage from "./MyPage";
 import { call, checkPassword, fetchMemberData } from "../service/ApiService.js";
 import { useTranslation } from "react-i18next";
-
+import SocialDeleteModal from "./SocialDeleteModal";
 const SettingPassword = ({ setShowMyPage }) => {
   const [password, setPassword] = useState("");
   const [member, setMember] = useState("");
@@ -11,7 +11,14 @@ const SettingPassword = ({ setShowMyPage }) => {
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");
   const [isProvider, setIsProvider] = useState();
+  const [modalOpen, setModalOpen] = useState(false);
 
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
   useEffect(() => {
     call("/member", "GET", null).then((response) => {
       setMember(response.email);
@@ -60,9 +67,22 @@ const SettingPassword = ({ setShowMyPage }) => {
     <>
       {isProvider !== null ? (
         <>
-          <h1 style={{ textAlign: "center", marginBottom: "300px" }}>
+          <h1 style={{ textAlign: "center", marginBottom: "100px" }}>
             {t("SNS login cannot edit member information")}
           </h1>
+          <Grid>
+            <Button
+              style={{
+                float: "right",
+              }}
+              variant="outlined"
+              color="error"
+              onClick={openModal}
+            >
+              {t("withdrawal")}
+            </Button>
+            <SocialDeleteModal open={modalOpen} close={closeModal} />
+          </Grid>
         </>
       ) : (
         <>

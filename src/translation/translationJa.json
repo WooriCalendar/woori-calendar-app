@@ -103,7 +103,39 @@
   "Yes!": "はい!",
   "No" : "いいえ",
 
-  "No notifications!" : "通知はありません!"
+  "No notifications!" : "通知がありません!",
+
+  "An invitation email has been sent." : "様に招待メールを発送しました。",
+
+  "Cannot invite yourself." : "自身は招待できません。",
 
 
+  "login fail" : "login fail",
+
+  "Login": "Login",
+
+  "Google Login" : "Google Login",
+  "Forgot password?" : "パスワードをお忘れですか?",
+  "Forgot email?" : "メールアドレスを忘れた場合?",
+  "Forgot Password": "パスワードをお忘れですか",
+
+  "please check your email." : "メールを確認してください。",
+  "This email is missing." : "このメールは見つかりません",
+  "Forgot Email" : "メールアドレスを忘れた場合",
+  "Send" : "送信",
+  "It doesn't match. please verify again" : "一致しません。もう一度確認してください",
+  "Send verification code" : "確認コードを送信する",
+  "Confirm verification code" : "確認コードを確認する",
+  "reset" : "リセット",
+  "Next" : "次",
+
+  "Account Create" : "アカウントの作成",
+  "This email is available" : "このメールは利用可能です",
+  "Duplicate emails exist." : "重複したメールが存在します",
+  "Not in the format of the email." : "メールの形式ではありません。",
+  "Privacy Policy" : "プライバシーポリシー",
+
+  "SubEmail change" : "サブメールアドレスの変更",
+  "code": "コード",
+  "Don't have an account? sign up here" : "アカウントをお持ちでない場合は、ここにサインアップしてください"
 }

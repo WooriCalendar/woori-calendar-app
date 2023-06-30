@@ -102,7 +102,40 @@
   "Yes!": "네!",
   "No" : "아니요",
 
-  "No notifications!" : "알림이 없어요!"
+  "No notifications!" : "알림이 없어요!",
+
+  "An invitation email has been sent." : "님에게 초대 이메일을 발송했습니다.",
+
+  "Cannot invite yourself." : "본인은 초대할 수 없습니다.",
+
+  "login fail" : "로그인 실패",
+
+  "Login": "로그인",
+
+  "Google Login" : "Google Login",
+  "Forgot password?" : "비밀번호를 잊으 셨나요?",
+  "Forgot email?" : "이메일을 잊으셨나요?",
+  "Forgot Password": "비밀번호 찾기",
+
+  "please check your email." : "이메일을 확인하십시오.",
+  "This email is missing." : "이 이메일이 없습니다..",
+  "Forgot Email" : "이메일을 찾기",
+  "Send" : "보내기",
+  "It doesn't match. please verify again" : "일치하지 않습니다. 다시 확인해주세요",
+  "Send verification code" : "인증 코드 보내기",
+  "Confirm verification code" : "인증 코드 확인",
+  "reset" : "초기화",
+  "Next" : "다음",
+
+  "Account Create" : "계정 생성",
+  "This email is available" : "이 이메일을 사용할 수 있습니다",
+  "Duplicate emails exist." : "중복 이메일이 있습니다.",
+  "Not in the format of the email." : "이메일 형식이 아닙니다.",
+  "Privacy Policy" : "개인정보 보호 정책",
+
+  "SubEmail change" : "서브 이메일 변경",
+  "code": "코드",
+  "Don't have an account? sign up here" : "계정이 없습니까? 여기에서 가입"
 
 
 }

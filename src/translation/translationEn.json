@@ -103,10 +103,48 @@
   "Yes!": "Yes!",
   "No" : "No",
 
-  "No notifications!": "No notifications!"
+  "No notifications!": "No notifications!",
+
+  "An invitation email has been sent.": "An invitation email has been sent.",
+
+  "Cannot invite yourself." : "Cannot invite yourself.",
 
 
- 
+
+  "login fail" : "login fail",
+
+  "Login": "Login",
+
+  "Google Login" : "Google Login",
+  "Forgot password?" : "Forgot password?",
+  "Forgot email?" : "Forgot email?",
+  "Forgot Password": "Forgot Password",
+
+  "please check your email." : "please check your email.",
+  "This email is missing." : "This email is missing.",
+  "Forgot Email" : "Forgot Email",
+  "Send" : "Send",
+  "It doesn't match. please verify again" : "It doesn't match. please verify again",
+  "Send verification code" : "Send verification code",
+  "Confirm verification code" : "Confirm verification code",
+  "reset" : "reset",
+  "Next" : "Next",
+
+  "Account Create" : "Account Create",
+  "This email is available" : "This email is available",
+  "Duplicate emails exist." : "Duplicate emails exist.",
+  "Not in the format of the email." : "Not in the format of the email.",
+  "Privacy Policy" : "Privacy Policy",
+
+  "SubEmail change" : "SubEmail change",
+  "code": "code",
+  "Don't have an account? sign up here" : "Don't have an account? sign up here"
+
+
+
+
+
+
 
 
 
