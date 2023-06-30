@@ -94,6 +94,7 @@ const CalModify = (props) => {
     colorRef.current = e.hex;
     setColor(colorRef.current);
     document.querySelector(".color .notranslate").innerHTML = colorRef.current;
+    setCalendar({...calendar, color : colorRef.current})
   };
 
   const onTimeZoneChange = async (e) => {
