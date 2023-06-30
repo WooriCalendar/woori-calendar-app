@@ -80,7 +80,7 @@ const Category = (props) => {
                                 hoveredItem === item.calNo && item.calName.length > 7 ? item.calName.slice(0, 7) + "..." : (item.calName.length > 8 ? item.calName.slice(0, 8) + "..." : item.calName)
                             }
                         />
-                        {hoveredItem === item.calNo && (
+                        {hoveredItem === item.calNo && item.calNo !== 90 && item.calNo !== 98 &&(
                             <Link
                                 to={`/settings`}
                                 state={{calNo: item.calNo}}
