@@ -104,7 +104,7 @@ const Forgotpassword = () => {
       setSendCodeConfirmDisabled(true);
       setButtonDisabled(false);
     } else {
-      alert(t("It doesn't match. please verify again"));
+      // alert(t("It doesn't match. please verify again"));
     }
   };
 

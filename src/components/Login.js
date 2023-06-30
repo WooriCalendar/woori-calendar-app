@@ -51,7 +51,7 @@ const Login = () => {
         }
       })
       .catch(() => {
-        alert("실패");
+        // alert("실패");
         document.getElementById("loginCheck").innerText = t("login fail");
         window.location.href = "/login";
       });

@@ -50,7 +50,6 @@ const PasswordModal = (props) => {
               };
 
               call("/member/updatePassword", "PUT", update).then(() => {
-                alert("성공");
                 close();
               });
             } else {
