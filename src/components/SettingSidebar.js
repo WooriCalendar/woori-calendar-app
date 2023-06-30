@@ -30,17 +30,25 @@ const SettingSidebar = ({handleSidebarClick}) => {
         <div style={{marginTop: "10px"}}>
             <div style={{marginTop: "20px"}}>
                 <Grid>
-                    <Button onClick={() => handleClick("Settings")}>
+                    <p
+                        style={{ margin: "20px", cursor: "pointer" }}
+                        onClick={() => handleClick("Settings")}
+                    >
                         {t("Settings")}
-                    </Button>
+                    </p>
                 </Grid>
 
                 <Grid>
-                    <Button onClick={() => handleClick("SettingPasword")}>
+                    <p
+                        style={{ margin: "20px", minWidth: "30px", cursor: "pointer" }}
+                        onClick={() => handleClick("SettingPasword")}
+                    >
                         {t("My Page")}
-                    </Button>
+                    </p>
                 </Grid>
                 <Grid>
+
+
                     <div>
                         {calendar.map((item) => {
                             if (item.calNo !== 90 && item.calNo !== 98) {
