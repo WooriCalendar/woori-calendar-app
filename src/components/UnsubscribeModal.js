@@ -13,6 +13,7 @@ const UnsubscribeModal = (props) => {
   const [mail, setmail] = useState("");
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");
+  const [webSocket, setWebSocket] = useState();
 
   useEffect(() => {
     call("/calendar/" + calNo, "GET").then((response) => {
@@ -28,12 +29,28 @@ const UnsubscribeModal = (props) => {
     fetchMemberData();
   }, [i18n]);
 
-
+  useEffect(() => {
+    const ws = new WebSocket("ws://localhost:8080/ws");
+    console.log("웹소켓연결성공")
+    ws.onmessage = (event) => {
+      console.log("Received message:", event.data);
+    };
+    setWebSocket(ws);
+    return () => ws.close();
+  }, []);
   const unsubscribe = () => {
+    sendMessage();
     console.log("No::::" + shareNo);
     call("/share", "DELETE", shareNo).then((response) => {
       window.location = "/settings";
     });
+
+  };
+  const sendMessage = () => {
+    console.log("메시지 발송")
+    if (webSocket) {
+      webSocket.send("Hello from React!");
+    }
   };
 
   return (

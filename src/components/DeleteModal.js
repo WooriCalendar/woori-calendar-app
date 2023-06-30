@@ -10,8 +10,11 @@ const DeleteModal = (props) => {
   const [mail, setmail] = useState("");
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");
+  const [webSocket, setWebSocket] = useState();
 
   useEffect(() => {
+
+
     call("/calendar/" + calNo, "GET").then((response) => {
       setmail(response.data);
       console.log("112asdasdasd112", response.data);
@@ -27,14 +30,27 @@ const DeleteModal = (props) => {
     });
     fetchMemberData();
   }, [i18n]);
-
+  const sendMessage = () => {
+    console.log("메시지 발송")
+    if (webSocket) {
+      webSocket.send("Hello from React!");
+    }
+  };
   // console.log("가나다라마바사", email);
   const deleteButton = () => {
+    const ws = new WebSocket("ws://localhost:8080/ws");
+    console.log("웹소켓연결성공")
+    ws.onmessage = (event) => {
+      console.log("Received message:", event.data);
+    };
+    setWebSocket(ws);
+    sendMessage();
     call("/calendar", "DELETE", calNo).then((response) => {
       // setmail(response.data);
       console.log("112asdasdasd112", response.data);
     });
     window.location = "/settings";
+    return () => ws.close();
   };
   return (
     <div className={open ? "openModal modal" : "modal"}>

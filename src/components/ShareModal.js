@@ -26,8 +26,16 @@ const ShareModal = (props) => {
   const [language, setLanguage] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [webSocket, setWebSocket] = useState();
 
   useEffect(() => {
+    const ws = new WebSocket("ws://localhost:8080/ws");
+    console.log("웹소켓연결성공")
+    ws.onmessage = (event) => {
+      console.log("Received message:", event.data);
+    };
+    setWebSocket(ws);
+    return () => ws.close();
     const loadData = async () => {
       try {
         const memberData = await fetchMemberData();
@@ -38,7 +46,6 @@ const ShareModal = (props) => {
         console.error("데이터 가져오기 오류:", error);
       }
     };
-
     loadData();
   }, [i18n]);
   // console.log("페치", fetchMemberData);
@@ -49,6 +56,11 @@ const ShareModal = (props) => {
     setGrade(event.target.value);
   };
 
+  const sendMessage = () => {
+    if (webSocket) {
+      webSocket.send("초대");
+    }
+  };
   // 캘린더 초대 이벤트
   const invite = () => {
     // console.log("메일 : ", email);
@@ -63,6 +75,7 @@ const ShareModal = (props) => {
         // 보낼 내용 : ~님이 ~님을 [캘린더이름]캘린더에 초대하셨습니다.
         // 보낸 사람 : 캘린더초대자의email
         // 받을 사람 : 수신자의email
+        sendMessage();
       });
     }, 100);
     openModal(true);

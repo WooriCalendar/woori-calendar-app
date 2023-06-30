@@ -38,8 +38,9 @@ const ScheduleCreate = () => {
   const [istitleCheck, setIstitleCheck] = useState(false);
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");
+  const [webSocket, setWebSocket] = useState();
 
-    console.log(calendars)
+
 
   useEffect(() => {
     call("/calendar/share", "GET", null).then((response) => {
@@ -48,7 +49,20 @@ const ScheduleCreate = () => {
       i18n.changeLanguage(response.language);
     });
     fetchMemberData();
+    const ws = new WebSocket("ws://localhost:8080/ws");
+    console.log("웹소켓연결성공")
+    ws.onmessage = (event) => {
+      console.log("Received message:", event.data);
+    };
+    setWebSocket(ws);
+    return () => ws.close();
   }, [i18n]);
+  const sendMessage = () => {
+    if (webSocket) {
+      webSocket.send("Hello from React!");
+    }
+  };
+
   const titleRegEx = /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?\s]{2,20}$/;
   const onTitleChange = (e) => {
     setSchedule({ ...schedule, title: e.target.value });
@@ -145,6 +159,7 @@ const ScheduleCreate = () => {
         console.log(response.data);
       });
 
+        sendMessage();
       window.location.pathname = "/";
     }
   };

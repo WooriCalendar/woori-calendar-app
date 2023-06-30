@@ -27,7 +27,7 @@ import { useTranslation } from "react-i18next";
 
 const Notification = () => {
   const [notification, setNotification] = useState([]);
-  const [count, setCount] = useState([]);
+  const [count, setCount] = useState(0);
   const [msg, setMsg] = useState("");
   const [email, setEmail] = useState("");
   const [chatt, setChatt] = useState([]);
@@ -38,6 +38,28 @@ const Notification = () => {
   const [emptyMsg, setEmptyMsg] = useState();
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");
+  const [webSocket, setWebSocket] = useState();
+
+  useEffect(() => {
+    const ws = new WebSocket("ws://localhost:8080/ws");
+    console.log("웹소켓연결성공")
+    ws.onmessage = (event) => {
+      console.log("Received message:", event.data);
+      setCount(count + 1);
+    };
+    setWebSocket(ws);
+    return () => ws.close();
+  }, []);
+
+  // UseEffect
+
+  const sendMessage = () => {
+    if (webSocket) {
+      webSocket.send("Hello from React!");
+      webSocket.send(notification);
+    }
+  };
+
 
   useEffect(() => {
     const loadData = async () => {
@@ -121,59 +143,10 @@ const Notification = () => {
       </div>
     ));
 
-  useEffect(() => {
-    if (socketData !== undefined) {
-      const tempData = chatt.concat(socketData);
-      setChatt(tempData);
-    }
-  }, [socketData]);
-
-  const onText = (event) => {
-    setMsg(event.target.value);
-  };
-
-  const webSocketLogin = useCallback(() => {
-    ws.current = new WebSocket("ws://localhost:8080/socket/chatt");
-    ws.current.onmessage = (message) => {
-      console.log("메시지 수신", message);
-      setEmptyMsg(null);
-      const dataSet = JSON.parse(message.data);
-      if (dataSet.revEmail === email) {
-        setCount(count + 1);
-        console.log("나한테옴?");
-        setSocketData(dataSet);
-      }
-    };
-  });
-
   const handleButtonClick = (itemNo) => {
     setSelectedItemNo(itemNo);
   };
-  const send = useCallback(() => {
-    webSocketLogin();
 
-    const data = {
-      sendEmail: "",
-      revEmail: "7ceojun@naver.com",
-      comment: "알림이 없어요!",
-      type: "test",
-      date: "",
-      calNo: 3,
-      nno: 20,
-    }; //전송 데이터(JSON)
-    const temp = JSON.stringify(data);
-    if (ws.current.readyState === 0) {
-      //readyState는 웹 소켓 연결 상태를 나타냄
-      ws.current.onopen = () => {
-        //webSocket이 맺어지고 난 후, 실행
-        console.log("발송완료1");
-        ws.current.send(temp);
-      };
-    } else {
-      console.log("발송완료2");
-      ws.current.send(temp);
-    }
-  });
   useEffect(() => {
     call("/notification", "GET", null).then((response) => {
       if (response.data.length !== 0) {
@@ -193,6 +166,7 @@ const Notification = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleIconClick = () => {
+    setCount(0);
     if (notification.length !== 0) {
       setIsOpen(!isOpen);
       if (!isOpen) {
@@ -220,7 +194,7 @@ const Notification = () => {
     <div>
       <Button onClick={handleIconClick}>
         <Badge
-          badgeContent={notification.length !== 0 ? count : null}
+          badgeContent={count}
           color="secondary"
         >
           <FontAwesomeIcon

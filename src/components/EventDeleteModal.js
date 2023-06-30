@@ -24,9 +24,23 @@ const EventDeleteModal = (props) => {
     rrule: {},
     status: "",
   });
+  const [webSocket, setWebSocket] = useState();
   useEffect(() => {
     setSchedule(scheduleDTO);
+    const ws = new WebSocket("ws://localhost:8080/ws");
+    console.log("웹소켓연결성공")
+    ws.onmessage = (event) => {
+      console.log("Received message:", event.data);
+    };
+    setWebSocket(ws);
+    return () => ws.close();
   }, [scheduleDTO]);
+
+  const sendMessage = () => {
+    if (webSocket) {
+      webSocket.send("Hello from React!");
+    }
+  };
 
   const deleteButton = () => {
     const updatedItem = {
@@ -39,6 +53,7 @@ const EventDeleteModal = (props) => {
 
     call("/schedule", "DELETE", scheduleDTO.scNo).then((response) => {
       console.log("responseresponse", response);
+      sendMessage();
     });
     window.location.pathname = "/";
   };
