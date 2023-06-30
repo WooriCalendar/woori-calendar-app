@@ -73,7 +73,7 @@ function App() {
                     <Navigation SideBar={sideBarButton} initialView={onInitialViewChange} next={onNextClick} prev={onPrevClick} today={onTodayClick} date={date}/>
                     {/*<Container maxWidth="xl" style={{margin : '0px 0px'}}>*/}
                     <Grid container spacing={3} style={{margin: '0px 0px', justifyContent: 'space-between', width: 'auto'}}>
-                        <Grid item xs={2} style={{paddingLeft: '20px'}}>
+                        <Grid item xs={isSideBarVisible ? 2 : false} style={{paddingLeft: '20px'}}>
                             <Sidebar
                                 visible={isSideBarVisible}
                                 contentHeight={'410px'}
@@ -81,7 +81,7 @@ function App() {
                                 onCategoryChange={onCategoryChange}
                             />
                         </Grid>
-                        <Grid item xs={10} style={{padding: '10px 30px', marginLeft: 'auto'}}>
+                        <Grid item xs={isSideBarVisible ? 10 : 12} style={{padding: '10px 30px', marginLeft: 'auto'}}>
                             <FullCalendars
                                 headerToolbar={headerToolbar}
                                 // height={'800px'}
