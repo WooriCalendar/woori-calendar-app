@@ -2,7 +2,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import React, { useEffect, useState, useRef } from "react";
 import dayjs from "dayjs";
 import { Button, Grid, MenuItem, Switch, TextField } from "@mui/material";
-import { ko } from "date-fns/locale";
+import { ko, tr } from "date-fns/locale";
 import moment from "moment";
 import { call, fetchMemberData } from "../service/ApiService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,25 +18,24 @@ import GoogleMaps from "./GooglePlace";
 import { useTranslation } from "react-i18next";
 
 const NewEventModal = (props) => {
-  const { open, close, calendar, scheduleDTO } = props;
-  // console.log("asdasdasdasasdd99", scheduleNo);
-  // alert(scheduleNo.scNo);
-  // console.log("scheduleDTOscheduleDTO", scheduleDTO);
+  const { open, close, scheduleDTO } = props;
 
   const fullDayRef = useRef(false);
-  const dateRef = useRef(moment(new Date()).format("YYYY-MM-DD HH:mm:ss"));
-  const untilRef = useRef(
-    moment(new Date().setMonth(new Date().getMonth() + 1)).format("YYYY-MM-DD")
-  );
+  const startDateRef = useRef();
+  const dateRef = useRef();
+  const untilRef = useRef();
+  // moment(new Date().setMonth(new Date().getMonth() + 1)).format("YYYY-MM-DD")
   const repeatRef = useRef("");
   const [repeatToggle, setRepeatToggle] = useState(false);
   const [language, setLanguage] = useState("");
   const { t, i18n } = useTranslation();
   const [calendars, setCalendars] = useState(false);
+
   const [schedule, setSchedule] = useState({
     scNo: "",
     title: "",
     comment: "",
+
     start: dateRef.current,
     end: dateRef.current,
     calNo: "",
@@ -44,24 +43,46 @@ const NewEventModal = (props) => {
     rrule: {},
     status: "",
   });
-
+  let regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
   // console.log("뉴이벤트모달테스트", scheduleDTO);
   useEffect(() => {
     setSchedule(scheduleDTO);
+    if (regex.test(scheduleDTO.start)) {
+      fullDayRef.current = true;
+    } else {
+      fullDayRef.current = false;
+    }
+    if (scheduleDTO.rrule === null) {
+      console.log("단순일정");
+      setRepeatToggle(false);
+      schedule.rrule = null;
+    } else {
+      console.log("반복일정");
+      setRepeatToggle(true);
+      // untilRef.current=schedule.rrule.until;
+      // repeatRef.current=schedule.rrule.freq;
+    }
   }, [scheduleDTO]);
-  // console.log("000000000000000000000088888888", schedule);
 
+  // console.log("response.data:::::::::::::", scheduleDTO);
   useEffect(() => {
     call("/calendar", "GET", null).then((response) => {
       // console.log("뉴이벤트모달", response.data[0]);
       setCalendars(response.data);
+
       i18n.changeLanguage(response.language);
+
+      if (titleRegEx.test(response.data[0].name)) {
+        setIstitleCheck(true);
+      }
     });
     fetchMemberData();
-  }, [i18n]);
+  }, []);
 
   const [istitleCheck, setIstitleCheck] = useState(false);
-  const titleRegEx = /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?\s]{2,20}$/;
+  const titleRegEx =
+    /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?][ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?\s]{0,18}[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?]$/;
+
   const onTitleChange = (e) => {
     setSchedule({
       ...schedule,
@@ -125,8 +146,6 @@ const NewEventModal = (props) => {
 
   const onRepeatChange = (e) => {
     setRepeatToggle(!repeatToggle);
-    // console.log(schedule);
-    // alert(e.target.checked);
   };
 
   const onFreqChange = (e) => {
@@ -138,7 +157,14 @@ const NewEventModal = (props) => {
   };
 
   const onCalendarChange = (e) => {
-    setSchedule({ ...schedule, calNo: e.target.value });
+    const selectedCalendarNo = e.target.value;
+    const selectedCalendar = calendars.find(
+      (calendar) => calendar.calNo === selectedCalendarNo
+    );
+    setSchedule({
+      ...schedule,
+      calNo: selectedCalendar ? selectedCalendar.calNo : "",
+    });
   };
 
   const onPlaceChange = (e) => {
@@ -162,26 +188,41 @@ const NewEventModal = (props) => {
   };
 
   const onUpdate = () => {
-    // console.log(schedule);
-    if (istitleCheck) {
+    console.log("반복상태를 나타냄" + repeatToggle);
+    if (istitleCheck && repeatToggle) {
+      if (untilRef.current == null) {
+        untilRef.current = scheduleDTO.rrule.until;
+      }
+      if (repeatRef.current == null) {
+        repeatRef.current = scheduleDTO.rrule.freq;
+      }
+
       const updatedItem = {
         ...schedule,
-        rrule: { ...schedule.rrule },
+        rrule: { until: untilRef.current, freq: repeatRef.current },
       };
-      // console.log("1번", updatedItem);
-      // if (istitleCheck) {
-      console.log("2번", updatedItem);
+      // console.log("1번", schedule);
+      // console.log("2번", updatedItem);
       call("/schedule", "PUT", updatedItem).then((response) => {
-        // console.log("3번", updatedItem);
-        // console.log("response.dataresponse.dataresponse.data", response.data);
+        console.log("3번", updatedItem);
+      });
+    } else if (!(istitleCheck && repeatToggle)) {
+      const updatedItem = {
+        ...schedule,
+        status: fullDayRef.current,
+        // rrule: { dtstart : null, untilRef : null, freq : null },
+        rrule: {},
+      };
+      // console.log("1번", schedule);
+      // console.log("2번", updatedItem);
+      call("/schedule", "PUT", updatedItem).then((response) => {
+        console.log("4번", updatedItem);
       });
     }
-    window.location.pathname = "/";
-    // }
-  };
-  // console.log("asdasdas66+++++", schedule.scNo);
 
-  // console.log("ㄹ라라라랄라라라", schedule);
+    // window.location.pathname = "/";
+  };
+
   return (
     <div item xs={12} className={open ? "openModal modal" : "modal"}>
       {open ? (
@@ -219,7 +260,7 @@ const NewEventModal = (props) => {
               container
               label={t("Title")}
               // defaultValue={schedule.title}
-              value={schedule.title || ""}
+              defaultValue={schedule.title}
               style={{ width: "350px", paddingBottom: "10px" }}
               onChange={onTitleChange}
             />
@@ -237,12 +278,12 @@ const NewEventModal = (props) => {
                   {fullDayRef.current ? (
                     <>
                       <DatePicker
-                        defaultValue={dayjs(new Date())}
+                        defaultValue={dayjs(schedule.start)}
                         format={"YYYY-MM-DD"}
                         onChange={onStartDateChange}
                       />
                       <DatePicker
-                        defaultValue={dayjs(new Date()).add(1, "h")}
+                        defaultValue={dayjs(schedule.end)}
                         format={"YYYY-MM-DD"}
                         onChange={onEndDateChange}
                       />
@@ -250,12 +291,12 @@ const NewEventModal = (props) => {
                   ) : (
                     <>
                       <DesktopDateTimePicker
-                        defaultValue={dayjs(new Date())}
+                        defaultValue={dayjs(schedule.start)}
                         format={"YYYY-MM-DD HH:mm:ss"}
                         onChange={onStartTimeChange}
                       />
                       <DesktopDateTimePicker
-                        defaultValue={dayjs(new Date())}
+                        defaultValue={dayjs(schedule.end)}
                         format={"YYYY-MM-DD HH:mm:ss"}
                         onChange={onEndTimeChange}
                       />
@@ -276,6 +317,8 @@ const NewEventModal = (props) => {
                 style={{ width: 400 }}
                 label={t("Repeat")}
                 onChange={onFreqChange}
+                id="freq"
+                defaultValue={schedule.rrule.freq ? schedule.rrule.freq : null}
               >
                 <MenuItem value={"daily"}>{t("Daily")}</MenuItem>
                 <MenuItem value={"weekly"}>{t("Weekly")}</MenuItem>
@@ -285,11 +328,15 @@ const NewEventModal = (props) => {
               <LocalizationProvider locale={ko} dateAdapter={AdapterDayjs}>
                 <Grid container style={{ marginTop: 20 }}>
                   <DatePicker
-                    defaultValue={dayjs(
-                      new Date().setMonth(new Date().getMonth() + 1)
-                    )}
+                    // defaultValue={dayjs(schedule.rrule.until || "")}
+                    defaultValue={
+                      dayjs(new Date().setMonth(new Date().getMonth() + 1)) ||
+                      ""
+                    }
+                    // value={dayjs(new Date(untilRef.current)) || ""}
                     format={"YYYY-MM-DD"}
                     onChange={onUntilChange}
+                    id="until"
                   />
                 </Grid>
               </LocalizationProvider>
@@ -302,6 +349,9 @@ const NewEventModal = (props) => {
               select
               style={{ width: 400 }}
               label={t("Calendar")}
+              // defaultValuevalue={calendar.name}
+
+              value={schedule.calNo}
               onChange={onCalendarChange}
             >
               {calendars
@@ -309,12 +359,14 @@ const NewEventModal = (props) => {
                   (calendar) => calendar.calNo != 90 && calendar.calNo != 98
                 )
                 .map((calendar) => (
-                  <MenuItem value={calendar.calNo}>{calendar.name}</MenuItem>
+                  <MenuItem key={calendar.calNo} value={calendar.calNo}>
+                    {calendar.name}
+                  </MenuItem>
                 ))}
             </TextField>
           </Grid>
           <Grid container style={{ marginTop: 20 }}>
-            <GoogleMaps onPlaceChange={onPlaceChange} />
+            <GoogleMaps onPlaceChange={onPlaceChange} value={schedule.place} />
           </Grid>
           <Grid container style={{ marginTop: 20 }}>
             <TextField

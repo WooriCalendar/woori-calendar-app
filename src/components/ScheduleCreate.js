@@ -40,8 +40,6 @@ const ScheduleCreate = () => {
   const [language, setLanguage] = useState("");
   const [webSocket, setWebSocket] = useState();
 
-
-
   useEffect(() => {
     call("/calendar/share", "GET", null).then((response) => {
       console.log("캘린더 데이터");
@@ -50,7 +48,7 @@ const ScheduleCreate = () => {
     });
     fetchMemberData();
     const ws = new WebSocket("ws://localhost:8080/ws");
-    console.log("웹소켓연결성공")
+    console.log("웹소켓연결성공");
     ws.onmessage = (event) => {
       console.log("Received message:", event.data);
     };
@@ -63,7 +61,8 @@ const ScheduleCreate = () => {
     }
   };
 
-  const titleRegEx = /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?\s]{2,20}$/;
+  const titleRegEx =
+    /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?][ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?\s]{0,18}[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?]$/;
   const onTitleChange = (e) => {
     setSchedule({ ...schedule, title: e.target.value });
     titleRegEx.test(e.target.value);
@@ -159,7 +158,7 @@ const ScheduleCreate = () => {
         console.log(response.data);
       });
 
-        sendMessage();
+      sendMessage();
       window.location.pathname = "/";
     }
   };
@@ -271,7 +270,10 @@ const ScheduleCreate = () => {
           >
             {calendars
               .filter(
-                (calendar) => calendar.calNo != 90 && calendar.calNo != 98 && calendar.grade !== 0
+                (calendar) =>
+                  calendar.calNo != 90 &&
+                  calendar.calNo != 98 &&
+                  calendar.grade !== 0
               )
               .map((calendar) => (
                 <MenuItem value={calendar.calNo}>{calendar.calName}</MenuItem>

@@ -30,9 +30,9 @@ const ShareModal = (props) => {
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080/ws");
-    console.log("웹소켓연결성공")
+    // console.log("웹소켓연결성공");
     ws.onmessage = (event) => {
-      console.log("Received message:", event.data);
+      // console.log("Received message:", event.data);
     };
     setWebSocket(ws);
     return () => ws.close();
@@ -126,7 +126,7 @@ const ShareModal = (props) => {
       } else if (resp.email == userEmail) {
         setButtonDisabled(true);
         document.getElementById("emailCheck").innerText =
-          "본인은 초대할 수 없습니다.";
+          t("본인은 초대할 수 없습니다.");
       }
     });
   };
@@ -194,11 +194,13 @@ const ShareModal = (props) => {
         <div className={modalOpen ? "openModal modal" : "modal"}>
           <section>
             <main>
-              <span>{email} 님에게 초대 이메일을 발송하였습니다.</span>
+              <span>
+                {email} {t("An invitation email has been sent.")}
+              </span>
             </main>
             <footer>
               <Button variant="contained" id="invite" onClick={closeModal}>
-                확인
+                {t("Complete")}
               </Button>
             </footer>
           </section>
