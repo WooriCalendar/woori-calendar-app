@@ -14,8 +14,8 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import rrulePlugin from "@fullcalendar/rrule";
 
 const Sidebar = (
-  { visible, aspectRatio, height, contentHeight, onCategoryChange },
-  props
+    { visible, aspectRatio, height, contentHeight, onCategoryChange },
+    props
 ) => {
   const headerToolbar = {
     left: "",
@@ -42,27 +42,27 @@ const Sidebar = (
   }, [i18n]);
 
   return (
-    <div>
-      {visible && (
-        <div className="slide-out">
-          <BasicMenu />
-          <FullCalendar
-              plugins={[dayGridPlugin, momentPlugin, interactionPlugin, timeGridPlugin, rrulePlugin]}
-              initialView={'dayGridMonth'}
-              headerToolbar={headerToolbar}
-            heigth={height}
-            contentHeight={contentHeight}
-            aspectRatio={aspectRatio}
-          />
-            <div style={{height : 300, overflow : 'scroll', marginTop : 10, marginBottom : 10}} >
+      <div>
+        {visible && (
+            <div className="slide-out">
+              <BasicMenu />
+              <FullCalendar
+                  plugins={[dayGridPlugin, momentPlugin, interactionPlugin, timeGridPlugin, rrulePlugin]}
+                  initialView={'dayGridMonth'}
+                  headerToolbar={headerToolbar}
+                  heigth={height}
+                  contentHeight={contentHeight}
+                  aspectRatio={aspectRatio}
+              />
+              <div style={{height : 300, overflow : 'scroll', marginTop : 10, marginBottom : 10}} >
                 <Category onCategoryChange={onCategoryChange} />
-            </div>
-            <Typography variant="body2" color="textSecondary" align="center">
+              </div>
+              <Typography variant="body2" color="textSecondary" align="center">
                 Copyright &copy; Woori Calendar {new Date().getFullYear()}
-            </Typography>
-        </div>
-      )}
-    </div>
+              </Typography>
+            </div>
+        )}
+      </div>
   );
 };
 export default Sidebar;

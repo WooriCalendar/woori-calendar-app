@@ -21,18 +21,18 @@ const Settings = ({location}) => {
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [showMyPage, setShowMyPage] = useState(false);
 
-    const no = useSelector(state => state.calNo);
-    console.log(no)
-    const dispatch = useDispatch();
+  const no = useSelector(state => state.calNo);
+  console.log(no)
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (no !== null) {
-            setCalNo(no)
-            setActiveComponent("Category")
+  useEffect(() => {
+    if (no !== null) {
+      setCalNo(no)
+      setActiveComponent("Category")
 
-            dispatch({type : "UNSET"})
-        }
-    }, [no])
+      dispatch({type : "UNSET"})
+    }
+  }, [no])
 
   const handleSidebarClick = (component, calNo) => {
     setActiveComponent(component);
@@ -69,9 +69,9 @@ const Settings = ({location}) => {
     } else if (activeComponent === "SettingPasword") {
       return <SettingPasword setShowMyPage={setShowMyPage} />;
     } else if (
-      activeComponent === "Category"
-      // ||
-      // activeComponent === "CalModify"
+        activeComponent === "Category"
+        // ||
+        // activeComponent === "CalModify"
     ) {
       // return <CalModify calNo={calendar.calNo} />;
       return <CalModify calNo={calNo} key={calNo} />;
@@ -81,24 +81,24 @@ const Settings = ({location}) => {
   };
 
   return (
-    <div>
-      <Grid container item xs={12}>
-        <SettingNavigation selectedCategory={selectedComponent} />
-        {/* {console.log("888888888888888888888", selectedComponent)} */}
-        <Grid item xs={2}>
-          <SettingSidebar handleSidebarClick={handleSidebarClick} />
-          {/* {console.log("888988888", handleSidebarClick)} */}
-        </Grid>
-        <Grid style={{ margin: "30px" }} item xs={9}>
-          <Grid container item xs={12}>
-            <Grid style={{ margin: "30px" }} item xs={9}>
-              {renderComponent()}
-              {showMyPage && <MyPage />}
+      <div>
+        <Grid container item xs={12}>
+          <SettingNavigation selectedCategory={selectedComponent} />
+          {/* {console.log("888888888888888888888", selectedComponent)} */}
+          <Grid item xs={2}>
+            <SettingSidebar handleSidebarClick={handleSidebarClick} />
+            {/* {console.log("888988888", handleSidebarClick)} */}
+          </Grid>
+          <Grid style={{ margin: "30px" }} item xs={9}>
+            <Grid container item xs={12}>
+              <Grid style={{ margin: "30px" }} item xs={9}>
+                {renderComponent()}
+                {showMyPage && <MyPage />}
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </div>
+      </div>
   );
 };
 

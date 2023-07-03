@@ -29,33 +29,33 @@ const SocialDeleteModal = (props) => {
     });
   };
   return (
-    <div
-      className={open ? "openModal modal" : "modal"}
-      style={{ textAlign: "center" }}
-    >
-      {open ? (
-        <section>
-          <main>
-            <div style={{ marginBottom: "30px" }}>
-              <span>{t("would you like to delete this account?")}</span>
-            </div>
-            <Button
-              variant="outlined"
-              color="error"
-              className="invite"
-              style={{ marginRight: "10px" }}
-              onClick={submit}
-            >
-              {t("Secession")}
-            </Button>
-            <Button variant="outlined" onClick={close}>
-              {t("Cancel")}
-            </Button>
-          </main>
-          <footer></footer>
-        </section>
-      ) : null}
-    </div>
+      <div
+          className={open ? "openModal modal" : "modal"}
+          style={{ textAlign: "center" }}
+      >
+        {open ? (
+            <section>
+              <main>
+                <div style={{ marginBottom: "30px" }}>
+                  <span>{t("would you like to delete this account?")}</span>
+                </div>
+                <Button
+                    variant="outlined"
+                    color="error"
+                    className="invite"
+                    style={{ marginRight: "10px" }}
+                    onClick={submit}
+                >
+                  {t("Secession")}
+                </Button>
+                <Button variant="outlined" onClick={close}>
+                  {t("Cancel")}
+                </Button>
+              </main>
+              <footer></footer>
+            </section>
+        ) : null}
+      </div>
   );
 };
 

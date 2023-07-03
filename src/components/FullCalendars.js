@@ -146,6 +146,7 @@ const FullCalendars = (
             <FullCalendar
                 plugins={[dayGridPlugin, momentPlugin, interactionPlugin, timeGridPlugin, rrulePlugin]}
                 initialView={'dayGridMonth'}
+                locale={"ko"}
                 headerToolbar={headerToolbar}
                 events={events}
                 height={height}

@@ -19,7 +19,7 @@ const CalendarCreate = () => {
     color: "",
   });
   const titleRegEx =
-    /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?][ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?\s]{0,18}[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?]$/;
+      /^[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?][ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?\s]{0,18}[ㄱ-ㅎ가-힣a-zA-Z0-9~!@#$%^&*()_+|<>?:{}?]$/;
   const [istitleCheck, setIstitleCheck] = useState(false);
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("");
@@ -53,7 +53,7 @@ const CalendarCreate = () => {
     titleRegEx.test(e.target.value);
     if (!titleRegEx.test(e.target.value)) {
       document.getElementById("titleCheck").innerText = t(
-        "Please enter at least 2 characters and no more than 20 characters"
+          "Please enter at least 2 characters and no more than 20 characters"
       );
     } else {
       document.getElementById("titleCheck").innerText = t("it's possible");
@@ -68,11 +68,11 @@ const CalendarCreate = () => {
 
   const onTimeZoneChange = async (e) => {
     await axios
-      .get("https://worldtimeapi.org/api/timezone/" + e.target.value)
-      .then((response) => {
-        timeZoneRef.current =
-          e.target.value + " (utc " + response.data.utc_offset + ")";
-      });
+        .get("https://worldtimeapi.org/api/timezone/" + e.target.value)
+        .then((response) => {
+          timeZoneRef.current =
+              e.target.value + " (utc " + response.data.utc_offset + ")";
+        });
     setCalendar({ ...calendar, timeZone: timeZoneRef.current });
   };
 
@@ -104,80 +104,80 @@ const CalendarCreate = () => {
   };
 
   return (
-    <Grid
-      container
-      className={"main"}
-      style={{ width: 400, margin: "0 auto", justifyContent: "center" }}
-    >
-      <Grid item>
-        <h2>{t("Create new calendar")}</h2>
+      <Grid
+          container
+          className={"main"}
+          style={{ width: 400, margin: "0 auto", justifyContent: "center" }}
+      >
+        <Grid item>
+          <h2>{t("Create new calendar")}</h2>
+        </Grid>
+        <Grid container style={{ marginTop: 20 }}>
+          <TextField label={t("Name")} onChange={onNameChange} />
+          <div id="titleCheck" style={{ color: "red" }}></div>
+        </Grid>
+        <Grid container style={{ marginTop: 20 }}>
+          <TextField label={t("Comment")} onChange={onCommentChange} />
+        </Grid>
+        <Grid container style={{ marginTop: 20 }}>
+          <TextField
+              select
+              style={{ width: 400 }}
+              label={t("timeZone")}
+              onChange={onTimeZoneChange}
+          >
+            {timeZones.map((timeZone) => (
+                <MenuItem value={timeZone}>{timeZone}</MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+        <Grid container style={{ marginTop: 20 }}>
+          <TextField
+              select
+              style={{ width: 400 }}
+              label={t("Color")}
+              className={"color"}
+          >
+            <BlockPicker
+                width={400}
+                colors={[
+                  "#FF6900",
+                  "#FCB900",
+                  "#7BDCB5",
+                  "#00D084",
+                  "#8ED1FC",
+                  "#0693E3",
+                  "#ABB8C3",
+                  "#EB144C",
+                  "#F78DA7",
+                  "#9900EF",
+                ]}
+                onChange={onColorChange}
+                color={colorRef.current}
+            />
+          </TextField>
+        </Grid>
+        <Grid item xs={12} style={{ marginTop: "20px" }}>
+          <Button
+              item
+              xs={6}
+              variant=""
+              onClick={onClickBtn}
+              style={{ textAlign: "left" }}
+          >
+            {t("Back")}
+          </Button>
+          <Button
+              item
+              xs={6}
+              style={{ textAlign: "right", marginLeft: "246px" }}
+              variant="contained"
+              onClick={addCalendar}
+          >
+            {t("Complete")}
+          </Button>
+        </Grid>
       </Grid>
-      <Grid container style={{ marginTop: 20 }}>
-        <TextField label={t("Name")} onChange={onNameChange} />
-        <div id="titleCheck" style={{ color: "red" }}></div>
-      </Grid>
-      <Grid container style={{ marginTop: 20 }}>
-        <TextField label={t("Comment")} onChange={onCommentChange} />
-      </Grid>
-      <Grid container style={{ marginTop: 20 }}>
-        <TextField
-          select
-          style={{ width: 400 }}
-          label={t("timeZone")}
-          onChange={onTimeZoneChange}
-        >
-          {timeZones.map((timeZone) => (
-            <MenuItem value={timeZone}>{timeZone}</MenuItem>
-          ))}
-        </TextField>
-      </Grid>
-      <Grid container style={{ marginTop: 20 }}>
-        <TextField
-          select
-          style={{ width: 400 }}
-          label={t("Color")}
-          className={"color"}
-        >
-          <BlockPicker
-            width={400}
-            colors={[
-              "#FF6900",
-              "#FCB900",
-              "#7BDCB5",
-              "#00D084",
-              "#8ED1FC",
-              "#0693E3",
-              "#ABB8C3",
-              "#EB144C",
-              "#F78DA7",
-              "#9900EF",
-            ]}
-            onChange={onColorChange}
-            color={colorRef.current}
-          />
-        </TextField>
-      </Grid>
-      <Grid item xs={12} style={{ marginTop: "20px" }}>
-        <Button
-          item
-          xs={6}
-          variant=""
-          onClick={onClickBtn}
-          style={{ textAlign: "left" }}
-        >
-          {t("Back")}
-        </Button>
-        <Button
-          item
-          xs={6}
-          style={{ textAlign: "right", marginLeft: "246px" }}
-          variant="contained"
-          onClick={addCalendar}
-        >
-          {t("Complete")}
-        </Button>
-      </Grid>
-    </Grid>
   );
 };
 

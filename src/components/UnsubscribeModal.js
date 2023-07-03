@@ -54,40 +54,40 @@ const UnsubscribeModal = (props) => {
   };
 
   return (
-    <div className={open ? "openModal modal" : "modal"}>
-      {open ? (
-        <section>
-          <main>
-            <div style={{ marginBottom: "5px" }}>
-              <div>
-                {t("Are you sure you want to unsubscribe?")} <br />
-                <br />
-                {t(
-                  "You will no longer have access to these calendars and events."
-                )}
-                <br />{" "}
-                {t(
-                  "Other users with access to the calendar can continue to use it."
-                )}
-              </div>
-            </div>
-          </main>
-          <footer>
-            <Button
-              variant="contained"
-              className="invite"
-              style={{ marginRight: "10px" }}
-              onClick={unsubscribe}
-            >
-              {t("Complete")}
-            </Button>
-            <Button variant="contained" onClick={close}>
-              {t("Cancel")}
-            </Button>
-          </footer>
-        </section>
-      ) : null}
-    </div>
+      <div className={open ? "openModal modal" : "modal"}>
+        {open ? (
+            <section>
+              <main>
+                <div style={{ marginBottom: "5px" }}>
+                  <div>
+                    {t("Are you sure you want to unsubscribe?")} <br />
+                    <br />
+                    {t(
+                        "You will no longer have access to these calendars and events."
+                    )}
+                    <br />{" "}
+                    {t(
+                        "Other users with access to the calendar can continue to use it."
+                    )}
+                  </div>
+                </div>
+              </main>
+              <footer>
+                <Button
+                    variant="contained"
+                    className="invite"
+                    style={{ marginRight: "10px" }}
+                    onClick={unsubscribe}
+                >
+                  {t("Complete")}
+                </Button>
+                <Button variant="contained" onClick={close}>
+                  {t("Cancel")}
+                </Button>
+              </footer>
+            </section>
+        ) : null}
+      </div>
   );
 };
 

@@ -122,6 +122,7 @@ const CalModify = (props) => {
   const editEventHandler = () => {
     call("/calendar", "PUT", calendar).then((response) => {
       console.log(response.data);
+      window.location.href="/"
     });
   };
 

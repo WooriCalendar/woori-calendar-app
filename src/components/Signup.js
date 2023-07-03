@@ -137,7 +137,7 @@ const Signup = () => {
       } else if (isNicknameVisible) {
         setNickname(document.getElementById("nickname").value);
         setIsNicknameVisible(false);
-        document.getElementById(t("nickname")).value = null;
+        document.getElementById("nickname").value = null;
         sliderRef.current.slickNext();
       } else if (isSubemailVisible) {
         setSubemail(document.getElementById("subemail").value);
